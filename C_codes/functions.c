@@ -14,26 +14,39 @@
 
 
 
-#define RODATA_BASE_ADDRESS          ((const volatile uint32_t *)0x08FF)  // RODATA base address
+#define RODATA_BASE_ADDRESS          ((const volatile uint32_t *)0x08FF)  // RODATA base address (2303)
 
 
 
-#define DC_MOTOR_BASE_ADDRESS        ((volatile uint32_t *)0x0BFF)  //DC motor peripheral base address
+#define DC_MOTOR_BASE_ADDRESS        ((volatile uint32_t *)0x0BFF)  //DC motor peripheral base address (3071)
 
 
-#define STEPPER_MOTOR_BASE_ADDRESS   ((volatile uint32_t *)0x0C1F)   //stepper motor peripheral base address
+#define STEPPER_MOTOR_BASE_ADDRESS   ((volatile uint32_t *)0x0C1F)   //stepper motor peripheral base address (3103)
 
-#define SERVO_MOTOR_BASE_ADDRESS     ((volatile uint32_t *)0x0C3F)   //servo motor peripheral base address
+#define SERVO_MOTOR_BASE_ADDRESS     ((volatile uint32_t *)0x0C3F)   //servo motor peripheral base address (3135)
 
-#define SPI_BASE_ADDRESS            ((volatile uint32_t *)0x0C5F)   //SPI peripheral base address
+#define SPI_BASE_ADDRESS            ((volatile uint32_t *)0x0C5F)   //SPI peripheral base address (3167)
 
-#define NRF24_BASE_ADDRESS          ((volatile uint32_t *)0x0C7F)   //NRF tranciever peripheral base address
+#define NRF24_BASE_ADDRESS          ((volatile uint32_t *)0x0C7F)   //NRF tranciever peripheral base address (3199)
 #define SYSTEM_REGS_BASE_ADDRESS          ((volatile uint32_t *)0x0C9F)   //NRF tranciever peripheral base address ( 3231)
 
 
+/** order of peripheral registers from base address
+           control_reg -----[0]
+           status_reg ------[1]
+           buffer_0 --------[2]
+           buffer_1 --------[3]
+           buffer_2 --------[4]
+           buffer_3 --------[5]
+           other registers  
 
 
-void modify_register(volatile uint32_t* reg_address , uint32_t mask , uint32_t shift , uint32_t action ){
+
+
+*/
+
+// based on action
+void modify_register_based_on_action(volatile uint32_t* reg_address , uint32_t mask , uint32_t shift , uint32_t action ){
     uint32_t value = *reg_address;
     // extract the field bits
     uint32_t field_bits = (value >> shift) & (mask >> shift);
@@ -75,6 +88,29 @@ void modify_register(volatile uint32_t* reg_address , uint32_t mask , uint32_t s
     uint32_t removed_field = value &  ~(mask);
     // insert new field value
     uint32_t new_reg_bits = removed_field | (field_bits << shift);
+
+    *reg_address = new_reg_bits;
+}
+
+
+
+
+
+
+
+// general modification
+void modify_register(volatile uint32_t* reg_address , uint32_t mask , uint32_t shift , uint32_t new_val ){
+    uint32_t value = *reg_address;
+    // extract the field bits
+    uint32_t field_bits = (value >> shift) & (mask >> shift);
+    // least frequency value = 64 max = 256
+
+    // modify the field bits
+ 
+//    clear the field bits
+    uint32_t removed_field = value &  ~(mask);
+    // insert new field value
+    uint32_t new_reg_bits = removed_field | (new_val << shift);
 
     *reg_address = new_reg_bits;
 }
@@ -188,7 +224,9 @@ switch (angle)
 
 
 
-
+void initialize_nrf_module(){
+//    const int tx_busy = read_register_field(NRF24_BASE_ADDRESS , uint32_t mask , uint32_t shift , uint32_t action)
+}
 
 
 
