@@ -127,7 +127,7 @@ void modify_register(volatile uint32_t* reg_address , uint32_t mask , uint32_t s
 
 
 
-uint32_t read_register_field(volatile uint32_t* reg_address , uint32_t mask , uint32_t shift , uint32_t action ){
+uint32_t read_register_field(volatile uint32_t* reg_address , uint32_t mask , uint32_t shift){
           uint32_t value = *reg_address;
     // extract the field bits
     uint32_t field_bits = (value >> shift) & (mask >> shift);
@@ -226,6 +226,26 @@ switch (angle)
 
 void initialize_nrf_module(){
 //    const int tx_busy = read_register_field(NRF24_BASE_ADDRESS , uint32_t mask , uint32_t shift , uint32_t action)
+}
+
+void parse_command(){
+      // read the reg with the received bytes
+    //   based on the system mode register , decide what to do
+
+      uint32_t data = SPI_BASE_ADDRESS[2]; // the buffer with received bytes
+      uint32_t command = read_register_field(&SPI_BASE_ADDRESS[2] , 255U, 0);
+      uint32_t param = read_register_field(&SPI_BASE_ADDRESS[2] ,(255U << 8) , 8);
+      uint32_t action = read_register_field(&SPI_BASE_ADDRESS[2] , (255U << 16), 16);
+
+      switch (SYSTEM_REGS_BASE_ADDRESS[0])
+      {
+      case 0:
+        
+        break;
+      
+      default:
+        break;
+      }
 }
 
 

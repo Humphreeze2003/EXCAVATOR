@@ -1,0 +1,52 @@
+module NRF_RECEIVER(
+    input clk,
+    input rst,
+
+    input IRQ,
+
+    input[31:0] data_from_cpu,
+    // input[31:0] address_bus
+    input write_en,
+    input enable,
+    output[31:0] data_to_cpu,
+    input[31:0] offset
+
+);
+
+
+ reg[31:0] control_reg , control_reg_next;
+ reg[31:0] status_reg , status_reg_next;
+
+ data_to_cpu = (enable && offset == 0)?control_reg_reg:(enable && offset == 1)?status_reg:32'b0;
+
+always @(posedge clk or negedge rst) begin
+      if(!rst)begin
+        control_reg <= 32'b0;
+        status_reg <= 32'b0;
+      end else begin
+    
+       if(enable)begin
+            if(write_en )begin  // writes are synchronous
+            case (offset)
+             0:begin
+               control_reg <= data_from_cpu; 
+             end
+
+             1:begin
+                status_reg <= data_from_cpu;
+             end
+                default: 
+            endcase
+        end else 
+
+       end
+
+
+       if(!IRQ)begin
+         status_reg[0] <= 1'b1;  // will be set back to low by CPU
+       end
+       
+
+      end
+end
+endmodule

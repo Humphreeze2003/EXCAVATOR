@@ -1,64 +1,36 @@
 /*
 
+packet format =====> [COMMAND , PARAM , ACTION]
+
+COMMANDS =========> MOVE             01
+                    STEER            02
+                    MOVE_ARM         03
 
 
-  packet layout  STX  COMMAND , ACTION   , ETX
-
-STX = 255
-ETX = 512
+  
 
 
+PARAMS ============> FROWARD         01
+                     BACKWARD        02
+                     CLOCKWISE       03
+                     ANTI_CLOCKWISE  04
+                     LEFT            05
+                     RIGHT           06
 
-// COMMANDS 
-NONE = 000
-OFF = 001
-CHANGE SYSTEM MODE = 002                                     ---- parameters ( oerating mode  [ 0 = drive , 1 = arm base , 2 = excavator arm)
-CHANGE FREQUENCY = 003                                ---------- parameters(action(increase/decrease)
-CHANGE DIRECTION = 004                                --parameters( DIRECTION , COULD E LEFT OR RIGHT)
-RESET = 005                                           ----no parameters 
-MOVE = 006                                            ----------------parameters(direction)
-STEER = 007
-TURN = 008
-BRAKE = 009                                           --------------no parameters
+                    
 
 
-/// excavator arm commands
-LOWER_ARM_UP = 010                                      
-LOWER_ARM_DOWN = 011
-
-MID_ARM_UP = 012
-MID_ARM_DOWN = 013
-
-SCOOP_UP = 014
-SCOOP_DOWN = 015
-
-
-
-
-// ACTION
-NONE = 000
-INCREASE = 001
-DECREASE = 002
-LEFT = 003
-RIGHT = 004
-UP = 005
-DOWN = 006
-FORWARD = 007
-BACKWARD = 008
-
-
-//PARAMS
-NONE = 000
-
-FORWARD = 001
-BACKWARD = 002
-
-CLOCKWISE = 003
-ANTICLOCKWISE = 004
-
-
+ACTIONS ===========> LOW_ARM_UP     01
+                     LOW_ARM_DOWN   02
+                     MID_ARM_UP     03
+                     MID_ARM_DOWN   04
+                     SCOOP_UP       05
+                     SCOOP_DOWN     06
+                    
 
 */
+
+
 
 
 import React, { useEffect, useState } from "react";
@@ -128,101 +100,117 @@ export default function Control_Dashboard() {
  
 
 
-  const send_control = async function(){  // when a button is pressed
-      const response = await fetch("http://localhost:3000/"  , {
-        method: "POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body : JSON.stringify({
-             command:command,
-             action:action
-        })
-      });
-  }
+  const send_command = async function(comm , param , action){  // when a button is pressed
+       console.log('sending command')      
 
-
-
-
-
-  const change_mode = async function(){
-   try{
-    console.log('changing system mode');
-    set_mode_index(function(prev){
-        return (prev + 1) % (modes.length);
-    });
-
-   
-
-    
-    // const response = await fetch();
-   }
-   catch(err){
-     console.log("error occured while changing mode" , err);
-   }
-
-  }
-
-
-
-
-
-
-
-  useEffect(function(){
-    
-  } , [])
+    try{
+      const res = await  fetch("http://localhost:3000/command" ,{
+          method:'POST',
+          headers:{
+              "Content-Type":"application/json"
+          },
   
-
-
-
-const change_system_mode = async function(){
-   try{
-    //  await change_mode();
-
-    const nextMode = (mode_index + 1) % modes.length;
-
-    set_mode_index(nextMode);
-
-    
-
-    const res = await  fetch("http://localhost:3000/change_system_mode" ,{
-      method:'POST',
-      headers:{
-          "Content-Type":"application/json"
-      },
-
-      body : JSON.stringify({
-          command:  command,
-          parameter: nextMode,
-          action:0
-
+          body : JSON.stringify({
+              command:  comm,
+              parameter: param,
+              action:action
+              
+          })
+  
+        
+  
+  
       })
 
+      if(!res.ok){
+          throw new Error('response not okay');
+      }
+
+      const info = await res.json();
+      console.log(info);
+    } catch(err){
+      console.log('error occured when sending command');
+      console.log(err);
+    }
+  }
+
+
+
+
+
+  // const change_mode = async function(){
+  //  try{
+  //   console.log('changing system mode');
+  //   set_mode_index(function(prev){
+  //       return (prev + 1) % (modes.length);
+  //   });
+
+   
+
+    
+  //   // const response = await fetch();
+  //  }
+  //  catch(err){
+  //    console.log("error occured while changing mode" , err);
+  //  }
+
+  // }
+
+
+
+
+
+
+
+  
+
+
+
+// const change_system_mode = async function(command , param , action){
+//    try{
+//     //  await change_mode();
+
+//     // const nextMode = (mode_index + 1) % modes.length;
+
+//     // set_mode_index(nextMode);
+
+    
+
+//     const res = await  fetch("http://localhost:3000/change_system_mode" ,{
+//       method:'POST',
+//       headers:{
+//           "Content-Type":"application/json"
+//       },
+
+//       body : JSON.stringify({
+//           command:  command,
+//           parameter: param,
+//           action:action
+
+//       })
+
     
   
 
-  })
+//   })
 
-  if(!res.ok){
-      throw new Error('response not okay');
-  }
+//   if(!res.ok){
+//       throw new Error('response not okay');
+//   }
 
-  const info = await res.json();
-  console.log(info);
+//   const info = await res.json();
+//   console.log(info);
 
   
 
 
    
-   }
-   catch(err){
-    console.log("error occured while changing system mode" , err);
+//    }
+//    catch(err){
+//     console.log("error occured while changing system mode" , err);
 
-   }
-}
-
-
+//    }
+// }
 
 
 
@@ -232,71 +220,76 @@ const change_system_mode = async function(){
 
 
 
-  const change_drive_mode = async function(){
-    console.log('changing drive mode');
-          try{
-            const res = await  fetch("http://localhost:3000/change_drive_mode" ,{
-                method:'POST',
-                headers:{
-                    "Content-Type":"application/json"
-                },
+
+
+//   const change_drive_mode = async function(){
+//     console.log('changing drive mode');
+//           try{
+//             const res = await  fetch("http://localhost:3000/change_drive_mode" ,{
+//                 method:'POST',
+//                 headers:{
+//                     "Content-Type":"application/json"
+//                 },
         
-                body : JSON.stringify({
-                    command:  command,
-                    parameter: parameter,
-                    action:0
+//                 body : JSON.stringify({
+//                     command:  command,
+//                     parameter: parameter,
+//                     action:0
                     
-                })
+//                 })
         
               
         
         
-            })
+//             })
 
-            if(!res.ok){
-                throw new Error('response not okay');
-            }
+//             if(!res.ok){
+//                 throw new Error('response not okay');
+//             }
 
-            const info = await res.json();
-            console.log(info);
-          } catch(err){
-            console.log('error occured trying to change drive mode' , err);
-          }
- }
-
-
- const change_excavator_base_mode = async function(){
-    console.log('changing excavator base mode');
+//             const info = await res.json();
+//             console.log(info);
+//           } catch(err){
+//             console.log('error occured trying to change drive mode' , err);
+//           }
+//  }
 
 
-    try{
-        const res = await  fetch("http://localhost:3000/change_excavator_base_mode" ,{
-            method:'POST',
-            headers:{
-                "Content-Type":"application/json"
-            },
+
+
+
+//  const change_excavator_base_mode = async function(){
+//     console.log('changing excavator base mode');
+
+
+//     try{
+//         const res = await  fetch("http://localhost:3000/change_excavator_base_mode" ,{
+//             method:'POST',
+//             headers:{
+//                 "Content-Type":"application/json"
+//             },
     
-            body : JSON.stringify({
-                command:  command,
-                parameter: parameter,
-                action:0
-            })
+//             body : JSON.stringify({
+//                 command:  command,
+//                 parameter: parameter,
+//                 action:0
+//             })
     
           
     
     
-        })
+//         })
 
-        if(!res.ok){
-            throw new Error('response not okay');
-        }
+//         if(!res.ok){
+//             throw new Error('response not okay');
+//         }
 
-        const info = await res.json();
-        console.log(info);
-      } catch(err){
-        console.log('error occured trying to change excavator base mode' , err);
-      }
- }
+//         const info = await res.json();
+//         console.log(info);
+//       } catch(err){
+//         console.log('error occured trying to change excavator base mode' , err);
+//       }
+//  }
 
 
 
@@ -338,8 +331,10 @@ const change_system_mode = async function(){
 
 
           if(key == "M" && e.shiftKey){
-            command = 2 // change system mode
-            change_system_mode(command );
+            command = 4 // change system mode
+            const nextMode = (mode_index + 1) % modes.length;
+            set_mode_index(nextMode);
+            change_system_mode(command , nextMode , 0 );
           } 
 
 
@@ -350,17 +345,36 @@ const change_system_mode = async function(){
             case "Drive":
                 
               
-          if(e.code == "Digit1" && e.shiftKey){
-            command = 4; //change direction
-            parameter = 1 // forward
-            change_drive_mode(); // Change direction of the drive motor
+          if(e.code == "ArrowUp"){
+            command = 1; //MOVE
+            parameter = 1; // FORWARD
+            action = 0;
+            send_command(command , parameter , action); // Change direction of the drive motor
           } 
 
 
-          if(e.code == "Digit2" && e.shiftKey){
-            command = 4; //change direction
-            parameter = 2 // backward
-            change_drive_mode();  // Change direction of the drive motor
+          if(e.code == "ArrowDown"){
+            command = 1; //MOVE
+            parameter = 2 // BACKWARD
+            action - 0;
+            send_command(command , parameter , action); // Change direction of the drive motor
+          }
+
+
+         
+          if(e.code == "ArrowLeft"){
+            command = 2; //STEER
+            parameter = 5 // LEFT
+            action = 0;
+            send_command(command , parameter , action); // Change direction of the drive motor
+          }
+
+
+          if(e.code == "ArrowRight"){
+            command = 2; //STEER
+            parameter = 6 // RIGHT
+            action = 0;
+            send_command(command , parameter , action); // Change direction of the drive motor
           }
 
                 break;
@@ -383,18 +397,20 @@ const change_system_mode = async function(){
             case "Excavator Base":
                 
                      
-          if(e.code == "Digit1" && e.shiftKey){
-            command = 4; //change direction
-            parameter = 3 // clockwise 
-            change_excavator_base_mode(); // Change direction of the drive motor
-          } 
-
-
-          if(e.code == "Digit2" && e.shiftKey){
-            command = 4; //change direction
-            parameter = 1 // anti clockwise
-            change_excavator_base_mode();  // Change direction of the drive motor
-          }
+            if(e.code == "ArrowLeft"){
+              command = 1; //MOVE
+              parameter = 3 // CLOCKWISE
+              action = 0;
+              send_command(command , parameter , action); // Change direction of the drive motor
+            }
+  
+  
+            if(e.code == "ArrowRight"){
+              command = 1; //MOVE
+              parameter = 4 // ANTI_CLOCKWISE
+              action = 0;
+              send_command(command , parameter , action); // Change direction of the drive motor
+            }
             
 
                 break;
@@ -429,8 +445,54 @@ const change_system_mode = async function(){
 
 
             case "Excavator Arm":
-                 
-                break;
+                
+            if(e.code == "ArrowLeft"){
+              command = 3; //MOVE_ARM
+              parameter = 0 ;
+              action = 2;  // LOWER_ARM DOWN
+              send_command(command , parameter , action); // Change direction of the drive motor
+            }
+  
+  
+            if(e.code == "ArrowRight"){
+              command = 3; //MOVE_ARM
+              parameter = 0 ;
+              action = 1;  //LOWER_ARM UP
+              send_command(command , parameter , action); // Change direction of the drive motor
+            }
+
+
+            if(e.code == "ArrowUp"){
+              command = 3; //MOVE_ARM
+              parameter = 0;
+              action = 3;   // MID_ARM_UP
+              send_command(command , parameter , action); // Change direction of the drive motor
+            }
+  
+  
+            if(e.code == "ArrowDown"){
+              command = 3; //MOVE_ARM
+              parameter = 0;
+              action = 4;  // MID_ARM_DOWN
+              send_command(command , parameter , action); // Change direction of the drive motor
+            }
+
+
+            if(e.code == "KeyW"){
+              command = 3; //MOVE_ARM
+              parameter = 0 ;
+              action = 6;  // SCOOP_DOWN
+              send_command(command , parameter , action); // Change direction of the drive motor
+            }
+  
+  
+            if(e.code == "KeyS"){
+              command = 3; //MOVE_ARM
+              parameter = 0 ;
+              action = 5; //SCOOP_DOWN
+              send_command(command , parameter , action); // Change direction of the drive motor
+            }
+                
           
             default:
                 break;
