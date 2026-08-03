@@ -33,7 +33,7 @@ ACTIONS ===========> LOW_ARM_UP     01
 
 
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   VStack,
@@ -84,6 +84,7 @@ export default function Control_Dashboard() {
   
   const [pressedKeys, setPressedKeys] = useState(new Set());
   let [mode_index , set_mode_index] = useState(0);
+  const pressed_keys_ref = useRef(new Set());
   let current_mode = modes[mode_index];
   console.log("current mode is" , current_mode);
   let command ;
@@ -92,10 +93,46 @@ export default function Control_Dashboard() {
 
 
 
+
+
+  // send initial mode
+  useEffect(function(){
+       send_command(4 , 0 , 0); // set to drive 
+  } , []);
+
+
+
+
+
+
   useEffect(() => {
-    console.log([...pressedKeys]);
+    // console.log([...pressedKeys]);
+    console.log('checking keyboard press state');
+    pressed_keys_ref.current = pressedKeys;
 }, [pressedKeys]);
 
+
+  // triggers when no key is pressed
+  useEffect(() => {
+
+    const interval = setInterval(() => {
+
+       if(pressed_keys_ref.current.size == 0){
+        console.log('no key is pressed');
+        send_command(5 , 0 , 0); // no key press
+       } else {
+        console.log('a key is pressed');
+       }
+
+    }, 100);
+
+    return () => {
+
+        clearInterval(interval);
+
+    };
+
+}, []);
 
  
 
@@ -104,7 +141,7 @@ export default function Control_Dashboard() {
        console.log('sending command')      
 
     try{
-      const res = await  fetch("http://localhost:3000/command" ,{
+      const res = await  fetch("http://localhost:3000/send_command" ,{
           method:'POST',
           headers:{
               "Content-Type":"application/json"
@@ -334,50 +371,55 @@ export default function Control_Dashboard() {
             command = 4 // change system mode
             const nextMode = (mode_index + 1) % modes.length;
             set_mode_index(nextMode);
-            change_system_mode(command , nextMode , 0 );
+            // change_system_mode(command , nextMode , 0 );
+            command = 4; // change system mode
+            parameter = nextMode;
+            action = 0;
+
+            send_command(command , parameter , action);
           } 
 
 
 
      
-          switch (current_mode) {
+          // switch (current_mode) {
 
-            case "Drive":
+          //   case "Drive":
                 
               
-          if(e.code == "ArrowUp"){
-            command = 1; //MOVE
-            parameter = 1; // FORWARD
-            action = 0;
-            send_command(command , parameter , action); // Change direction of the drive motor
-          } 
+          // if(e.code == "ArrowUp"){
+          //   command = 1; //MOVE
+          //   parameter = 1; // FORWARD
+          //   action = 0;
+          //   send_command(command , parameter , action); // Change direction of the drive motor
+          // } 
 
 
-          if(e.code == "ArrowDown"){
-            command = 1; //MOVE
-            parameter = 2 // BACKWARD
-            action - 0;
-            send_command(command , parameter , action); // Change direction of the drive motor
-          }
+          // if(e.code == "ArrowDown"){
+          //   command = 1; //MOVE
+          //   parameter = 2 // BACKWARD
+          //   action - 0;
+          //   send_command(command , parameter , action); // Change direction of the drive motor
+          // }
 
 
          
-          if(e.code == "ArrowLeft"){
-            command = 2; //STEER
-            parameter = 5 // LEFT
-            action = 0;
-            send_command(command , parameter , action); // Change direction of the drive motor
-          }
+          // if(e.code == "ArrowLeft"){
+          //   command = 2; //STEER
+          //   parameter = 5 // LEFT
+          //   action = 0;
+          //   send_command(command , parameter , action); // Change direction of the drive motor
+          // }
 
 
-          if(e.code == "ArrowRight"){
-            command = 2; //STEER
-            parameter = 6 // RIGHT
-            action = 0;
-            send_command(command , parameter , action); // Change direction of the drive motor
-          }
+          // if(e.code == "ArrowRight"){
+          //   command = 2; //STEER
+          //   parameter = 6 // RIGHT
+          //   action = 0;
+          //   send_command(command , parameter , action); // Change direction of the drive motor
+          // }
 
-                break;
+          //       break;
 
 
 
@@ -394,26 +436,26 @@ export default function Control_Dashboard() {
 
 
             
-            case "Excavator Base":
+          //   case "Excavator Base":
                 
                      
-            if(e.code == "ArrowLeft"){
-              command = 1; //MOVE
-              parameter = 3 // CLOCKWISE
-              action = 0;
-              send_command(command , parameter , action); // Change direction of the drive motor
-            }
+          //   if(e.code == "ArrowLeft"){
+          //     command = 1; //MOVE
+          //     parameter = 3 // CLOCKWISE
+          //     action = 0;
+          //     send_command(command , parameter , action); // Change direction of the drive motor
+          //   }
   
   
-            if(e.code == "ArrowRight"){
-              command = 1; //MOVE
-              parameter = 4 // ANTI_CLOCKWISE
-              action = 0;
-              send_command(command , parameter , action); // Change direction of the drive motor
-            }
+          //   if(e.code == "ArrowRight"){
+          //     command = 1; //MOVE
+          //     parameter = 4 // ANTI_CLOCKWISE
+          //     action = 0;
+          //     send_command(command , parameter , action); // Change direction of the drive motor
+          //   }
             
 
-                break;
+          //       break;
 
 
 
@@ -444,59 +486,59 @@ export default function Control_Dashboard() {
 
 
 
-            case "Excavator Arm":
+          //   case "Excavator Arm":
                 
-            if(e.code == "ArrowLeft"){
-              command = 3; //MOVE_ARM
-              parameter = 0 ;
-              action = 2;  // LOWER_ARM DOWN
-              send_command(command , parameter , action); // Change direction of the drive motor
-            }
+          //   if(e.code == "ArrowLeft"){
+          //     command = 3; //MOVE_ARM
+          //     parameter = 0 ;
+          //     action = 2;  // LOWER_ARM DOWN
+          //     send_command(command , parameter , action); // Change direction of the drive motor
+          //   }
   
   
-            if(e.code == "ArrowRight"){
-              command = 3; //MOVE_ARM
-              parameter = 0 ;
-              action = 1;  //LOWER_ARM UP
-              send_command(command , parameter , action); // Change direction of the drive motor
-            }
+          //   if(e.code == "ArrowRight"){
+          //     command = 3; //MOVE_ARM
+          //     parameter = 0 ;
+          //     action = 1;  //LOWER_ARM UP
+          //     send_command(command , parameter , action); // Change direction of the drive motor
+          //   }
 
 
-            if(e.code == "ArrowUp"){
-              command = 3; //MOVE_ARM
-              parameter = 0;
-              action = 3;   // MID_ARM_UP
-              send_command(command , parameter , action); // Change direction of the drive motor
-            }
+          //   if(e.code == "ArrowUp"){
+          //     command = 3; //MOVE_ARM
+          //     parameter = 0;
+          //     action = 3;   // MID_ARM_UP
+          //     send_command(command , parameter , action); // Change direction of the drive motor
+          //   }
   
   
-            if(e.code == "ArrowDown"){
-              command = 3; //MOVE_ARM
-              parameter = 0;
-              action = 4;  // MID_ARM_DOWN
-              send_command(command , parameter , action); // Change direction of the drive motor
-            }
+          //   if(e.code == "ArrowDown"){
+          //     command = 3; //MOVE_ARM
+          //     parameter = 0;
+          //     action = 4;  // MID_ARM_DOWN
+          //     send_command(command , parameter , action); // Change direction of the drive motor
+          //   }
 
 
-            if(e.code == "KeyW"){
-              command = 3; //MOVE_ARM
-              parameter = 0 ;
-              action = 6;  // SCOOP_DOWN
-              send_command(command , parameter , action); // Change direction of the drive motor
-            }
+          //   if(e.code == "KeyW"){
+          //     command = 3; //MOVE_ARM
+          //     parameter = 0 ;
+          //     action = 6;  // SCOOP_DOWN
+          //     send_command(command , parameter , action); // Change direction of the drive motor
+          //   }
   
   
-            if(e.code == "KeyS"){
-              command = 3; //MOVE_ARM
-              parameter = 0 ;
-              action = 5; //SCOOP_DOWN
-              send_command(command , parameter , action); // Change direction of the drive motor
-            }
+          //   if(e.code == "KeyS"){
+          //     command = 3; //MOVE_ARM
+          //     parameter = 0 ;
+          //     action = 5; //SCOOP_DOWN
+          //     send_command(command , parameter , action); // Change direction of the drive motor
+          //   }
                 
           
-            default:
-                break;
-          }
+          //   default:
+          //       break;
+          // }
 
 
 
@@ -513,122 +555,218 @@ export default function Control_Dashboard() {
             } 
 
 
+            // setPressedKeys(prev => {
+            //   const copy = new Set(prev);
+            //   copy.add(e.key);
+            //   return copy;
+            // });
+
+            switch (e.key) {
+
+
+              case "ArrowUp":
+                setPressedKeys(prev => {
+                  const copy = new Set(prev);
+                  copy.add("ArrowUp");
+                  return copy;
+                });
+                break;
+
+
+                case "ArrowDown":
+                  setPressedKeys(prev => {
+                    const copy = new Set(prev);
+                    copy.add("ArrowDown");
+                    return copy;
+                  });
+                break;
+
+
+
+                case "ArrowLeft":
+                  setPressedKeys(prev => {
+                    const copy = new Set(prev);
+                    copy.add("ArrowLeft");
+                    return copy;
+                  });
+                break;
+
+
+                case "ArrowRight":
+                  setPressedKeys(prev => {
+                    const copy = new Set(prev);
+                    copy.add("ArrowRight");
+                    return copy;
+                  });
+                break;
+            
+              default:
+                break;
+            }
+
+            
+
 
 
             switch (current_mode) {
-                case "Drive":
-                    
-                  switch (e.key) {
-                    case "ArrowUp":
-                        command = (6); // MOVE
-                        // action = (7); //forward not neeed
-                        break;
-    
-    
-                    case "ArrowDown":
-                        command = (6); // MOVE
-                        // action = (8); // backward
-                        break;
-    
-                    
-                        case "ArrowLeft":
-                            command = (7); // steer
-                            // action = (3);
-                        break;
-    
-    
-    
-    
-                        case "ArrowRight":
-                            command = (7); // steer
-                            // action = (4);
-                        break;
+
+              case "Drive":
                   
-                    default:
-                        break;
-                  }
-    
-    
-                    break;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
                 
-                case "Excavator Base":
-                    
-                switch (e.key) {
-                 
-    
-                    
-                        case "ArrowLeft":
-                            command = (6); // MOVE 
-                            // action = (3);
-                        break;
-    
-    
-    
-    
-                        case "ArrowRight":
-                            command = (6); // MOVE
-                            // action = (4);
-                        break;
-                  
-                    default:
-                        break;
-                  }
-    
-                
-    
-                    break;
-    
-    
-    
-                
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-                case "Excavator Arm":
-                     
-                    break;
+            if(e.code == "ArrowUp"){
+              command = 1; //MOVE
+              parameter = 1; // FORWARD
+              action = 0;
+              send_command(command , parameter , action); // Change direction of the drive motor
+            } 
+  
+  
+            if(e.code == "ArrowDown"){
+              command = 1; //MOVE
+              parameter = 2 // BACKWARD
+              action - 0;
+              send_command(command , parameter , action); // Change direction of the drive motor
+            }
+  
+  
+           
+            if(e.code == "ArrowLeft"){
+              command = 2; //STEER
+              parameter = 5 // LEFT
+              action = 0;
+              send_command(command , parameter , action); // Change direction of the drive motor
+            }
+  
+  
+            if(e.code == "ArrowRight"){
+              command = 2; //STEER
+              parameter = 6 // RIGHT
+              action = 0;
+              send_command(command , parameter , action); // Change direction of the drive motor
+            }
+  
+                  break;
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
               
-                default:
-                    break;
+              case "Excavator Base":
+                  
+                       
+              if(e.code == "ArrowLeft"){
+                command = 1; //MOVE
+                parameter = 3 // CLOCKWISE
+                action = 0;
+                send_command(command , parameter , action); // Change direction of the drive motor
               }
+    
+    
+              if(e.code == "ArrowRight"){
+                command = 1; //MOVE
+                parameter = 4 // ANTI_CLOCKWISE
+                action = 0;
+                send_command(command , parameter , action); // Change direction of the drive motor
+              }
+              
+  
+                  break;
+  
+  
+  
+              
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+              case "Excavator Arm":
+                  
+              if(e.code == "ArrowLeft"){
+                command = 3; //MOVE_ARM
+                parameter = 0 ;
+                action = 2;  // LOWER_ARM DOWN
+                send_command(command , parameter , action); // Change direction of the drive motor
+              }
+    
+    
+              if(e.code == "ArrowRight"){
+                command = 3; //MOVE_ARM
+                parameter = 0 ;
+                action = 1;  //LOWER_ARM UP
+                send_command(command , parameter , action); // Change direction of the drive motor
+              }
+  
+  
+              if(e.code == "ArrowUp"){
+                command = 3; //MOVE_ARM
+                parameter = 0;
+                action = 3;   // MID_ARM_UP
+                send_command(command , parameter , action); // Change direction of the drive motor
+              }
+    
+    
+              if(e.code == "ArrowDown"){
+                command = 3; //MOVE_ARM
+                parameter = 0;
+                action = 4;  // MID_ARM_DOWN
+                send_command(command , parameter , action); // Change direction of the drive motor
+              }
+  
+  
+              if(e.code == "KeyW"){
+                command = 3; //MOVE_ARM
+                parameter = 0 ;
+                action = 6;  // SCOOP_DOWN
+                send_command(command , parameter , action); // Change direction of the drive motor
+              }
+    
+    
+              if(e.code == "KeyS"){
+                command = 3; //MOVE_ARM
+                parameter = 0 ;
+                action = 5; //SCOOP_DOWN
+                send_command(command , parameter , action); // Change direction of the drive motor
+              }
+                  
+            
+              default:
+                  break;
+            }
+
+          
          }
       
 

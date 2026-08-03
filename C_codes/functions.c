@@ -228,6 +228,12 @@ void initialize_nrf_module(){
 //    const int tx_busy = read_register_field(NRF24_BASE_ADDRESS , uint32_t mask , uint32_t shift , uint32_t action)
 }
 
+
+
+
+
+
+
 void parse_command(){
       // read the reg with the received bytes
     //   based on the system mode register , decide what to do
@@ -239,8 +245,288 @@ void parse_command(){
 
       switch (SYSTEM_REGS_BASE_ADDRESS[0])
       {
-      case 0:
+      case 0:  //  IDLE SYSTEM MODE MODE
+               switch (command)
+               {
+               case 4: // change system ode
+                    switch (param)
+                    {
+                    case 0:  // change to drive mode
+                        
+                        break;
+
+
+                    case 1:  // change to excavator arm mode
+                        
+                        break;
+
+
+
+
+                    case 2:   // change to excavator arm mode
+                        
+                        break;
+                    
+                    default:
+                        break;
+                    }
+                break;
+               
+               default:
+                break;
+               }
+        break;
+
+
+
+
+
+
+
+
+
+
+     case 1:  //  DRIVE SYSTEM  MODE
+             switch (command)
+             {
+             case 1:  // move
+                  switch (param)
+                  {
+                  case 1:  // froward
+                      modify_register(DC_MOTOR_BASE_ADDRESS , 0x01 , 0x0 , 1); // set direction bit in conrol reg to 1
+                    break;
+
+                 case 2:  // backward
+                     modify_register(DC_MOTOR_BASE_ADDRESS , 0x01 , 0x0 , 0); // set direction bit in conrol reg to 0
+
+                    break;
+                  
+                  default:
+                    break;
+                  }
+                break;
+
+
+
+
+             case 2:  // steer
+                     switch (param)
+                  {
+                  case 5:  // left  set servo to 135 degrees (1750 microseconds)
+                       modify_register(SERVO_MOTOR_BASE_ADDRESS , 0xffff , 0 , 1750);
+                    break;
+
+                 case 6:  // right  set servo to 45 degrees (1250 microseconds)
+                       modify_register(SERVO_MOTOR_BASE_ADDRESS , 0xffff , 0 , 1250);
+
+                    break;
+                  
+                  default:
+                    break;
+                  }
+                break;
+
+
+
+
+             case 4:   // CHANGE SYSTEM MODE
+               switch (param)
+                    {
+                    case 0:  // change to drive mode
+                    modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 1);  
+                        break;
+
+
+                    case 1:  // change to excavator arm mode
+                    modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 2);  
+               
+                        break;
+
+
+
+
+                    case 2:   // change to excavator arm mode
+                    modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 4);  
+                        
+                        break;
+                    
+                    default:
+                        break;
+                    }
+          break;
+
+
+             case 5:   // NO KEY PRESSED
+
+              break;
+        break;
+
+
+
+             
+             default:
+                break;
+             }
+
+
+
+       
+
+
+
+     case 2:  //  EXCAVATOR BASE SYSTEM MODE MODE
+          
+          switch (command)
+          {
+          case 1: // MOVE
+                switch (param)
+                {
+                case 3:  // clockwise
+                modify_register(STEPPER_MOTOR_BASE_ADDRESS , 0x1 , 0 , 1);
+                    break;
+
+                case 4:  //anticlockwise
+                modify_register(STEPPER_MOTOR_BASE_ADDRESS , 0x1 , 0 , 0);
+
+                    break;
+                
+                default:
+                    break;
+                }
+            break;
+
+
+
+                 case 4:   // CHANGE SYSTEM MODE
+               switch (param)
+                    {
+                    case 0:  // change to drive mode
+                    modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 1);  
+                        
+                        break;
+
+
+                    case 1:  // change to excavator arm mode
+                     modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 2);  
+                       
+                        break;
+
+
+
+
+                    case 2:   // change to excavator arm mode
+                    modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 4);  
+                        
+                        break;
+                    
+                    default:
+                        break;
+                    }
+          break;
+
+
+             case 5:   // NO KEY PRESSED
+
+              break;
+          
+          default:
+            break;
+          }
+        break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     case 3:  //  EXCAVATOR ARM SYSTEM MODE MODE
+           switch (command)
+           {
+           case 3: // MOVE ARM
+                  switch (action)
+                  {
+                  case 1:  // move lower arm up
+                
+                    break;
+
+                case 2:  // move lower arm down
+                
+                    break;
+
+
+                case 3:  // move mid arm up
+                
+                    break;
+
+                case 4:  // move mid arm down
+                
+                    break;
+
+
+
+
+                case 5:  // move scoop up
+                
+                    break;
+
+                case 6:  // move scoop down
+                
+                    break;
+                  
+                  default:
+                    break;
+                  }
+            break;
+
+
+
+
+
+
+              case 4:   // CHANGE SYSTEM MODE
+               switch (param)
+                    {
+                    case 0:  // change to drive mode
+                        
+                        break;
+
+
+                    case 1:  // change to excavator arm mode
+                        
+                        break;
+
+
+
+
+                    case 2:   // change to excavator arm mode
+                        
+                        break;
+                    
+                    default:
+                        break;
+                    }
+          break;
+
+
+             case 5:   // NO KEY PRESSED
+
+              break;
+            
+           
+           default:
+            break;
+           }
         
+
         break;
       
       default:
@@ -255,7 +541,176 @@ void parse_command(){
 
 
 
+void initialize_nrf_module(){
+    
+    //  if(!spi_tx_busy){
+        // set spi master clk freq
+                       // do this for every command
+        // set no of bytes to send
+        //put data into spi tx buffer
+        // assert start tx
+        // listen for tx going back to 0 then send the next comman bytes
 
+
+          modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+
+        while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+
+                         }    
+
+                 //  write to confic reg
+        // modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+        modify_register(SPI_BASE_ADDRESS , (0xf << 16) , 16 , 2); // set number of bytes to send
+        modify_register(&SPI_BASE_ADDRESS[2] , 0xffffffff , 0 , 0x200f);  // put data into the spi tx buffer
+        modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
+
+
+
+         while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+            
+                         }  
+
+
+
+
+         //  write to EN_AA reg
+        // modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+        modify_register(SPI_BASE_ADDRESS , (0xf << 16) , 16 , 2); // set number of bytes to send
+        modify_register(&SPI_BASE_ADDRESS[2] , 0xffffffff , 0 , 0x2101);  // put data into the spi tx buffer
+        modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
+        
+
+
+
+          while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+            
+                         }  
+
+
+         //  write to EN_RX_ADDR reg
+        // modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+        modify_register(SPI_BASE_ADDRESS , (0xf << 16) , 16 , 2); // set number of bytes to send
+        modify_register(&SPI_BASE_ADDRESS[2] , 0xffffffff , 0 , 0x2201);  // put data into the spi tx buffer
+        modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
+
+
+
+
+               while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+            
+                         }  
+
+
+
+        //  //  write to SETTUP_AW reg
+        // modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+        modify_register(SPI_BASE_ADDRESS , (0xf << 16) , 16 , 2); // set number of bytes to send
+        modify_register(&SPI_BASE_ADDRESS[2] , 0xffffffff , 0 , 0x2301);  // put data into the spi tx buffer
+        modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
+
+
+                 while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+            
+                         }  
+
+
+        //  //  write to SETUP_RETY reg
+        // modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+        modify_register(SPI_BASE_ADDRESS , (0xf << 16) , 16 , 2); // set number of bytes to send
+        modify_register(&SPI_BASE_ADDRESS[2] , 0xffffffff , 0 , 0x2400);  // put data into the spi tx buffer
+        modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
+
+
+                while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+            
+                         }  
+
+
+        //  //  write to RF_CH reg
+        // modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+        modify_register(SPI_BASE_ADDRESS , (0xf << 16) , 16 , 2); // set number of bytes to send
+        modify_register(&SPI_BASE_ADDRESS[2] , 0xffffffff , 0 , 0x254C);  // put data into the spi tx buffer
+        modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
+        
+
+
+                while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+            
+                         }  
+
+
+        //  //  write to RF_SETUP reg
+        // modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+        modify_register(SPI_BASE_ADDRESS , (0xf << 16) , 16 , 2); // set number of bytes to send
+        modify_register(&SPI_BASE_ADDRESS[2] , 0xffffffff , 0 , 0x2606);  // put data into the spi tx buffer
+        modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
+
+
+
+                    while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+            
+                         }  
+
+
+
+        //  //  write to STSTUS reg
+        // modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+        modify_register(SPI_BASE_ADDRESS , (0xf << 16) , 16 , 2); // set number of bytes to send
+        modify_register(&SPI_BASE_ADDRESS[2] , 0xffffffff , 0 , 0x2770);  // put data into the spi tx buffer
+        modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
+
+
+
+
+                    while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+            
+                         }  
+
+
+
+
+        //  //  write to RX_ADDR_P0 reg
+        // modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+        modify_register(SPI_BASE_ADDRESS , (0xf << 16) , 16 , 4); // set number of bytes to send
+        modify_register(&SPI_BASE_ADDRESS[2] , 0xffffffff , 0 , 0x2AAAAAAA);  // put data into the spi tx buffer
+        modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
+
+
+
+
+                   while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+            
+                         }  
+
+
+
+
+        //  //  write to RX_PW_P0 reg
+        // modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+        modify_register(SPI_BASE_ADDRESS , (0xf << 16) , 16 , 2); // set number of bytes to send
+        modify_register(&SPI_BASE_ADDRESS[2] , 0xffffffff , 0 , 0x3120);  // put data into the spi tx buffer
+        modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
+  
+
+
+
+
+                  while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+            
+                         }  
+
+
+
+
+        //  //  write to FLUSH_RX
+        // modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+        modify_register(SPI_BASE_ADDRESS , (0xf << 16) , 16 , 1); // set number of bytes to send
+        modify_register(&SPI_BASE_ADDRESS[2] , 0xffffffff , 0 , 0xE2);  // put data into the spi tx buffer
+        modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
+
+        return;
+    //  }
+}
 
 
 

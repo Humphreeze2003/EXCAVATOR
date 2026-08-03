@@ -14,10 +14,12 @@ module NRF_RECEIVER(
 );
 
 
+  // receives the IRQ signal from the nrf physical module
+
  reg[31:0] control_reg , control_reg_next;
  reg[31:0] status_reg , status_reg_next;
 
- data_to_cpu = (enable && offset == 0)?control_reg_reg:(enable && offset == 1)?status_reg:32'b0;
+ data_to_cpu = (enable  && !write_en && offset == 0)?control_reg_reg:(enable && !write_en && offset == 1)?status_reg:32'b0;
 
 always @(posedge clk or negedge rst) begin
       if(!rst)begin

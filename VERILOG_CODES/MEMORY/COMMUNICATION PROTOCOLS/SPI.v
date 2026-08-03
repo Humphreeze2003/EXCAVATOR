@@ -1,7 +1,7 @@
 module SPI (
     input clk,
     input rst,
-    input wire[31:0] data_to_transmit,
+    // input wire[31:0] data_to_transmit,
     input offset,
     input write_en,
     input enable,
@@ -14,14 +14,14 @@ module SPI (
     output reg MOSI,
     input  MISO,
     output SPI_CLK,
-    output reg slave_select
+    output reg slave_select,
 
 
 
     input[31:0] data_from_cpu,
     // input[31:0] address_bus
     input write_en,
-    input enable,
+    // input enable,
     output[31:0] data_to_cpu,
     input[31:0] offset
 );
@@ -29,6 +29,7 @@ module SPI (
  
     
 
+assign data_to_cpu = (enable && !write_en && offset ==0)?control_reg : (enable && !write_en && offset == 1)?status_reg:(enable && !write_en && offset == 2)?buffer_reg_0:(enable && !write_en && offset == 3)?buffer_reg_1:32'b0;
 
     reg[31:0] control_reg , control_reg_next;
     reg[31:0] status_reg , status_reg_next;
@@ -86,6 +87,8 @@ localparam[4:0] IDLE = 5'b0 ,
                 DONE_RECEIVING = 5'd4;
 
 
+
+
 reg[4:0] state , next_state;
 
 
@@ -141,6 +144,16 @@ always @(posedge clk or negedge rst) begin
         // end
 
         state <= next_state;
+
+        if(write_en)begin
+          case (offset)
+            0: control_reg <= data_from_cpu;
+            1: status_reg <= data_from_cpu;
+            2: buffer_reg_0 <= data_from_cpu;
+            3: buffer_reg_1 <= data_from_cpu;
+            default: 
+          endcase
+        end
      end
 end
 
@@ -171,6 +184,9 @@ always @(*) begin
      bits_counter_next = bits_counter;
 
      next_state = state;
+
+
+   
 
 
     case (state)
