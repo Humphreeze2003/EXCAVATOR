@@ -24,6 +24,8 @@ reg[31:0] control_reg  ,control_reg_next;
 reg[31:0] status_reg  ,status_reg_next;
 // reg[31:0] clock_cycles_counter;
 
+
+wire standby = control_reg[16];
 reg[31:0] microseconds_counter , microseconds_counter_next;  // 27 cycles every microsecond
 wire microseconds_tick = (microseconds_counter == (control_reg[15:0] - 1'b1));
 wire pulse_signal = ((microseconds_counter <= (control_reg[15:0]) - 1'b1) && state == SEND_PULSE);
@@ -76,6 +78,8 @@ always @() begin
     end
 end
 
+
+
 always @(*) begin
     data_out_next = data_out;
     control_reg_next = control_reg;
@@ -86,13 +90,21 @@ always @(*) begin
      miliseconds_counter_next = 1'b0;
      microseconds_counter_next = 1'b0;
     
-    if(enable && !write_en)begin
-        case (offset)
+    if(enable)begin
+        if(!write_en)begin
+                case (offset)
             0: data_out_next = control_reg;
             1: data_out_next = status_reg; 
             default: 
         endcase
-    end
+        end
+
+        if(standby)begin
+            next_state = IDLE;
+            
+        end
+     
+    end 
     
      case (state)
         IDLE:begin

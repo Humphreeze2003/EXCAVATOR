@@ -30,7 +30,7 @@ wire[31:0] sys_reg_buffer = (enable)?system_mode_reg_bits;
 
 reg[31:0] control_reg , control_reg_next;
 reg[31:0] status_reg , status_reg_next;
-
+wire standby = control_reg[10]; // when no key is pressed
 // / PWM generation signals
 reg[31:0] motor_frequency_counter;
 reg motor_pulse_tick;
@@ -94,15 +94,15 @@ always @(*) begin
 
 if(enable)begin // mode 1 = drive
   
-if(!write_en)begin
+if(!write_en )begin
    case (offset)
     0: data_out_next = control_reg;
     1: data_out_next = status_reg;
     default:  data_out_next = 32'b0;
    endcase
 end
- 
-if(control_reg[0] == 1 && motor_pulse_tick)begin // clockwise
+   if(!standby)begin
+       if(control_reg[0] == 1 && motor_pulse_tick)begin // clockwise
     sig_a_next = 1;
     sig_b_next = 0;
     sig_c_next = 0;
@@ -113,6 +113,13 @@ end else if(control_reg[0] == 0 && motor_pulse_tick)begin  // anti_clockwise
     sig_c_next = 1;
     sig_d_next = 0;
 end
+   end else begin
+    sig_a_next = 0;
+    sig_b_next = 0;
+    sig_c_next = 0;
+    sig_d_next = 0;
+   end
+
 end
 
 end

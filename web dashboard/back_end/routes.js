@@ -36,19 +36,19 @@ ACTIONS ===========> LOW_ARM_UP     01
 const express = require('express');
 const router = express.Router();
 
-// const { SerialPort } = require("serialport");
+const { SerialPort } = require("serialport");
 
 
-// const port = new SerialPort({
-//     path: "COM4",
-//     baudRate: 9600
-// });
+const port = new SerialPort({
+    path: "COM8",
+    baudRate: 9600
+});
+ 
+port.on("open", () => {
+    console.log("port is Ready");
+});
 
-// port.on("open", () => {
-//     console.log("port is Ready");
-// });
 
-//
 
 
 router.post('/send_command' , async function(req , res){
@@ -66,18 +66,24 @@ router.post('/send_command' , async function(req , res){
     const param = info.parameter; //index
     const action = req.action;
     const packet = Buffer.from([command , param , action]);
-  //   port.write(packet, (err) => {
+ 
 
-  //     if (err) {
-  //         console.log("Write failed:", err.message);
-  //         return;
-  //     }
-  
-  //     console.log("Packet sent.");
-  
-  // });
+
   console.log('packet');
   console.log(packet);
+
+     port.write(packet, (err) => {
+
+      if (err) {
+          console.log("Write failed:", err.message);
+          return;
+      }
+  
+      console.log("Packet sent.");
+  
+  });
+
+
     return  res.status(200).json({error:false , message:'successfully changed system mode' });
 
 

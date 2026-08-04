@@ -153,6 +153,7 @@ void send_servo_pulse(volatile uint32_t* servo_control_reg_address , uint32_t du
   uint16_t value = *servo_control_reg_address;
 
 switch (angle)
+   // pulse width is in microseconds
 {
     case 0:
         pulse_width = 1000;
@@ -224,9 +225,9 @@ switch (angle)
 
 
 
-void initialize_nrf_module(){
-//    const int tx_busy = read_register_field(NRF24_BASE_ADDRESS , uint32_t mask , uint32_t shift , uint32_t action)
-}
+// void initialize_nrf_module(){
+// //    const int tx_busy = read_register_field(NRF24_BASE_ADDRESS , uint32_t mask , uint32_t shift , uint32_t action)
+// }
 
 
 
@@ -238,10 +239,10 @@ void parse_command(){
       // read the reg with the received bytes
     //   based on the system mode register , decide what to do
 
-      uint32_t data = SPI_BASE_ADDRESS[2]; // the buffer with received bytes
-      uint32_t command = read_register_field(&SPI_BASE_ADDRESS[2] , 255U, 0);
-      uint32_t param = read_register_field(&SPI_BASE_ADDRESS[2] ,(255U << 8) , 8);
-      uint32_t action = read_register_field(&SPI_BASE_ADDRESS[2] , (255U << 16), 16);
+      uint32_t data = SPI_BASE_ADDRESS[3]; // the buffer with received bytes
+      uint32_t command = read_register_field(&SPI_BASE_ADDRESS[3] , 255U, 0);
+      uint32_t param = read_register_field(&SPI_BASE_ADDRESS[3] ,(255U << 8) , 8);
+      uint32_t action = read_register_field(&SPI_BASE_ADDRESS[3] , (255U << 16), 16);
 
       switch (SYSTEM_REGS_BASE_ADDRESS[0])
       {
@@ -717,6 +718,54 @@ void initialize_nrf_module(){
 
 
 
+void receive_data(){
+    // after detecting NRF IRQ
+    // set spi freq
+    // set no of bytes to receive
+    // TRIGGER START_RX of spi
+
+modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
+modify_register(SPI_BASE_ADDRESS , (0xf << 20) , 20 , 3); // set number of bytes to receive
+modify_register(SPI_BASE_ADDRESS , (0x1 << 25) , 25 , 1);  // assert rx in control reg
+
+modify_register(&NRF24_BASE_ADDRESS[1] , 0x1 , 0 , 0); // reset irq bit in nrf status reg back to 0  ( when irq goes low  the bit goes high to show a packet has been received) 
+
+  while (SPI_BASE_ADDRESS[25]){
+    //  wait untill rx is set to low by hardware ( spi done receiving)
+  }
+  
+
+  parse_command();
+  
+
+}
+
+
+
+
+void initialize_system(){
+    modify_register(SYSTEM_REGS_BASE_ADDRESS , 0xffffffff , 0 , 0); // set system mode to none
+
+     // reset dc motor control reg
+    modify_register(DC_MOTOR_BASE_ADDRESS , 0x1 , 0 , 1); // set dc motor direction bit to 1
+    modify_register(DC_MOTOR_BASE_ADDRESS , (0x1ff << 1) , 1 , 0x1ff); // set initial dc motor freq counter to 256
+    modify_register(DC_MOTOR_BASE_ADDRESS , (0x1 << 10) , 10 , 0); // set standby bit to 0
+
+
+     // reset stepper motor control reg
+    modify_register(STEPPER_MOTOR_BASE_ADDRESS , 0x1 , 0 , 1); // set dc motor direction bit to 1
+    modify_register(STEPPER_MOTOR_BASE_ADDRESS, (0x1ff << 1) , 1 , 0x1ff); // set initial dc motor freq counter to 256
+    modify_register(STEPPER_MOTOR_BASE_ADDRESS, (0x1 << 10) , 10 , 0); // set standby bit to 0
+
+    // reset sERVO motor control reg
+    modify_register(SERVO_MOTOR_BASE_ADDRESS , 0xffff , 0 , 1500); // set initial servo motor angle to 90 degrees (duration is in microseconds)
+    modify_register(SERVO_MOTOR_BASE_ADDRESS, (0x1 << 16) , 16 , 0x0); // set standby bit of servo motor to 0
+
+    initialize_nrf_module();
+
+    modify_register(&SYSTEM_REGS_BASE_ADDRESS[1] , 0xffffffff , 0 , 0); // set reset register to 0
+
+}
 
 
 
@@ -725,11 +774,52 @@ void initialize_nrf_module(){
 
 
 
+int main()
+{
+    // initialize whole system
+                                        // initialize system regs (set mode regs to 0 --- no mode yet , set reset reg to 0)
+                                        // initialize all control regs (dc , stpper , servo , spi , nrf ) --- set default freq counters ( 256) , initial direction bits to 1 , standby bit to 0
+                                        // initialize nrf module -- call the function
+    //    all the above done by initialize_system() function
 
 
 
+// LOOP:
+    // listen for reset
+            // if reset:
+              // call initialize system()
+                    // then start loop again
 
 
+           // else
+    // listen for received command
+                    // if_command is received:
+                             // receive command
+                             // parse command
+                                    // start loop again
+
+                            // else
+                                // start loop again
+
+
+    initialize_system();
+    while(1){
+         if(!read_register_field(&SYSTEM_REGS_BASE_ADDRESS[1] , 0xffffffff , 0)){
+            if(read_register_field(&NRF24_BASE_ADDRESS[1] , 0x1 , 0)){
+              // packet received
+              receive_data();  // internally calls parse_command()
+            }
+
+         }else
+         {
+            initialize_system();
+         }
+          
+
+    }
+    
+    
+}
 
 
 

@@ -9,6 +9,36 @@ module MEMORY(
 
     input write_en,
 
+
+
+
+
+  // PERIPHERAL OUTPUTS / inputs
+    
+    // dc outputs / inputs
+output wire sig_a,
+output wire sig_b,
+output wire sig_c,
+output wire sig_d,
+
+
+// stepper outputs / inputs
+
+output wire stepper_step_signal,
+output wire stepper_direction_signal,
+
+// servo outputs / inputs
+output wire servo_pulse,
+
+
+// spi outputs / inputs
+output wire MOSI,
+output wire MISO,
+output wire SPI_CLK,
+output wire slave_select,
+
+
+  // NRF outputs / inputs
     imput NRF_IRQ
 );
 
@@ -79,11 +109,11 @@ RODATA rodata(
 
 
 
-// dc wires
-wire sig_a;
-wire sig_b;
-wire sig_c;
-wire sig_d;
+// // dc wires
+// wire sig_a;
+// wire sig_b;
+// wire sig_c;
+// wire sig_d;
 
 DC_DRIVER_MOTOR dc(
 
@@ -108,10 +138,10 @@ DC_DRIVER_MOTOR dc(
 
 
 
-// stepper wires
+// // stepper wires
 
-wire stepper_step_signal;
-wire stepper_direction_signal;
+// wire stepper_step_signal;
+// wire stepper_direction_signal;
 
 
 EXCAVATOR_ARM_BASE_STEPPER_MOTOR ex_base_motor(
@@ -132,8 +162,8 @@ EXCAVATOR_ARM_BASE_STEPPER_MOTOR ex_base_motor(
 
 
 
-// servo wires
-wire servo_pulse;
+// // servo wires
+// wire servo_pulse;
 
 STEERING_STEPPER_MOTOR servo(
     .clk(clk),
@@ -170,11 +200,11 @@ NRF_RECEIVER nrf(
 );
 
 
-// spi wires
-wire MOSI;
-wire MISO;
-wire SPI_CLK;
-wire slave_select;
+// // spi wires
+// wire MOSI;
+// wire MISO;
+// wire SPI_CLK;
+// wire slave_select;
 
 
 

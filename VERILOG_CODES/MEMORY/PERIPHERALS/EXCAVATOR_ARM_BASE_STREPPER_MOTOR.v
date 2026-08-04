@@ -25,6 +25,8 @@ reg[31:0] syst_mod_bts_buffer;
 reg[31:0] control_reg , control_reg_next;
 reg[31:0] status_reg , status_reg_next;
 
+wire standby = control_reg[10]; // when no key is pressed
+
 assign direction = control_reg[0];
 
 
@@ -81,7 +83,9 @@ always @(*) begin
     period_counter_next = 1'b0;
 
     if(enable)begin
+        if(!standby)begin
         period_counter_next = period_counter + 1'b1;
+        end
    
         if(!write_en)begin
    case (offset)

@@ -124,7 +124,7 @@ export default function Control_Dashboard() {
         console.log('a key is pressed');
        }
 
-    }, 100);
+    }, 1000);
 
     return () => {
 
