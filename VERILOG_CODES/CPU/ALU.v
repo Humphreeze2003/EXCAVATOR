@@ -7,6 +7,18 @@ module ALU (
 
     output reg[31:0] result,
 
+
+
+
+
+
+
+
+
+
+
+    output reg[31:0] mem_address
+
     // flags
     // output  reg branch_taken  // for when a branch is taken
 );
@@ -68,8 +80,9 @@ module ALU (
     
     always @(*) begin
       // branch_taken = 0;
-      result = 0;
+    //   result = 0;
         result = 32'b0;
+        mem_address = 32'b0;
     //     if(operation == ADD)begin
     //       result = rs1 + rs2;
     //     end else if(operation == SUB)begin
@@ -146,16 +159,20 @@ module ALU (
     //-------------------------
 
     // Load Word
-    LW : result = rs1 + immediate;
-
+    LW :begin
+         mem_address = rs1 + immediate;
+    end
     // Store Word
-    SW : result = rs1 + immediate;
+    SW : begin
+        mem_address = rs1 + immediate;
+    end
 
     //-------------------------
     // Upper Immediate
     //-------------------------
 
-    LUI : result = immediate;
+    // LUI : result = immediate;
+    LUI : result{instruction[31:12], 12'b0};
 
     AUIPC : result = immediate;
         // Normally PC + immediate is computed outside the ALU

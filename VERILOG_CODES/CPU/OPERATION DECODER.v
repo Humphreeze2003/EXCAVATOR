@@ -8,7 +8,11 @@ module OP_DECODER (
     input wire[31:0] rs1,
     input wire[31:0] rs2,
     input wire[31:0] rd,
-    input wire[31:0] immediate_value
+    input wire[31:0] immediate_value,
+
+
+    input wire[31:0] rs1_value,
+    input wire[31:0] rs2_value,
 
     
     output reg[31:0] next_address,  // address of the next instruction
@@ -22,7 +26,10 @@ module OP_DECODER (
     output reg cpu_write_en,
     output reg mem_write_enable,
 
-     output reg[7:0] mux_control_signal
+     output reg[7:0] mux_control_signal,
+
+
+     output reg[31:0] data_to_mem
 );
     
     localparam[3:0]     R_TYPE = 4'b0001 ,
@@ -99,6 +106,7 @@ localparam [9:0]
     mem_write_enable = 0;
     mux_control_signal = 0;
 
+    data_to_mem = 32'b0;
 if(op_type == R_TYPE)begin
 
             // next_address = current_instruction_address + (31'd4 / 31'd1);  // for ths project , my adresses progress by 1 , not 4 for simplicity
@@ -193,6 +201,8 @@ end else if(op_type == I_TYPE)begin
             3'b010 :begin
             alu_operation = LW;
             cpu_write_en = 1;  // we write to CPU
+            mux_control_signal = 8'b1 // data from mem
+            cpu_write_en = 1'b1
             end 
             
         endcase
@@ -227,7 +237,7 @@ end else if(op_type == B_TYPE)begin
 
     case(funct_bits[2:0])
 
-        3'b000:
+        3'b000:  //BEQ
         begin
             alu_operation = BEQ;
 
@@ -295,11 +305,12 @@ end else if (op_type == S_TYPE)begin
 
                     case(funct_bits[2:0])
 
-                        3'b010 :
+                        3'b010 : begin // SW
                             //  cpu_write_en = 0;
-                            mem_write_enable = 0;
+                            mem_write_enable = 1;
                             alu_operation = SW;
-
+                            data_to_mem = rs2_value;
+                        end
                     endcase
          end
     end

@@ -37,7 +37,7 @@ wire freq_counter_val = control_reg[9:1];
 reg[31:0] period_counter , period_counter_next;
 wire enable_period_counter = (enable);
 wire step_tick = (period_counter >= freq_counter_val/2);
-
+assign step = step_tick;
 
 
 
@@ -47,7 +47,7 @@ always @(posedge clk or negedge rst) begin
 
         control_reg[0] <= 1'b1;
         control_reg[9:1] <= 8'256;
-
+        period_counter <= 32'b0;
      end else begin
 
                 data_out <= data_out_next;

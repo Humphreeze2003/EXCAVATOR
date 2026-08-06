@@ -113,8 +113,11 @@ OP_DECODER op_dec(
     .rs1(ccu_rs1),
     .rs2(ccu_rs2),
     .rd(ccu_rd),
-    .immediate_value(ccu_immediate_value)
+    .immediate_value(ccu_immediate_value),
 
+    .rs1_value(reg_file_read_data_1),
+    .rs2_value(reg_file_read_data_2),
+    
     
     .next_address(next_instruction_address_from_op_dec),  // address of the next instruction( goes to the program counter)
     .alu_operation(op_dec_alu_op),
@@ -127,7 +130,8 @@ OP_DECODER op_dec(
     .cpu_write_en(cpu_write_enable),
     .mem_write_enable(write_en_bus),
 
-    .mux_control_signal(mux_control_signal)
+    .mux_control_signal(mux_control_signal),
+    .data_to_mem(cpu_to_mem_data_bus)
 );
 
 
@@ -143,6 +147,7 @@ ALU alu(
     .operation(op_dec_alu_op),
 
     .result(alu_result),
+    .mem_address(address_bus)
 
     // flags
     // branch_taken(alu_branch_taken)  // for when a branch is taken

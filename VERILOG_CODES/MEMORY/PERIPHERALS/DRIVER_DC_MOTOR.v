@@ -77,7 +77,17 @@ always @(posedge clk or negedge rst) begin
        endcase
       end
 
+      sig_a <= sig_a_next;
+      sig_b <= sig_b_next;
+      sig_c <= sig_c_next;
+      sig_d <= sig_d_next;
+
         end
+
+      sig_a <= 1'b0;
+      sig_b <= 1'b0;
+      sig_c <= 1'b0;
+      sig_c <= 1'b0;
 
       end
 end
