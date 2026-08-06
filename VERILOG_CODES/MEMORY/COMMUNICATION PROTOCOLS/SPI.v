@@ -60,8 +60,8 @@ wire[31:0] bits_to_receive = (bytes_to_receive  << 3);
 
 reg[31:0] clock_cycles_counter  ,clock_cycles_counter_next;
 reg enable_cycles_counter , enable_cycles_counter_next;
-wire spi_clk_rise_tick ,spi_clk_rise_tick_next = (clock_cycles_counter <= (clock_period/2));
-wire spi_clk_fall_tick ,spi_clk_fall_tick_next = (clock_cycles_counter > (clock_period/2));
+wire spi_clk_rise_tick  = (clock_cycles_counter <= (clock_period/2));
+wire spi_clk_fall_tick  = (clock_cycles_counter > (clock_period/2));
 wire spi_period_tick = (clock_cycles_counter == (clock_period) - 1);
 
 
@@ -124,11 +124,11 @@ always @(posedge clk or negedge rst) begin
         buffer_reg_2 <= buffer_reg_2_next;
         buffer_reg_3 <= buffer_reg_3_next;
 
-        enable_cycles_counter <= enable_cycles_counter_next;
+        enable_cycles_counter <= enable_cycles_counter_next; 
         clock_cycles_counter <= clock_cycles_counter_next;
 
         if(enable_cycles_counter)begin
-              clock_cycles_counter_next <= (clock_cycles_counter == (clock_period - 1'b1))?32'b0:clock_cycles_counter_next;
+              clock_cycles_counter <= (clock_cycles_counter == (clock_period - 1'b1))?32'b0:clock_cycles_counter_next;
         end
 
         // if(state == TRANSMIT)begin
@@ -144,16 +144,9 @@ always @(posedge clk or negedge rst) begin
         // end
 
         state <= next_state;
+= ;]
 
-        if(write_en)begin
-          case (offset)
-            0: control_reg <= data_from_cpu;
-            1: status_reg <= data_from_cpu;
-            2: buffer_reg_0 <= data_from_cpu;
-            3: buffer_reg_1 <= data_from_cpu;
-            default: 
-          endcase
-        end
+        
      end
 end
 
@@ -163,7 +156,7 @@ end
 always @(*) begin
      MOSI = 1'b0;
     //  MISO = 1'b0;
-     spi_clk_rise_tick_next = 1'b0;
+    //  spi_clk_rise_tick = 1'b0;
      slave_select = 1'b1;
 
 
@@ -175,7 +168,19 @@ always @(*) begin
      buffer_reg_2_next = buffer_reg_2;
      buffer_reg_3_next = buffer_reg_3;
 
-     clock_cycles_counter_next = clock_cycles_counter;
+     if(write_en && enable)begin
+          case (offset)
+            0: control_reg_next <= data_from_cpu;
+            1: status_reg_next <= data_from_cpu;
+            2: buffer_reg_0_next <= data_from_cpu;
+            3: buffer_reg_1_next <= data_from_cpu;
+            default: 
+          endcase
+        end
+
+     
+
+     clock_cycles_counter_next = clock_cycles_counter ;
      enable_cycles_counter_next = enable_cycles_counter;
      
      bytes_received_next = bytes_received;
@@ -209,6 +214,7 @@ always @(*) begin
          // set status_reg[0] to 1
          status_reg_next[0] = 1'b1;
          enable_cycles_counter_next = 1'b1;
+         clock_cycles_counter_next = clock_cycles_counter + 1'b1;
          slave_select = 1'b0;
          if(spi_clk_rise_tick)begin
             MOSI = buffer_reg_0[0];
@@ -244,6 +250,7 @@ always @(*) begin
          // set status_reg[1] to 1
         status_reg_next[1] = 1'b1;
          enable_cycles_counter_next = 1'b1;
+         clock_cycles_counter_next = clock_cycles_counter + 1'b1;
          slave_select = 1'b0;
 
          if(spi_clk_rise_tick)begin

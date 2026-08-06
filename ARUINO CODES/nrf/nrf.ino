@@ -80,70 +80,70 @@ Serial.println(ok);
 
 
 
-// void loop()
-// {
-//     uint8_t packet[3] = {0xAA, 0xBB, 0xCC};
-
-//     bool success = radio.write(packet, 3);
-
-//     delay(1000);
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void loop()
 {
-    // Wait until 3 bytes have arrived
-    if (Serial.available() >= 3)
-    {
-        uint8_t packet[3];
+    uint8_t packet[3] = {0xAA, 0xBB, 0xCC};
 
-        // Read exactly 3 bytes
-        Serial.readBytes(packet, 3);
+    bool success = radio.write(packet, 3);
 
-
-        // -----------------------------
-        // Print packet in HEX
-        // -----------------------------
-
-        Serial.print("Received: ");
-
-        for (int i = 0; i < 3; i++)
-        {
-            if (packet[i] < 16)
-                Serial.print("0");
-
-            Serial.print(packet[i], HEX);
-            Serial.print(" ");
-        }
-
-        Serial.println();
-
-
-        // -----------------------------
-        // Send over NRF24L01
-        // -----------------------------
-
-        bool success = radio.write(packet, 3);
-
-        if (success)
-        {
-            Serial.println("Packet Sent");
-        }
-        else
-        {
-            Serial.println("Transmission Failed");
-        }
-    }
+    delay(1000);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// void loop()
+// {
+//     // Wait until 3 bytes have arrived
+//     if (Serial.available() >= 3)
+//     {
+//         uint8_t packet[3];
+
+//         // Read exactly 3 bytes
+//         Serial.readBytes(packet, 3);
+
+
+//         // -----------------------------
+//         // Print packet in HEX
+//         // -----------------------------
+
+//         Serial.print("Received: ");
+
+//         for (int i = 0; i < 3; i++)
+//         {
+//             if (packet[i] < 16)
+//                 Serial.print("0");
+
+//             Serial.print(packet[i], HEX);
+//             Serial.print(" ");
+//         }
+
+//         Serial.println();
+
+
+//         // -----------------------------
+//         // Send over NRF24L01
+//         // -----------------------------
+
+//         bool success = radio.write(packet, 3);
+
+//         if (success)
+//         {
+//             Serial.println("Packet Sent");
+//         }
+//         else
+//         {
+//             Serial.println("Transmission Failed");
+//         }
+//     }
+// }

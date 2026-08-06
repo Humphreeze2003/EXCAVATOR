@@ -45,52 +45,52 @@
 
 */
 
-// based on action
-void modify_register_based_on_action(volatile uint32_t* reg_address , uint32_t mask , uint32_t shift , uint32_t action ){
-    uint32_t value = *reg_address;
-    // extract the field bits
-    uint32_t field_bits = (value >> shift) & (mask >> shift);
-    // least frequency value = 64 max = 256
+// // based on action
+// void modify_register_based_on_action(volatile uint32_t* reg_address , uint32_t mask , uint32_t shift , uint32_t action ){
+//     uint32_t value = *reg_address;
+//     // extract the field bits
+//     uint32_t field_bits = (value >> shift) & (mask >> shift);
+//     // least frequency value = 64 max = 256
 
-    // modify the field bits
-    switch (action)
-    {
-    case 64:   // INCREASE_freq
-           if(field_bits == 256){
+//     // modify the field bits
+//     switch (action)
+//     {
+//     case 64:   // INCREASE_freq
+//            if(field_bits == 256){
 
-           }else{
-            field_bits >> 2; // multiply by 2 
-           }
-        break;
+//            }else{
+//             field_bits >> 2; // multiply by 2 
+//            }
+//         break;
 
-      case 128:   // DECREASE_freq
-           if(field_bits == 64){
+//       case 128:   // DECREASE_freq
+//            if(field_bits == 64){
 
-           }else{
-            field_bits << 2; // divide by 2 
-           }
-        break;
+//            }else{
+//             field_bits << 2; // divide by 2 
+//            }
+//         break;
 
 
-       case 256:   // change motor direction
-          field_bits = ~field_bits;  // invert the direction bit
-        break;
+//        case 256:   // change motor direction
+//           field_bits = ~field_bits;  // invert the direction bit
+//         break;
 
          
     
     
     
-    default:
-        break;
-    }
+//     default:
+//         break;
+//     }
 
-//    clear the field bits
-    uint32_t removed_field = value &  ~(mask);
-    // insert new field value
-    uint32_t new_reg_bits = removed_field | (field_bits << shift);
+// //    clear the field bits
+//     uint32_t removed_field = value &  ~(mask);
+//     // insert new field value
+//     uint32_t new_reg_bits = removed_field | (field_bits << shift);
 
-    *reg_address = new_reg_bits;
-}
+//     *reg_address = new_reg_bits;
+// }
 
 
 
@@ -102,7 +102,7 @@ void modify_register_based_on_action(volatile uint32_t* reg_address , uint32_t m
 void modify_register(volatile uint32_t* reg_address , uint32_t mask , uint32_t shift , uint32_t new_val ){
     uint32_t value = *reg_address;
     // extract the field bits
-    uint32_t field_bits = (value >> shift) & (mask >> shift);
+    // uint32_t field_bits = (value >> shift) & (mask >> shift);
     // least frequency value = 64 max = 256
 
     // modify the field bits
@@ -147,81 +147,81 @@ uint32_t read_register_field(volatile uint32_t* reg_address , uint32_t mask , ui
 
 
 
-void send_servo_pulse(volatile uint32_t* servo_control_reg_address , uint32_t duration_mask , uint32_t duration_shift  , uint32_t angle){
-   uint32_t pulse_width;
+// void send_servo_pulse(volatile uint32_t* servo_control_reg_address , uint32_t duration_mask , uint32_t duration_shift  , uint32_t angle){
+//    uint32_t pulse_width;
   
-  uint16_t value = *servo_control_reg_address;
+//   uint32_t value = *servo_control_reg_address;
 
-switch (angle)
-   // pulse width is in microseconds
-{
-    case 0:
-        pulse_width = 1000;
-        break;
+// switch (angle)
+//    // pulse width is in microseconds
+// {
+//     case 0:
+//         pulse_width = 1000;
+//         break;
 
-    case 15:
-        pulse_width = 1083;
-        break;
+//     case 15:
+//         pulse_width = 1083;
+//         break;
 
-    case 30:
-        pulse_width = 1167;
-        break;
+//     case 30:
+//         pulse_width = 1167;
+//         break;
 
-    case 45:
-        pulse_width = 1250;
-        break;
+//     case 45:
+//         pulse_width = 1250;
+//         break;
 
-    case 60:
-        pulse_width = 1333;
-        break;
+//     case 60:
+//         pulse_width = 1333;
+//         break;
 
-    case 75:
-        pulse_width = 1417;
-        break;
+//     case 75:
+//         pulse_width = 1417;
+//         break;
 
-    case 90:
-        pulse_width = 1500;
-        break;
+//     case 90:
+//         pulse_width = 1500;
+//         break;
 
-    case 105:
-        pulse_width = 1583;
-        break;
+//     case 105:
+//         pulse_width = 1583;
+//         break;
 
-    case 120:
-        pulse_width = 1667;
-        break;
+//     case 120:
+//         pulse_width = 1667;
+//         break;
 
-    case 135:
-        pulse_width = 1750;
-        break;
+//     case 135:
+//         pulse_width = 1750;
+//         break;
 
-    case 150:
-        pulse_width = 1833;
-        break;
+//     case 150:
+//         pulse_width = 1833;
+//         break;
 
-    case 165:
-        pulse_width = 1917;
-        break;
+//     case 165:
+//         pulse_width = 1917;
+//         break;
 
-    case 180:
-        pulse_width = 2000;
-        break;
+//     case 180:
+//         pulse_width = 2000;
+//         break;
 
-    default:
-        /* Invalid angle */
-        pulse_width = 1500;   // Default to 90°
-        break;
-}
+//     default:
+//         /* Invalid angle */
+//         pulse_width = 1500;   // Default to 90°
+//         break;
+// }
 
 
-//    clear the field bits
-    uint32_t removed_field = value &  ~(duration_mask);
-    // insert new field value
-    uint32_t new_reg_bits = removed_field | (pulse_width << duration_shift);
+// //    clear the field bits
+//     uint32_t removed_field = value &  ~(duration_mask);
+//     // insert new field value
+//     uint32_t new_reg_bits = removed_field | (pulse_width << duration_shift);
 
-    *servo_control_reg_address = new_reg_bits;
+//     *servo_control_reg_address = new_reg_bits;
 
-}
+// }
 
 
 
@@ -239,7 +239,7 @@ void parse_command(){
       // read the reg with the received bytes
     //   based on the system mode register , decide what to do
 
-      uint32_t data = SPI_BASE_ADDRESS[3]; // the buffer with received bytes
+    //   uint32_t data = SPI_BASE_ADDRESS[3]; // the buffer with received bytes
       uint32_t command = read_register_field(&SPI_BASE_ADDRESS[3] , 255U, 0);
       uint32_t param = read_register_field(&SPI_BASE_ADDRESS[3] ,(255U << 8) , 8);
       uint32_t action = read_register_field(&SPI_BASE_ADDRESS[3] , (255U << 16), 16);
@@ -253,19 +253,21 @@ void parse_command(){
                     switch (param)
                     {
                     case 0:  // change to drive mode
-                        
+                        modify_register(SYSTEM_REGS_BASE_ADDRESS , 0xffffffff , 0 , 1);
                         break;
 
 
                     case 1:  // change to excavator arm mode
-                        
+                     modify_register(SYSTEM_REGS_BASE_ADDRESS , 0xffffffff , 0 , 2);
+
                         break;
 
 
 
 
                     case 2:   // change to excavator arm mode
-                        
+                         modify_register(SYSTEM_REGS_BASE_ADDRESS , 0xffffffff , 0 , 4);
+                    
                         break;
                     
                     default:
@@ -294,12 +296,14 @@ void parse_command(){
                   switch (param)
                   {
                   case 1:  // froward
+                      modify_register(DC_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0
                       modify_register(DC_MOTOR_BASE_ADDRESS , 0x01 , 0x0 , 1); // set direction bit in conrol reg to 1
+
                     break;
 
                  case 2:  // backward
+                     modify_register(DC_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0
                      modify_register(DC_MOTOR_BASE_ADDRESS , 0x01 , 0x0 , 0); // set direction bit in conrol reg to 0
-
                     break;
                   
                   default:
@@ -314,10 +318,12 @@ void parse_command(){
                      switch (param)
                   {
                   case 5:  // left  set servo to 135 degrees (1750 microseconds)
+                    //    modify_register(SERVO_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0
                        modify_register(SERVO_MOTOR_BASE_ADDRESS , 0xffff , 0 , 1750);
                     break;
 
                  case 6:  // right  set servo to 45 degrees (1250 microseconds)
+                    //    modify_register(DC_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0
                        modify_register(SERVO_MOTOR_BASE_ADDRESS , 0xffff , 0 , 1250);
 
                     break;
@@ -334,11 +340,13 @@ void parse_command(){
                switch (param)
                     {
                     case 0:  // change to drive mode
+                    modify_register(DC_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0
                     modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 1);  
                         break;
 
 
                     case 1:  // change to excavator arm mode
+                     modify_register(STEPPER_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0                 
                     modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 2);  
                
                         break;
@@ -347,6 +355,7 @@ void parse_command(){
 
 
                     case 2:   // change to excavator arm mode
+                     modify_register(STEPPER_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0                  
                     modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 4);  
                         
                         break;
@@ -358,7 +367,7 @@ void parse_command(){
 
 
              case 5:   // NO KEY PRESSED
-
+            modify_register(DC_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 1); // assert standby mode
               break;
         break;
 
@@ -369,7 +378,7 @@ void parse_command(){
                 break;
              }
 
-
+    break;
 
        
 
@@ -383,10 +392,12 @@ void parse_command(){
                 switch (param)
                 {
                 case 3:  // clockwise
+                modify_register(STEPPER_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0
                 modify_register(STEPPER_MOTOR_BASE_ADDRESS , 0x1 , 0 , 1);
                     break;
 
                 case 4:  //anticlockwise
+                modify_register(STEPPER_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0
                 modify_register(STEPPER_MOTOR_BASE_ADDRESS , 0x1 , 0 , 0);
 
                     break;
@@ -402,12 +413,14 @@ void parse_command(){
                switch (param)
                     {
                     case 0:  // change to drive mode
+                     modify_register(STEPPER_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0
                     modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 1);  
                         
                         break;
 
 
-                    case 1:  // change to excavator arm mode
+                    case 1:  // change to excavator BASE mode
+                     modify_register(STEPPER_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0                  
                      modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 2);  
                        
                         break;
@@ -416,6 +429,7 @@ void parse_command(){
 
 
                     case 2:   // change to excavator arm mode
+                    modify_register(STEPPER_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0
                     modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 4);  
                         
                         break;
@@ -427,6 +441,7 @@ void parse_command(){
 
 
              case 5:   // NO KEY PRESSED
+                     modify_register(STEPPER_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 1); // assert standby bit to 1
 
               break;
           
@@ -449,7 +464,7 @@ void parse_command(){
 
 
 
-     case 3:  //  EXCAVATOR ARM SYSTEM MODE MODE
+     case 4:  //  EXCAVATOR ARM SYSTEM MODE MODE
            switch (command)
            {
            case 3: // MOVE ARM
@@ -555,7 +570,7 @@ void initialize_nrf_module(){
 
           modify_register(SPI_BASE_ADDRESS , 0xffff , 0 , 27); // set frequency to 1mhz from 27mhz ( counter counts to 27)
 
-        while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+        while(read_register_field(&SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
 
                          }    
 
@@ -567,7 +582,7 @@ void initialize_nrf_module(){
 
 
 
-         while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+         while(read_register_field(&SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
             
                          }  
 
@@ -583,7 +598,7 @@ void initialize_nrf_module(){
 
 
 
-          while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+          while(read_register_field(&SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
             
                          }  
 
@@ -597,7 +612,7 @@ void initialize_nrf_module(){
 
 
 
-               while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+               while(read_register_field(&SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
             
                          }  
 
@@ -610,7 +625,7 @@ void initialize_nrf_module(){
         modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
 
 
-                 while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+                 while(read_register_field(&SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
             
                          }  
 
@@ -622,7 +637,7 @@ void initialize_nrf_module(){
         modify_register(SPI_BASE_ADDRESS , (0x1 << 24) , 24 , 1);  // assert tx in control reg
 
 
-                while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+                while(read_register_field(&SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
             
                          }  
 
@@ -635,7 +650,7 @@ void initialize_nrf_module(){
         
 
 
-                while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+                while(read_register_field(&SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
             
                          }  
 
@@ -648,7 +663,7 @@ void initialize_nrf_module(){
 
 
 
-                    while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+                    while(read_register_field(&SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
             
                          }  
 
@@ -663,7 +678,7 @@ void initialize_nrf_module(){
 
 
 
-                    while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+                    while(read_register_field(&SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
             
                          }  
 
@@ -679,7 +694,7 @@ void initialize_nrf_module(){
 
 
 
-                   while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+                   while(read_register_field(&SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
             
                          }  
 
@@ -696,7 +711,7 @@ void initialize_nrf_module(){
 
 
 
-                  while(read_register_field(SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
+                  while(read_register_field(&SPI_BASE_ADDRESS[1]  , 0x01 , 0)){
             
                          }  
 
@@ -730,7 +745,7 @@ modify_register(SPI_BASE_ADDRESS , (0x1 << 25) , 25 , 1);  // assert rx in contr
 
 modify_register(&NRF24_BASE_ADDRESS[1] , 0x1 , 0 , 0); // reset irq bit in nrf status reg back to 0  ( when irq goes low  the bit goes high to show a packet has been received) 
 
-  while (SPI_BASE_ADDRESS[25]){
+  while (read_register_field(SPI_BASE_ADDRESS , (0x1 << 25) , 25)){
     //  wait untill rx is set to low by hardware ( spi done receiving)
   }
   
