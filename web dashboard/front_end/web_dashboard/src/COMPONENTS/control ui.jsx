@@ -2,22 +2,37 @@
 
 packet format =====> [COMMAND , PARAM , ACTION]
 
-COMMANDS =========> MOVE             01
-                    STEER            02
-                    MOVE_ARM         03
-
-
+COMMANDS =========> MOVE                     01
+                    STEER                    02
+                    MOVE_ARM                 03
+                    CHANGE_SYSTEM_MODE       04
+                    NO_KEY_PRESS             05
+                   
   
 
 
-PARAMS ============> FROWARD         01
-                     BACKWARD        02
-                     CLOCKWISE       03
-                     ANTI_CLOCKWISE  04
-                     LEFT            05
-                     RIGHT           06
+PARAMS (GENERIC)      ============> FROWARD         01
+                                    BACKWARD        02
+                                    CLOCKWISE       03
+                                    ANTI_CLOCKWISE  04
+                                    LEFT            05
+                                    RIGHT           06
 
-                    
+
+
+                         // PARAMS FOR CHANGE SYSTEM MODE COMMAND
+                     00  ---- DRIVE MODE
+                     01  ---- BASE MODE
+                     02  ---- ARM MODE
+
+                     // PARAMS FOR ARM MODE MOVE COMMAND
+
+                     01 -- LOW_ARM_UP
+                     02 -- LOW_ARM_DOWN
+                     03 -- MID_ARM_UP
+                     04 -- MID_ARM_UP
+                     05 -- SCOOP_UP
+                     06 -- SCOOP_UP
 
 
 ACTIONS ===========> LOW_ARM_UP     01
@@ -54,8 +69,8 @@ export default function Control_Dashboard() {
 
     const modes = [
         "Drive",
-        "Excavator Base",
-        "Excavator Arm",
+        "Excavator Base"
+        // "Excavator Arm",
       ];
     
       const keyboard = [

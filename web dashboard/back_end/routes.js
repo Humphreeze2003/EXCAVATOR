@@ -2,22 +2,37 @@
 
 packet format =====> [COMMAND , PARAM , ACTION]
 
-COMMANDS =========> MOVE             01
-                    STEER            02
-                    MOVE_ARM         03
-
-
+COMMANDS =========> MOVE                     01
+                    STEER                    02
+                    MOVE_ARM                 03
+                    CHANGE_SYSTEM_MODE       04
+                    NO_KEY_PRESS             05
+                   
   
 
 
-PARAMS ============> FROWARD         01
-                     BACKWARD        02
-                     CLOCKWISE       03
-                     ANTI_CLOCKWISE  04
-                     LEFT            05
-                     RIGHT           06
+PARAMS (GENERIC)      ============> FROWARD         01
+                                    BACKWARD        02
+                                    CLOCKWISE       03
+                                    ANTI_CLOCKWISE  04
+                                    LEFT            05
+                                    RIGHT           06
 
-                    
+
+
+                         // PARAMS FOR CHANGE SYSTEM MODE COMMAND
+                     00  ---- DRIVE MODE
+                     01  ---- BASE MODE
+                     02  ---- ARM MODE
+
+                     // PARAMS FOR ARM MODE MOVE COMMAND
+
+                     01 -- LOW_ARM_UP
+                     02 -- LOW_ARM_DOWN
+                     03 -- MID_ARM_UP
+                     04 -- MID_ARM_UP
+                     05 -- SCOOP_UP
+                     06 -- SCOOP_UP
 
 
 ACTIONS ===========> LOW_ARM_UP     01
@@ -39,14 +54,14 @@ const router = express.Router();
 const { SerialPort } = require("serialport");
 
 
-const port = new SerialPort({
-    path: "COM8",
-    baudRate: 9600
-});
+// const port = new SerialPort({
+//     path: "COM8",
+//     baudRate: 9600
+// });
  
-port.on("open", () => {
-    console.log("port is Ready");
-});
+// port.on("open", () => {
+//     console.log("port is Ready");
+// });
 
 
 
@@ -72,16 +87,16 @@ router.post('/send_command' , async function(req , res){
   console.log('packet');
   console.log(packet);
 
-     port.write(packet, (err) => {
+  //    port.write(packet, (err) => {
 
-      if (err) {
-          console.log("Write failed:", err.message);
-          return;
-      }
+  //     if (err) {
+  //         console.log("Write failed:", err.message);
+  //         return;
+  //     }
   
-      console.log("Packet sent.");
+  //     console.log("Packet sent.");
   
-  });
+  // });
 
 
     return  res.status(200).json({error:false , message:'successfully changed system mode' });

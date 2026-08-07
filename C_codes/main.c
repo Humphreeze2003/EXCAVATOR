@@ -508,22 +508,27 @@ void parse_command(){
 
 
 
-              case 4:   // CHANGE SYSTEM MODE
+                    case 4:   // CHANGE SYSTEM MODE
                switch (param)
                     {
                     case 0:  // change to drive mode
-                        
+                    // modify_register(DC_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0
+                    modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 1);  
                         break;
 
 
                     case 1:  // change to excavator arm mode
-                        
+                    //  modify_register(STEPPER_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0                 
+                    modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 2);  
+               
                         break;
 
 
 
 
                     case 2:   // change to excavator arm mode
+                    //  modify_register(STEPPER_MOTOR_BASE_ADDRESS , (0x1 << 10), 10 , 0); // assert standby bit to 0                  
+                    modify_register(SYSTEM_REGS_BASE_ADDRESS, 0xffffffff , 0 , 4);  
                         
                         break;
                     
@@ -531,8 +536,6 @@ void parse_command(){
                         break;
                     }
           break;
-
-
              case 5:   // NO KEY PRESSED
 
               break;
