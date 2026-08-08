@@ -792,8 +792,7 @@ void initialize_system(){
 
 
 
-int main()
-{
+int main(){
     // initialize whole system
                                         // initialize system regs (set mode regs to 0 --- no mode yet , set reset reg to 0)
                                         // initialize all control regs (dc , stpper , servo , spi , nrf ) --- set default freq counters ( 256) , initial direction bits to 1 , standby bit to 0
