@@ -52,7 +52,7 @@ wire is_ram = (address_bus >= RAM_BASE && address_bus <= RAM_END);
 
 
 assign enable_rodata = is_rodata;
-assign enable_istruction_rom = is_irom;
+assign enable_instruction_rom = is_irom;
 assign enable_RAM = is_ram;
 assign enable_driver_dc_motor = is_dc_motor;
 assign enable_stepper_motor = is_stepper_motor;

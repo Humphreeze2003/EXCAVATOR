@@ -11,7 +11,7 @@ module PROGRAM_COUNTER(
 
 always @(posedge clk or negedge rst) begin
       if(!rst)begin
-        current_address <= 32'd0;
+        current_address <= 32'd1130;
         
       end else begin
           current_address <= next_address;

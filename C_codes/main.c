@@ -790,8 +790,6 @@ void initialize_system(){
 
 
 
-
-
 int main(){
     // initialize whole system
                                         // initialize system regs (set mode regs to 0 --- no mode yet , set reset reg to 0)

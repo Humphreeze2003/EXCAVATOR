@@ -1,0 +1,52 @@
+"filename", "language", "JSON", "JavaScript", "HTML", "Markdown", "Verilog", "SVG", "C", "Assembly", "JavaScript JSX", "Arduino", "comment", "blank", "total"
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\ARUINO CODES\nrf\nrf.ino", "Arduino", 0, 0, 0, 0, 0, 0, 0, 0, 0, -33, -63, -53, -149
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\ASSEMBLY_CODES\initialize nrf.s", "Assembly", 0, 0, 0, 0, 0, 0, 0, -346, 0, 0, 0, -76, -422
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\ASSEMBLY_CODES\initializer.s", "Assembly", 0, 0, 0, 0, 0, 0, 0, -3, 0, 0, 0, -2, -5
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\ASSEMBLY_CODES\main.s", "Assembly", 0, 0, 0, 0, 0, 0, 0, -59, 0, 0, 0, -46, -105
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\ASSEMBLY_CODES\modify_register.s", "Assembly", 0, 0, 0, 0, 0, 0, 0, -38, 0, 0, 0, -29, -67
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\ASSEMBLY_CODES\parse command.s", "Assembly", 0, 0, 0, 0, 0, 0, 0, -390, 0, 0, 0, -51, -441
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\ASSEMBLY_CODES\read regiter field.s", "Assembly", 0, 0, 0, 0, 0, 0, 0, -26, 0, 0, 0, -34, -60
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\ASSEMBLY_CODES\receive data.s", "Assembly", 0, 0, 0, 0, 0, 0, 0, -82, 0, 0, 0, -35, -117
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\C_codes\main.c", "C", 0, 0, 0, 0, 0, 0, -292, 0, 0, 0, -188, -462, -942
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\CPU\ALU.v", "Verilog", 0, 0, 0, 0, -86, 0, 0, 0, 0, 0, -48, -82, -216
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\CPU\CENTRAL CONTROL UNIT.v", "Verilog", 0, 0, 0, 0, -75, 0, 0, 0, 0, 0, -3, -24, -102
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\CPU\OPERATION DECODER.v", "Verilog", 0, 0, 0, 0, -169, 0, 0, 0, 0, 0, -35, -113, -317
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\CPU\PLUS 1 ADDER.v", "Verilog", 0, 0, 0, 0, -8, 0, 0, 0, 0, 0, 0, -4, -12
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\CPU\PROGRAM COUNTER.v", "Verilog", 0, 0, 0, 0, -15, 0, 0, 0, 0, 0, 0, -13, -28
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\CPU\REGISTER FILE.v", "Verilog", 0, 0, 0, 0, -27, 0, 0, 0, 0, 0, -1, -14, -42
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\CPU\WRITE_BACK_MUX.v", "Verilog", 0, 0, 0, 0, -17, 0, 0, 0, 0, 0, 0, -7, -24
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\CPU\cpu.v", "Verilog", 0, 0, 0, 0, -91, 0, 0, 0, 0, 0, -20, -100, -211
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\FULL_SYSTEM\computer.v", "Verilog", 0, 0, 0, 0, -49, 0, 0, 0, 0, 0, -7, -30, -86
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\ADDRESS DECODER.v", "Verilog", 0, 0, 0, 0, -45, 0, 0, 0, 0, 0, -4, -22, -71
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\BSS SECTION .v", "Verilog", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\COMMUNICATION PROTOCOLS\SPI.v", "Verilog", 0, 0, 0, 0, -155, 0, 0, 0, 0, 0, -34, -105, -294
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\DATA SECTION.v", "Verilog", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\INSTRUCTION ROM.v", "Verilog", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\MEMORY_MODULE.v", "Verilog", 0, 0, 0, 0, -131, 0, 0, 0, 0, 0, -26, -92, -249
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\PERIPHERALS\DRIVER_DC_MOTOR.v", "Verilog", 0, 0, 0, 0, -102, 0, 0, 0, 0, 0, -6, -29, -137
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\PERIPHERALS\EXCAVATOR_ARM_BASE_STREPPER_MOTOR.v", "Verilog", 0, 0, 0, 0, -66, 0, 0, 0, 0, 0, -1, -34, -101
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\PERIPHERALS\NRF receiver.V", "Verilog", 0, 0, 0, 0, -39, 0, 0, 0, 0, 0, -2, -16, -57
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\PERIPHERALS\STEERING_ERVO_MOTOR.v", "Verilog", 0, 0, 0, 0, -111, 0, 0, 0, 0, 0, -8, -48, -167
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\RAM.v", "Verilog", 0, 0, 0, 0, -20, 0, 0, 0, 0, 0, 0, -11, -31
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\RODATA.v", "Verilog", 0, 0, 0, 0, -32, 0, 0, 0, 0, 0, -13, -13, -58
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\VERILOG_CODES\MEMORY\SYSTEM REGS.v", "Verilog", 0, 0, 0, 0, -26, 0, 0, 0, 0, 0, -1, -8, -35
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\back_end\main.js", "JavaScript", 0, -9, 0, 0, 0, 0, 0, 0, 0, 0, 0, -7, -16
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\back_end\package-lock.json", "JSON", -1194, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1195
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\back_end\package.json", "JSON", -7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -8
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\back_end\routes.js", "JavaScript", 0, -22, 0, 0, 0, 0, 0, 0, 0, 0, -118, -114, -254
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\package-lock.json", "JSON", -1822, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1823
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\package.json", "JSON", -7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -8
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\README.md", "Markdown", 0, 0, 0, -9, 0, 0, 0, 0, 0, 0, 0, -8, -17
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\eslint.config.js", "JavaScript", 0, -20, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2, -22
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\index.html", "HTML", 0, 0, -13, 0, 0, 0, 0, 0, 0, 0, 0, -1, -14
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\package-lock.json", "JSON", -3314, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -3315
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\package.json", "JSON", -32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -33
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\public\favicon.svg", "SVG", 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, -1
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\public\icons.svg", "SVG", 0, 0, 0, 0, 0, -24, 0, 0, 0, 0, 0, -1, -25
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\src\App.jsx", "JavaScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, -11, 0, 0, -4, -15
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\src\COMPONENTS\control ui.jsx", "JavaScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, -381, 0, -224, -402, -1007
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\src\assets\react.svg", "SVG", 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, -1
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\src\assets\vite.svg", "SVG", 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, -2
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\src\main.jsx", "JavaScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, -11, 0, 0, -3, -14
+"e:\FPGA STUFF\COMP ARCHITECTURE\EXCAVATOR\web dashboard\front_end\web_dashboard\vite.config.js", "JavaScript", 0, -5, 0, 0, 0, 0, 0, 0, 0, 0, -1, -2, -8
+"Total", "-", -6376, -56, -13, -9, -1264, -27, -292, -944, -403, -33, -803, -2107, -12327

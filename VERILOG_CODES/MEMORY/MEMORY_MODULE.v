@@ -74,6 +74,15 @@ ADDRESS_DECODER dec(
 );
 
 
+INSTRUCTION_ROM i_rom(
+    .clk(clk),
+    .rst(rst),
+    .enable(enable_irom),
+    .offset(offset),
+    .instruction(data_to_cpu)
+)
+
+
 
 RAM ram(
    .clk(clk),

@@ -1,0 +1,23 @@
+# Diff Summary
+
+Date : 2026-08-08 13:24:38
+
+Directory e:\\FPGA STUFF\\COMP ARCHITECTURE\\EXCAVATOR\\ASSEMBLY_CODES\\init system.s
+
+Total : 2 files,  70 codes, 0 comments, -20 blanks, all 50 lines
+
+[Summary](results.md) / [Details](details.md) / Diff Summary / [Diff Details](diff-details.md)
+
+## Languages
+| language | files | code | comment | blank | total |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| Assembly | 2 | 70 | 0 | -20 | 50 |
+
+## Directories
+| path | files | code | comment | blank | total |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| . | 2 | 70 | 0 | -20 | 50 |
+| . (Files) | 1 | 129 | 0 | 26 | 155 |
+| .. | 1 | -59 | 0 | -46 | -105 |
+
+[Summary](results.md) / [Details](details.md) / Diff Summary / [Diff Details](diff-details.md)

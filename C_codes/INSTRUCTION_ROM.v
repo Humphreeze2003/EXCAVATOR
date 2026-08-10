@@ -1,23 +1,3 @@
-module INSTRUCTION_ROM(
-    input clk,
-    input rst,
-
-    input enable,
-    input wire[31:0] offset,
-    // output [31:0] data_to_cpu,  // instruction
-    // input wire[31:0] data_from_cpu, no writes will be happening
-   // no need for write en signal , cannot write to this ROM
-
-    // input wire[31:0] instruction_adress,
-    output wire[31:0] instruction // this is data_to_cpu
-)
-
-
-
-reg[31:0] instruction_ROM[0:1022]; // ,y Irom has 1023 instead of 1024 addresses/regions , i will keep it that way , since nothing breaks
-
-
-
 initial begin
     instruction_ROM[0] = 32'hFD010113;
     instruction_ROM[1] = 32'h02112623;
@@ -918,21 +898,3 @@ initial begin
     instruction_ROM[896] = 32'hE8DFF0EF;
     instruction_ROM[897] = 32'hFBDFF06F;
 end
-
-
-
-assign instruction = enable?instruction_ROM[offset]:32'd0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-endmodule
