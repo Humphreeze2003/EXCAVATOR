@@ -5,6 +5,8 @@ module ALU (
     input[31:0] immediate,
     input[9:0] operation,
 
+    input[31:0] instruction,
+
     output reg[31:0] result,
 
 
@@ -18,6 +20,7 @@ module ALU (
 
 
     output reg[31:0] mem_address
+//    output reg[15:0] cpu_address_bus_mux_signal
 
     // flags
     // output  reg branch_taken  // for when a branch is taken
@@ -94,9 +97,10 @@ module ALU (
 
 
 
-    always @(*) begin
+    // always @(*) begin
 
     result = 32'd0;
+//cpu_address_bus_mux_signal = 15'b0;
 
     case(operation)
 
@@ -161,10 +165,13 @@ module ALU (
     // Load Word
     LW :begin
          mem_address = rs1 + immediate;
+//         cpu_address_bus_mux_signal = 16'd2;
     end
     // Store Word
     SW : begin
         mem_address = rs1 + immediate;
+//         cpu_address_bus_mux_signal = 16'd2;
+
     end
 
     //-------------------------
@@ -172,7 +179,7 @@ module ALU (
     //-------------------------
 
     // LUI : result = immediate;
-    LUI : result{instruction[31:12], 12'b0};
+    LUI : result = {instruction[31:12], 12'b0};
 
     AUIPC : result = immediate;
         // Normally PC + immediate is computed outside the ALU
@@ -211,6 +218,6 @@ module ALU (
 end
 
 
-    end
+    // end
 
 endmodule

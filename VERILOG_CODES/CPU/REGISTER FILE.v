@@ -11,7 +11,7 @@ module CPU_REGS (
    
 
     output wire[31:0] read_data1,
-    output wire[31:0] read_data2,
+    output wire[31:0] read_data2
 
     
 
@@ -29,7 +29,7 @@ reg[31:0] CPU_REGISTERS [0:31];
 
     always @(posedge clk or negedge rst) begin
         if(!rst)begin 
-       for(i ==0 ; i <= 31 ; i += 1'b1)begin 
+       for(i = 0; i <= 31; i = i + 1)begin 
        CPU_REGISTERS[i] <= 32'b0;
 end
   end   else begin 

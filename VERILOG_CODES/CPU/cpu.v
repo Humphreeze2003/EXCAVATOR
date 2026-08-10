@@ -3,10 +3,10 @@ module CPU(
     input rst,
 
     // buses 
-    input wire[31:0] cpu_to_mem_data_bus,
-    output reg[31:0] mem_to_cpu_data_bus,
-    output reg[31:0] address_bus,
-    output reg[31:0] write_en_bus,
+    output wire[31:0] cpu_to_mem_data_bus,
+    input wire[31:0] mem_to_cpu_data_bus,
+    output wire[31:0] address_bus,
+    output  write_en_bus
     
 
 
@@ -40,7 +40,7 @@ wire[9:0] ccu_funct_bits;
 
 
     // op_dec_wires
-wire[31:0] next_instruction_address_from_op_dec
+wire[31:0] next_instruction_address_from_op_dec;
 wire[9:0] op_dec_alu_op;
 wire[7:0] mux_control_signal;
 
@@ -55,7 +55,7 @@ wire[31:0] reg_file_read_data_2;
 
 
     // alu wires
-wire[31:0] alu_result
+wire[31:0] alu_result;
 // wire alu_branch_taken
 
 
@@ -67,13 +67,31 @@ wire[31:0] mux_output;
 // plus_1 wires
 wire[31:0] plus_one_out;
 
+// address bus mux wires
+wire[15:0] control_signal;
+wire[31:0] alu_mem_address_out;
+wire[31:0] pc_mem_address_out;
+
+
+CPU_ADDRESS_BUS_MUX cpu_add_mux(
+ .control_signal(control_signal),
+ 
+ .pc_val(pc_mem_address_out) , // address from pc_counter
+ .alu_val(alu_mem_address_out) , // address from alu
+
+
+ .mux_out(address_bus)
+
+
+);
+
 PROGRAM_COUNTER pc(
 .clk(clk),
 .rst(rst),
 .next_address(next_instruction_address_from_op_dec), // input--------------------------from op decoder
-.current_address_to_mem(address_bus) // output
+.current_address_to_mem(pc_mem_address_out), // output =========================
 .current_address_to_op_dec(pc_current_address_to_op_dec)// output  --------------------- to op decoder
-
+//.cpu_address_bus_mux_signal(control_signal)
 );
 
 
@@ -82,7 +100,7 @@ PROGRAM_COUNTER pc(
 
 
 
-CENTRAL_PROCESSING_UNIT  ccu(
+CENTRAL_CONTROL_UNIT  ccu(
 
     .instruction(mem_to_cpu_data_bus),
 
@@ -131,7 +149,8 @@ OP_DECODER op_dec(
     .mem_write_enable(write_en_bus),
 
     .mux_control_signal(mux_control_signal),
-    .data_to_mem(cpu_to_mem_data_bus)
+    .data_to_mem(cpu_to_mem_data_bus),
+    .cpu_address_bus_mux_signal(control_signal)
 );
 
 
@@ -147,7 +166,10 @@ ALU alu(
     .operation(op_dec_alu_op),
 
     .result(alu_result),
-    .mem_address(address_bus)
+    .mem_address(alu_mem_address_out),   //===========================================
+    .instruction(mem_to_cpu_data_bus)
+
+//    .cpu_address_bus_mux_signal(control_signal)
 
     // flags
     // branch_taken(alu_branch_taken)  // for when a branch is taken
@@ -160,8 +182,8 @@ ALU alu(
 
 
 
-PLUS_1(
-    .val(current_address_to_op_dec), //current instruction's address
+PLUS_1 plus_one(
+    .val(pc_current_address_to_op_dec), //current instruction's address
     .plus_1(plus_one_out)
 );
 
@@ -176,7 +198,7 @@ PLUS_1(
     .control_signal(mux_control_signal),
     .from_alu(alu_result),
     .from_mem(mem_to_cpu_data_bus),
-    .plus_1(plus_one_out)
+    .address_plus_1(plus_one_out),
     .mux_out(mux_output)
 );
 
@@ -201,7 +223,7 @@ CPU_REGS  reg_file(
    
 
     .read_data1(reg_file_read_data_1), /////////////////// to ALU
-    .read_data2(reg_file_read_data_2), //////////// to ALU
+    .read_data2(reg_file_read_data_2) //////////// to ALU
 
 
 ); 

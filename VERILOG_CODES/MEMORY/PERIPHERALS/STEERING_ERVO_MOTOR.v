@@ -5,13 +5,13 @@ module STEERING_STEPPER_MOTOR (
 
       //   interface
     input enable,
-    input wire[31:0] system_mode_reg_bits,
+//    input wire[31:0] system_mode_reg_bits,
     input wire[31:0] offset,
     input wire[31:0] data_from_cpu,
-    output eire[31:0] data_to_cpu,
+    output wire[31:0] data_to_cpu,
     input write_en,
 
-    output  pulse;
+    output  pulse
 
 
 );
@@ -32,13 +32,13 @@ wire pulse_signal = ((microseconds_counter <= (control_reg[15:0]) - 1'b1) && sta
 assign pulse = pulse_signal;
 
 reg[31:0] miliseconds_counter , miliseconds_counter_next;  // 27000 cycles every milisecond
-wire miliseconds_tick = (miliseconds_counter == (32'd540000 - 1'b1))
+wire miliseconds_tick = (miliseconds_counter == (32'd540000 - 1'b1));
 
 reg[4:0] state , next_state;
 localparam[4:0]  IDLE = 4'b0000  , WAIT=4'b0001 , SEND_PULSE = 4'b0010 ;
 
 
-always @() begin
+always @(posedge clk or negedge rst) begin
     if(!rst)begin
         data_out <= 32'b0;
         microseconds_counter <= 32'b0;
@@ -70,7 +70,7 @@ always @() begin
             case (offset)
                 0: control_reg <= data_from_cpu;
                 1: status_reg  <= data_from_cpu;
-                default: 
+                default: ;
             endcase
         end
 
@@ -85,8 +85,8 @@ always @(*) begin
     control_reg_next = control_reg;
     status_reg_next = status_reg;
 
-    pulse = 1'b0;
-     next_state = ILE;
+//    pulse = 1'b0;
+     next_state = IDLE;
      miliseconds_counter_next = 1'b0;
      microseconds_counter_next = 1'b0;
     
@@ -95,7 +95,7 @@ always @(*) begin
                 case (offset)
             0: data_out_next = control_reg;
             1: data_out_next = status_reg; 
-            default: 
+            default: ;
         endcase
         end
 
@@ -132,7 +132,7 @@ always @(*) begin
 
         SEND_PULSE : begin 
           if(enable)begin
-              microseconds_counter_next = microseconds_counter = 1'b1
+              microseconds_counter_next = microseconds_counter + 1'b1;
            if(microseconds_tick)begin
             next_state = IDLE;
            end else begin

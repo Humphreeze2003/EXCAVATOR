@@ -6,11 +6,11 @@ module DC_DRIVER_MOTOR(
     input enable,
     input wire[31:0] offset,
     input wire[31:0] data_from_cpu,
-    output reg[31:0] data_to_cpu,
+    output wire[31:0] data_to_cpu,
     input wire write_en,
 
 
-    input wire[31:0] system_mode_reg_bits,
+//    input wire[31:0] system_mode_reg_bits,
 
 
     output signal_A,
@@ -20,20 +20,20 @@ module DC_DRIVER_MOTOR(
 );
 
 
-reg data_out , data_out_next;
+reg[31:0] data_out , data_out_next;
 assign data_to_cpu = data_out;
 
 // localparam[31:0]  DC_PERIPHERAL_BASE_ADDRESS = 32'd3071 ;
 
 // buffer for system mode reg
-wire[31:0] sys_reg_buffer = (enable)?system_mode_reg_bits;
+//wire[31:0] sys_reg_buffer = (enable)?system_mode_reg_bits:32'b0;
 
 reg[31:0] control_reg , control_reg_next;
 reg[31:0] status_reg , status_reg_next;
 wire standby = control_reg[10]; // when no key is pressed
 // / PWM generation signals
 reg[31:0] motor_frequency_counter;
-reg motor_pulse_tick;
+wire motor_pulse_tick;
 assign motor_pulse_tick = (motor_frequency_counter >= (control_reg[9:1])/2);
 
 reg sig_a , sig_a_next;
@@ -73,7 +73,7 @@ always @(posedge clk or negedge rst) begin
        case (offset)
         0: control_reg <= data_from_cpu;
         1: status_reg <= data_from_cpu; 
-        default: 
+        default: ;
        endcase
       end
 

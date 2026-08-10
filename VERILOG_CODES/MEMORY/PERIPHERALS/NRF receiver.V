@@ -20,7 +20,7 @@ module NRF_RECEIVER(
  reg[31:0] status_reg , status_reg_next;
 
  reg irq_reg;
- data_to_cpu = (enable  && !write_en && offset == 0)?control_reg_reg:(enable && !write_en && offset == 1)?status_reg:32'b0;
+ assign data_to_cpu = (enable  && !write_en && offset == 0)?control_reg:(enable && !write_en && offset == 1)?status_reg:32'b0;
 
 always @(posedge clk or negedge rst) begin
       if(!rst)begin
@@ -40,11 +40,12 @@ always @(posedge clk or negedge rst) begin
              1:begin
                 status_reg <= data_from_cpu;
              end
-                default: 
+                default: ;
             endcase
-        end else 
+        end
+// else 
 
-       end
+//       end
 
 
        if(irq_reg == 1'b1 && !IRQ)begin   // read IRQ port by edge detection
@@ -53,5 +54,6 @@ always @(posedge clk or negedge rst) begin
        
 
       end
+end
 end
 endmodule

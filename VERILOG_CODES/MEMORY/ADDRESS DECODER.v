@@ -22,19 +22,20 @@ module ADDRESS_DECODER(
               
     output  enable_system_regs,
     
-    output wire[31:0] offset
+    output wire[31:0] offset,
+    output wire[15:0] mem_to_cpu_data_mux_sig
 
 );
 
-reg[]
 
-localparam[31:0]  = RODATA_BASE = 32'd2303 , RODATA_END = 32'd2558,
+
+localparam[31:0]   RODATA_BASE = 32'd2303 , RODATA_END = 32'd2558,
                     I_ROM_BASE = 32'd256 , I_ROM_END = 32'd2302, 
                     DC_MOTOR_BASE  = 32'd3071, DC_MOTOR_END = 32'd3102, 
                     STEPPER_BASE = 32'd3103, STEPPER_END = 32'd3134,
                     SERVO_BASE  = 32'd3135,  SERVO_END = 32'd3166,
                     NRF_BASE  = 32'd3199,  NRF_END = 32'd3230,
-                    SPI_BASE = 332'd167, SPI_END = 32'd3198,
+                    SPI_BASE = 32'd3167, SPI_END = 32'd3198,
                     SYST_REGS_BASE = 32'd3231 , SYST_REGS_END = 32'd3262,
                     RAM_BASE = 32'd0 , RAM_END = 32'd255;
 
@@ -62,8 +63,8 @@ assign enable_spi = is_spi;
 assign enable_system_regs = is_sys_regs;
 
 
-assign offset = (is_rodata)?(address_bus - RODATA_BASE):(is_irom)?(address_bus - I_ROM_BASE):(is_dc_motor)?(address_bus - DC_MOTOR_BASE):(is_stepper_motor)?(address_bus - STEPPER_BASE):(is_servo)?(address_bus - SERVO_BASE):(is_nrf)?(address_bus - NRF_BASE):(is_spi)?(address_bus - SPI_BASE):(is_sys_regs)?(address_bus - SYST_REGS_BASE):32'b0;
-
+assign offset = (is_rodata)?(address_bus - RODATA_BASE):(is_irom)?(address_bus - I_ROM_BASE):(is_dc_motor)?(address_bus - DC_MOTOR_BASE):(is_stepper_motor)?(address_bus - STEPPER_BASE):(is_servo)?(address_bus - SERVO_BASE):(is_nrf)?(address_bus - NRF_BASE):(is_spi)?(address_bus - SPI_BASE):(is_sys_regs)?(address_bus - SYST_REGS_BASE):is_ram?(address_bus - RAM_BASE):32'b0;
+assign mem_to_cpu_data_mux_sig = (is_rodata)?16'd3:(is_irom)?16'd1:(is_dc_motor)?16'd4:(is_stepper_motor)?16'd5:(is_servo)?16'd6:(is_nrf)?16'd7:(is_spi)?16'd8:(is_sys_regs)?16'd9:(is_ram)?16'd2:32'b0; 
 
 
 

@@ -7,7 +7,7 @@ module SYSTEM_REGS(
     output wire[31:0] data_to_cpu,
     input enable,
     input write_en,
-    input offset,
+    input wire[31:0] offset
 
     // output wire[31:0] data_out
 );
@@ -27,7 +27,7 @@ always @(posedge clk or negedge rst) begin
             case (offset)
                 0: system_mode_reg <= data_from_cpu;
                 1: system_reset_reg <= data_from_cpu;
-                default: 
+                default: ;
             endcase
         end
     end

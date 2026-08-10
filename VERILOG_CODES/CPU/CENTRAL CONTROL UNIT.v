@@ -27,8 +27,8 @@ localparam[3:0]     R_TYPE = 4'b0001 ,
                     J_TYPE = 4'b0011 , 
                     B_TYPE = 4'b0100 ,  
                     U_TYPE = 4'b0101 , 
-                    S_TYPE = 4'b0110 ,
-                    B_TYPE = 4'b0111 ;
+                    S_TYPE = 4'b0110 ;
+//                    B_TYPE = 4'b0111 ;
 
 
 wire is_R;

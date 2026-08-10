@@ -2,7 +2,7 @@ module SPI (
     input clk,
     input rst,
     // input wire[31:0] data_to_transmit,
-    input offset,
+    input wire[31:0] offset,
     input write_en,
     input enable,
 
@@ -20,10 +20,10 @@ module SPI (
 
     input[31:0] data_from_cpu,
     // input[31:0] address_bus
-    input write_en,
+//    input write_en,
     // input enable,
-    output[31:0] data_to_cpu,
-    input[31:0] offset
+    output[31:0] data_to_cpu
+//    input[31:0] offset
 );
     
  
@@ -43,7 +43,7 @@ assign data_to_cpu = (enable && !write_en && offset ==0)?control_reg : (enable &
 
 
 
-wire[15:0] clock_period = control_reg[15:0] // period counter for the frequency 
+wire[15:0] clock_period = control_reg[15:0]; // period counter for the frequency 
 wire[3:0] bytes_to_send = control_reg[19:16];
 wire[3:0] bytes_to_receive = control_reg[23:20];
 // wire start_tx = control_reg[24];
@@ -97,8 +97,8 @@ reg[4:0] state , next_state;
 
 always @(posedge clk or negedge rst) begin
      if(!rst)begin
-        MOSI <= 1'b0;
-        slave_select <= 1'b1;
+//        MOSI <= 1'b0;
+//        slave_select <= 1'b1;
 
         control_reg <= 32'b0;
         status_reg <= 32'b0;
@@ -112,7 +112,7 @@ always @(posedge clk or negedge rst) begin
         enable_cycles_counter <= 32'b0;
         bits_counter <= 32'b0;
 
-        next_state <= 5'b0;
+        state <= IDLE;
 
      end  else begin
         
@@ -144,7 +144,7 @@ always @(posedge clk or negedge rst) begin
         // end
 
         state <= next_state;
-= ;]
+
 
         
      end
@@ -170,11 +170,11 @@ always @(*) begin
 
      if(write_en && enable)begin
           case (offset)
-            0: control_reg_next <= data_from_cpu;
-            1: status_reg_next <= data_from_cpu;
-            2: buffer_reg_0_next <= data_from_cpu;
-            3: buffer_reg_1_next <= data_from_cpu;
-            default: 
+            0: control_reg_next = data_from_cpu;
+            1: status_reg_next = data_from_cpu;
+            2: buffer_reg_0_next = data_from_cpu;
+            3: buffer_reg_1_next = data_from_cpu;
+            default: ;
           endcase
         end
 
@@ -183,8 +183,8 @@ always @(*) begin
      clock_cycles_counter_next = clock_cycles_counter ;
      enable_cycles_counter_next = enable_cycles_counter;
      
-     bytes_received_next = bytes_received;
-     bytes_sent_next = bytes_sent;
+//     bytes_received_next = bytes_received;
+//     bytes_sent_next = bytes_sent;
 
      bits_counter_next = bits_counter;
 

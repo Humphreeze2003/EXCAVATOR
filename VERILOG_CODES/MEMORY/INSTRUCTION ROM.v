@@ -10,7 +10,7 @@ module INSTRUCTION_ROM(
 
     // input wire[31:0] instruction_adress,
     output wire[31:0] instruction // this is data_to_cpu
-)
+);
 
 
 

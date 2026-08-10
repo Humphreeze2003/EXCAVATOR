@@ -28,7 +28,7 @@ output wire slave_select,
 
 
   // NRF outputs / inputs
-    imput NRF_IRQ
+    input NRF_IRQ
 );
 
 // cpu wires

@@ -5,9 +5,9 @@ module OP_DECODER (
     input wire[31:0] current_instruction_address,  // address of the current instruction
 
 
-    input wire[31:0] rs1,
-    input wire[31:0] rs2,
-    input wire[31:0] rd,
+    input wire[4:0] rs1,
+    input wire[4:0] rs2,
+    input wire[4:0] rd,
     input wire[31:0] immediate_value,
 
 
@@ -29,7 +29,11 @@ module OP_DECODER (
      output reg[7:0] mux_control_signal,
 
 
-     output reg[31:0] data_to_mem
+     output reg[31:0] data_to_mem,
+
+     output reg[15:0] cpu_address_bus_mux_signal
+     
+
 );
     
     localparam[3:0]     R_TYPE = 4'b0001 ,
@@ -107,6 +111,7 @@ localparam [9:0]
     mux_control_signal = 0;
 
     data_to_mem = 32'b0;
+    cpu_address_bus_mux_signal = 16'b1;  // normally the pc drives the cpu address bus
 if(op_type == R_TYPE)begin
 
             // next_address = current_instruction_address + (31'd4 / 31'd1);  // for ths project , my adresses progress by 1 , not 4 for simplicity
@@ -201,8 +206,9 @@ end else if(op_type == I_TYPE)begin
             3'b010 :begin
             alu_operation = LW;
             cpu_write_en = 1;  // we write to CPU
-            mux_control_signal = 8'b1 // data from mem
-            cpu_write_en = 1'b1
+            mux_control_signal = 8'b1 ;// data from mem
+            cpu_write_en = 1'b1;
+            cpu_address_bus_mux_signal = 16'd2;
             end 
             
         endcase
@@ -214,7 +220,7 @@ end else if(op_type == I_TYPE)begin
 
         alu_operation = JALR;
 
-        next_address = rs1 + immediate_value;
+        next_address = rs1_value + immediate_value;
 
     end
          
@@ -310,6 +316,8 @@ end else if (op_type == S_TYPE)begin
                             mem_write_enable = 1;
                             alu_operation = SW;
                             data_to_mem = rs2_value;
+                             cpu_address_bus_mux_signal = 16'd2;
+
                         end
                     endcase
          end

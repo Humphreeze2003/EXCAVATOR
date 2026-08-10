@@ -33,13 +33,13 @@ output wire servo_pulse,
 
 // spi outputs / inputs
 output wire MOSI,
-output wire MISO,
+input wire MISO,
 output wire SPI_CLK,
 output wire slave_select,
 
 
   // NRF outputs / inputs
-    imput NRF_IRQ
+    input NRF_IRQ
 );
 
 
@@ -54,7 +54,7 @@ output wire slave_select,
   wire enable_spi;
   wire enable_sys_regs;
   wire[31:0] offset;
-
+  wire[15:0] mux_sig;
 
 ADDRESS_DECODER dec(
       .clk(clk),
@@ -66,12 +66,50 @@ ADDRESS_DECODER dec(
       .enable_RAM(enable_ram),
       .enable_driver_dc_motor(enable_dc_motor),
       .enable_stepper_motor(enable_stepper_motor),
+      .enable_servo_motor(enable_servo_motor),
       .enable_nrf(enable_nrf),
       .enable_spi(enable_spi),
       .enable_system_regs(enable_sys_regs),
 
-      .offset(offset)
+      .offset(offset),
+      .mem_to_cpu_data_mux_sig(mux_sig)
 );
+
+
+// mem_to_cpu_data_mux wires
+
+ wire[31:0] data_from_i_rom;
+ wire[31:0] data_from_ram;
+ wire[31:0] data_from_rodata;
+ wire[31:0] data_from_dc_motor;
+ wire[31:0] data_from_stepper;
+ wire[31:0] data_from_servo;
+ wire[31:0] data_from_nrf;
+ wire[31:0] data_from_spi;
+ wire[31:0] data_from_syst_regs;
+
+MEM_TO_CPU_DATA_MUX mem_to_cpu_data_mux(
+
+ .data_from_i_rom(data_from_i_rom),
+ .data_from_ram(data_from_ram),
+ .data_from_rodata(data_from_rodata),
+ .data_from_dc_motor(data_from_dc_motor),
+ .data_from_stepper(data_from_stepper),
+ .data_from_servo(data_from_servo),
+ .data_from_nrf(data_from_nrf),
+ .data_from_spi(data_from_spi),
+ .data_from_syst_regs(data_from_syst_regs),
+
+
+
+
+ .control_signal(mux_sig),
+
+ .data_to_cpu(data_to_cpu)
+
+);
+
+
 
 
 INSTRUCTION_ROM i_rom(
@@ -79,8 +117,8 @@ INSTRUCTION_ROM i_rom(
     .rst(rst),
     .enable(enable_irom),
     .offset(offset),
-    .instruction(data_to_cpu)
-)
+    .instruction(data_from_i_rom)
+);
 
 
 
@@ -90,7 +128,7 @@ RAM ram(
 
 
    .offset(offset),
-   .data_to_cpu(data_to_cpu),
+   .data_to_cpu(data_from_ram),
    .data_from_cpu(data_from_cpu),
    .enable(enable_ram),
    .write_en(write_en)
@@ -109,7 +147,7 @@ RODATA rodata(
     .rst(rst),
 
     .data_from_cpu(data_from_cpu),
-    .data_to_cpu(data_to_cpu),
+    .data_to_cpu(data_from_rodata),
     .offset(offset),
     .write_en(write_en),
     .enable(enable_rodata)
@@ -130,7 +168,7 @@ DC_DRIVER_MOTOR dc(
      .rst(rst),
 
     .data_from_cpu(data_from_cpu),
-    .data_to_cpu(data_to_cpu),
+    .data_to_cpu(data_from_dc_motor),
     .offset(offset),
     .write_en(write_en),
     .enable(enable_dc_motor),
@@ -162,7 +200,7 @@ EXCAVATOR_ARM_BASE_STEPPER_MOTOR ex_base_motor(
     // .system_mode_reg_bits(system_reg_bits), //=================will come from system regs peripheral
     .offset(offset),
     .data_from_cpu(data_from_cpu),
-    .data_to_cpu(data_to_cpu),
+    .data_to_cpu(data_from_stepper),
 
     .write_en(write_en),
     .step(stepper_step_signal),
@@ -182,7 +220,7 @@ STEERING_STEPPER_MOTOR servo(
     // .system_mode_reg_bits(system_reg_bits)  //=================will come from system regs peripheral
     .offset(offset),
     .data_from_cpu(data_from_cpu),
-    .data_to_cpu(data_to_cpu),
+    .data_to_cpu(data_from_servo),
     .write_en(write_en),
 
     .pulse(servo_pulse)
@@ -199,7 +237,7 @@ NRF_RECEIVER nrf(
     .IRQ(NRF_IRQ),
 
     .data_from_cpu(data_from_cpu),
-    .data_to_cpu(data_to_cpu),
+    .data_to_cpu(data_from_nrf),
 
     .write_en(write_en),
     .enable(enable_nrf),
@@ -231,9 +269,9 @@ SPI spi(
     .slave_select(slave_select),
 
     .data_from_cpu(data_from_cpu),
-    .write_en(write_en),
-    .data_to_cpu(data_to_cpu),
-    .offset(offset)
+//    .write_en(write_en),
+    .data_to_cpu(data_from_spi)
+//    .offset(offset)
 );
 
 
@@ -245,10 +283,10 @@ SYSTEM_REGS sys_regs(
     .rst(rst),
 
     .data_from_cpu(data_from_cpu),
-    .data_to_cpu(data_to_cpu),
+    .data_to_cpu(data_from_syst_regs),
     .enable(enable_sys_regs),
     .write_en(write_en),
-    .offset(offset),
+    .offset(offset)
 
     
 

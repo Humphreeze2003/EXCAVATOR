@@ -5,19 +5,19 @@ module EXCAVATOR_ARM_BASE_STEPPER_MOTOR(
 
     //   interface
     input enable,
-    input wire[31:0] system_mode_reg_bits,
+//    input wire[31:0] system_mode_reg_bits,
     input wire[31:0] offset,
     input wire[31:0] data_from_cpu,
     output wire[31:0] data_to_cpu,
 
     input write_en,
 
-    output wire step;
-    output wire direction;
+    output wire step,
+    output wire direction
 );
 
 
-reg data_out , data_out_next;
+reg[31:0] data_out , data_out_next;
 assign data_to_cpu = data_out;
 
 reg[31:0] syst_mod_bts_buffer;
@@ -31,7 +31,7 @@ assign direction = control_reg[0];
 
 
 
-wire freq_counter_val = control_reg[9:1];
+wire[8:0] freq_counter_val = control_reg[9:1];
 
 
 reg[31:0] period_counter , period_counter_next;
@@ -46,7 +46,7 @@ always @(posedge clk or negedge rst) begin
                 data_out <= 32'b0;
 
         control_reg[0] <= 1'b1;
-        control_reg[9:1] <= 8'256;
+        control_reg[9:1] <= 9'd256;
         period_counter <= 32'b0;
      end else begin
 
@@ -63,7 +63,7 @@ always @(posedge clk or negedge rst) begin
             case (offset)
                 0: control_reg <= data_from_cpu;
                 1: status_reg <= data_from_cpu;
-                default: 
+                default: ;
             endcase
         end
 

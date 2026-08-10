@@ -7,8 +7,8 @@ module RODATA(
     input wire[31:0] data_from_cpu,
     output wire[31:0] data_to_cpu,
     input wire[31:0] offset,
-    input wire[31:0] write_en, // not needed since ROM is read only
-    input wire[31:0] enable,
+    input  write_en, // not needed since ROM is read only
+    input  enable
 
 
 );
@@ -23,7 +23,7 @@ initial begin
     RODATA_ROM[2] = 32'd2303;          //  rodata BASE ADDRESS
     RODATA_ROM[3] = 32'd2559;          //  bss base address
     RODATA_ROM[4] = 32'd2815;          //  data base address
-    RODATA_ROM[5] = 32'3071;           //  mem mapped i/o/periperals base address
+    RODATA_ROM[5] = 32'd3071;           //  mem mapped i/o/periperals base address
     RODATA_ROM[6] = 32'd3071;          //  dc motor peripheral base address 
     RODATA_ROM[7] = 32'd3103;          //  ex base stepper motor peripheral base address
     RODATA_ROM[8] = 32'd3135;          //  steer servo motor peripheral base address
@@ -45,7 +45,7 @@ initial begin
 end
 
    // reads are asynchronous
- assign data_to_cpu = (enable)?RODATA_ROM(offset)?32'd0;
+ assign data_to_cpu = (enable)?RODATA_ROM[offset]:32'd0;
 
 
   always @(posedge clk or negedge rst) begin
