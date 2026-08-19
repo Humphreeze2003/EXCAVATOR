@@ -1,0 +1,35 @@
+for J an b type instructions , divide immediate offset value by 4
+research on jalr , what it does , how it works , what are added , and wherhte to change the pc + imediate part or not
+
+
+
+
+add instruction input to ALU
+
+
+
+
+check 256 freq counter initialization in peripgerals , if i used 8'b instead of 9'b
+
+mem read multiplexer
+adress bus mux
+
+
+add these ports to mem
+
+decoder control signal(output)
+
+
+check jal , jalr , lui , AUIPC , 
+add current pc input port to PC
+
+
+data to write to mem
+data fetched from mem
+
+investigate current_address_to_op_dec from pc , and what an how it influences
+
+
+Connection of cpu_address_bus_mux_signal and also where the respective mux output connects , and whether it shoud be a demux insead , where based on control signal , the value is connected to PC or address bus directly , currently , it seems like it connects to address bus directly in whichever case
+
+the issue as to why the 4dE instruction or instructions after sw/lw instructions get skipped is because the cpu address bus mux control signal remains 2 after the sw / lw thus the next instruction fo be fetched over the PC gets ignored , and that leads to certain instructions gettinf skipped
