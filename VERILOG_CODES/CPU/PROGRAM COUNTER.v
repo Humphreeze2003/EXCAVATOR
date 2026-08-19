@@ -12,8 +12,8 @@ module PROGRAM_COUNTER(
 
 always @(posedge clk or negedge rst) begin
       if(!rst)begin
-        current_address_to_mem <= 32'd1130;
-        current_address_to_op_dec <= 32'd1130;
+        current_address_to_mem <= 32'd1130;  // 1130 - 256 = 874
+        current_address_to_op_dec <= 32'd1130; // 1130 - 256 = 874
 //        cpu_address_bus_mux_signal <= 16'b0;
         
       end else begin

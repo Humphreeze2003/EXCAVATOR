@@ -39,7 +39,7 @@ wire is_U;
 wire is_S;
 
 assign is_R = (instruction[6:0] == 7'b0110011);
-assign is_I = (instruction[6:0] == 7'b0010011 || instruction[6:0] == 7'b0000011 || instruction[6:0] == 7'b1100111 || instruction[6:0] == 7'b01110011 || instruction[6:0] == 7'b0001111);
+assign is_I = (instruction[6:0] == 7'b0010011 || instruction[6:0] == 7'b0000011 || instruction[6:0] == 7'b1100111 || instruction[6:0] == 7'b1110011 || instruction[6:0] == 7'b0001111);
 assign is_S = (instruction[6:0] == 7'b0100011);
 assign is_U = (instruction[6:0] == 7'b0110111 || instruction[6:0] == 7'b0010111);
 assign is_B = (instruction[6:0] == 7'b1100011);
@@ -72,7 +72,7 @@ always @(*) begin
         funct_bits[2:0] = instruction[14:12];
         rs1 = instruction[19:15];
         rs2 = instruction[24:20];
-        funct_bits[9:3] = instruction[31:25];
+//        funct_bits[9:3] = instruction[31:25];
         immediate_value = { {20{instruction[31]}} , instruction[31:20]};
 
      end else if (is_J) begin

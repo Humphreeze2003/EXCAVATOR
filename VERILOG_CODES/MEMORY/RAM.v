@@ -12,7 +12,7 @@ module RAM(
 
 
 
-reg[0:31] RAM [0:255];
+reg[31:0] RAM [0:255];
 
 
 

@@ -39,14 +39,27 @@ output wire slave_select,
 
 
   // NRF outputs / inputs
-    input NRF_IRQ
+    input NRF_IRQ,
+
+
+output wire[15:0] mem_data_demux_control_signal,
+
+
+
+output wire[31:0] debug_enable_irom,
+output wire[31:0] debug_enable_ram,
+output wire[31:0] debug_offset
+//output wire[31:0] debug_mux_sig
+
 );
 
 
   //address decoder wires
   wire enable_rodata;
   wire enable_irom;
+ assign debug_enable_irom = enable_irom;
   wire enable_ram;
+assign debug_enable_ram = enable_ram;
   wire enable_dc_motor;
   wire enable_stepper_motor;
   wire enable_servo_motor;
@@ -54,6 +67,7 @@ output wire slave_select,
   wire enable_spi;
   wire enable_sys_regs;
   wire[31:0] offset;
+assign debug_offset = offset;
   wire[15:0] mux_sig;
 
 ADDRESS_DECODER dec(
@@ -72,7 +86,8 @@ ADDRESS_DECODER dec(
       .enable_system_regs(enable_sys_regs),
 
       .offset(offset),
-      .mem_to_cpu_data_mux_sig(mux_sig)
+      .mem_to_cpu_data_mux_sig(mux_sig),
+      .mem_data_demux_control_signal(mem_data_demux_control_signal)
 );
 
 
@@ -142,16 +157,16 @@ RAM ram(
 
 
 
-RODATA rodata(
-    .clk(clk),
-    .rst(rst),
+//RODATA rodata(
+//    .clk(clk),
+//    .rst(rst),
 
-    .data_from_cpu(data_from_cpu),
-    .data_to_cpu(data_from_rodata),
-    .offset(offset),
-    .write_en(write_en),
-    .enable(enable_rodata)
-);
+//    .data_from_cpu(data_from_cpu),
+//    .data_to_cpu(data_from_rodata),
+//    .offset(offset),
+//    .write_en(write_en),
+//    .enable(enable_rodata)
+//);
 
 
 

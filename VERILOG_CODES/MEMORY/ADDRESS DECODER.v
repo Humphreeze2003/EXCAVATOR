@@ -23,7 +23,9 @@ module ADDRESS_DECODER(
     output  enable_system_regs,
     
     output wire[31:0] offset,
-    output wire[15:0] mem_to_cpu_data_mux_sig
+    output wire[15:0] mem_to_cpu_data_mux_sig,
+
+    output wire[15:0] mem_data_demux_control_signal
 
 );
 
@@ -51,6 +53,7 @@ wire is_spi = (address_bus >= SPI_BASE && address_bus <= SPI_END);
 wire is_sys_regs = (address_bus >= SYST_REGS_BASE && address_bus <= SYST_REGS_END);
 wire is_ram = (address_bus >= RAM_BASE && address_bus <= RAM_END);
 
+assign mem_data_demux_control_signal = (is_irom)?16'd1:16'd2;
 
 assign enable_rodata = is_rodata;
 assign enable_instruction_rom = is_irom;

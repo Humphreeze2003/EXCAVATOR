@@ -27,9 +27,10 @@ always @(posedge clk or negedge rst) begin
         control_reg <= 32'b0;
         status_reg <= 32'b0;
 
-        irq_reg <= IRQ;
+        irq_reg <= 1'b0;
       end else begin
     
+     irq_reg <= IRQ;
        if(enable)begin
             if(write_en )begin  // writes are synchronous
             case (offset)

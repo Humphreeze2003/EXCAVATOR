@@ -6,7 +6,7 @@ module ALU (
     input[9:0] operation,
 
     input[31:0] instruction,
-
+    input[31:0] instruction_address,  // from PC
     output reg[31:0] result,
 
 
@@ -112,7 +112,7 @@ module ALU (
 
     SUB  : result = rs1 - rs2;
 
-    ADDI : result = rs1 + immediate;
+    ADDI : result = rs1 + $signed(immediate);
 
     //-------------------------
     // Logical
@@ -120,15 +120,15 @@ module ALU (
 
     AND_OP : result = rs1 & rs2;
 
-    ANDI   : result = rs1 & immediate;
+    ANDI   : result = rs1 & $signed(immediate);
 
     OR_OP  : result = rs1 | rs2;
 
-    ORI    : result = rs1 | immediate;
+    ORI    : result = rs1 | $signed(immediate);
 
     XOR_OP : result = rs1 ^ rs2;
 
-    XORI   : result = rs1 ^ immediate;
+    XORI   : result = rs1 ^ $signed(immediate);
 
     //-------------------------
     // Shift
@@ -164,12 +164,12 @@ module ALU (
 
     // Load Word
     LW :begin
-         mem_address = rs1 + immediate;
+         mem_address = rs1 + ($signed(immediate));
 //         cpu_address_bus_mux_signal = 16'd2;
     end
     // Store Word
     SW : begin
-        mem_address = rs1 + immediate;
+        mem_address = rs1 + ($signed(immediate));
 //         cpu_address_bus_mux_signal = 16'd2;
 
     end
@@ -179,22 +179,22 @@ module ALU (
     //-------------------------
 
     // LUI : result = immediate;
-    LUI : result = {instruction[31:12], 12'b0};
+    LUI : result = immediate;
 
-    AUIPC : result = immediate;
+    AUIPC : result = (instruction_address + ($signed(immediate)));
         // Normally PC + immediate is computed outside the ALU
         // or by giving the ALU the PC as an operand.
 
     //-------------------------
-    // Branch Comparisons
-    //-------------------------
+    // Branch 
 
     BEQ : result = (rs1 == rs2);
 
     BNE : result = (rs1 != rs2);
 
     BLT : result = ($signed(rs1) < $signed(rs2));
-
+//Comparisons
+    //-------------------------
     BGE : result = ($signed(rs1) >= $signed(rs2));
 
     BLTU : result = (rs1 < rs2);
@@ -205,12 +205,14 @@ module ALU (
     // Jump Instructions
     //-------------------------
 
-    JAL : result = 32'd0;
-        // write-back (PC+1) comes from PC logic
+    JAL : ;   // write-back (PC+1) comes from PC logic... this is already handled by plus_1 module
+       
 
-    JALR : result = rs1 + immediate;
+    JALR : begin 
+         // write-back (PC+1) comes from PC logic... this is already handled by plus_1 module
         // target address before clearing bit 0
-
+           
+        end
     default : result = 32'd0;
 
     endcase

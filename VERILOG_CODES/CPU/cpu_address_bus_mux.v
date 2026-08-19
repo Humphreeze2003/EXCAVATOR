@@ -17,7 +17,7 @@ mux_out = 32'b0;
 case(control_signal)
 
 
- 16'd0:  mux_out = 32'b0;
+ 16'd0:  mux_out = 32'd0;
  16'd1: mux_out = pc_val;
  16'd2: mux_out = alu_val;
 

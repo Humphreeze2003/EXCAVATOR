@@ -12,11 +12,28 @@ module INSTRUCTION_ROM(
     output wire[31:0] instruction // this is data_to_cpu
 );
 
+integer i;
+
+reg[31:0] instruction_ROM[0:2046]; // ,my Irom has 1023 instead of 1024 addresses/regions , i will keep it that way , since nothing breaks
+
+reg[31:0] instruction_value;
+
+always @(posedge clk or negedge rst) begin
 
 
-reg[31:0] instruction_ROM[0:1022]; // ,y Irom has 1023 instead of 1024 addresses/regions , i will keep it that way , since nothing breaks
+if(!rst)begin
+    instruction_value <= 32'b0;
 
+end  else begin
+    if(enable)begin
+      instruction_value <= instruction_ROM[offset];
 
+  end
+//    instruction_value <= instruction_ROM[offset]
+
+end
+
+end
 
 initial begin
     instruction_ROM[0] = 32'hFD010113;
@@ -921,7 +938,7 @@ end
 
 
 
-assign instruction = enable?instruction_ROM[offset]:32'd0;
+assign instruction = instruction_value;
 
 
 
