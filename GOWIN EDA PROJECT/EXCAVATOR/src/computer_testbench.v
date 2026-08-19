@@ -42,6 +42,8 @@
 //wire[31:0] debug_ipc_address_to_opdec;
 //wire[31:0] debug_pc_address_to_mem;
 //wire[15:0] debug_cpu_address_bus_mux_signal;
+//wire[31:0] debug_cpu_data_address_bus;
+//wire[31:0] debug_mem_fetched_data_bus;
 
 
 //    wire sig_a;
@@ -90,7 +92,8 @@
 //        .debug_ipc_address_to_opdec(debug_ipc_address_to_opdec),
 //        .debug_pc_address_to_mem(debug_pc_address_to_mem),
 //        .debug_cpu_address_bus_mux_signal(debug_cpu_address_bus_mux_signal),
-
+//        .debug_cpu_data_address_bus(debug_cpu_data_address_bus),
+//        .debug_mem_fetched_data_bus(debug_mem_fetched_data_bus),
 
 //        .sig_a(sig_a),
 //        .sig_b(sig_b),

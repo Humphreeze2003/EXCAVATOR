@@ -1,6 +1,6 @@
 module MEM_TO_CPU_DATA_MUX(
 
-input wire[31:0] data_from_i_rom,
+//input wire[31:0] data_from_i_rom,
 input wire[31:0] data_from_ram,
 input wire[31:0] data_from_rodata,
 input wire[31:0] data_from_dc_motor,
@@ -33,7 +33,7 @@ case(control_signal)
 
 
 16'd0: data_to_cpu = 32'b0;
-16'd1: data_to_cpu = data_from_i_rom;
+//16'd1: data_to_cpu = data_from_i_rom;
 16'd2: data_to_cpu = data_from_ram;
 16'd3: data_to_cpu = data_from_rodata;
 16'd4: data_to_cpu = data_from_dc_motor;

@@ -27,6 +27,8 @@ output wire[31:0] debug_offset,
 output wire[31:0] debug_ipc_address_to_opdec,
 output wire[31:0] debug_pc_address_to_mem,
 output wire[15:0] debug_cpu_address_bus_mux_signal,
+output wire[31:0] debug_cpu_data_address_bus,
+output wire[31:0] debug_mem_fetched_data_bus,
     // PERIPHERAL OUTPUTS / inputs
     
     // dc outputs / inputs
@@ -66,8 +68,16 @@ wire[31:0] address_bus;
 assign debug__address_bus = address_bus;
 wire write_en_bus;
 assign debug_write_enable = write_en_bus;
+
+wire[31:0] cpu_data_address_bus;
+assign debug_cpu_data_address_bus = cpu_data_address_bus;
+
+
+
 // memory wires
 wire[15:0] mem_data_demux_control_signal;
+wire[31:0] mem_fetched_data_bus;
+assign debug_mem_fetched_data_bus = mem_fetched_data_bus;
 
 
 CPU cpu(
@@ -80,6 +90,9 @@ CPU cpu(
     .mem_to_cpu_data_bus(mem_to_cpu),
     .address_bus(address_bus),
     .write_en_bus(write_en_bus),
+
+    .data_address_bus(cpu_data_address_bus), ///////////////////////////////  output
+    .fetched_data(mem_fetched_data_bus), ////////////////////////  iput
      
 
     .debug_op_dec_next_address(debug_op_dec_next_address),
@@ -131,6 +144,12 @@ MEMORY mem(
     
     .NRF_IRQ(NRF_IRQ),
      .mem_data_demux_control_signal(mem_data_demux_control_signal),
+
+   
+  .fetched_data(mem_fetched_data_bus) ,     /////////output
+  .data_address(cpu_data_address_bus) , ////////////input
+
+
 
     .debug_enable_irom(debug_enable_irom),
     .debug_enable_ram(debug_enable_ram),

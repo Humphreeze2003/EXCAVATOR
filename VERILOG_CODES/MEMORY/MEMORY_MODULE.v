@@ -3,9 +3,16 @@ module MEMORY(
     input rst,
 
     // cpu interface
-    output wire[31:0] data_to_cpu,
-    input wire[31:0] data_from_cpu,
-    input wire[31:0] address_bus,
+    output wire[31:0] data_to_cpu, // for instruction
+    input wire[31:0] data_from_cpu, 
+    input wire[31:0] address_bus,  // for instruction
+
+
+
+                  ////////////////////////##############
+    output wire[31:0] fetched_data,
+    input wire[31:0]  data_address,
+
 
     input write_en,
 
@@ -67,6 +74,7 @@ assign debug_enable_ram = enable_ram;
   wire enable_spi;
   wire enable_sys_regs;
   wire[31:0] offset;
+  wire[31:0] data_offset;
 assign debug_offset = offset;
   wire[15:0] mux_sig;
 
@@ -87,7 +95,10 @@ ADDRESS_DECODER dec(
 
       .offset(offset),
       .mem_to_cpu_data_mux_sig(mux_sig),
-      .mem_data_demux_control_signal(mem_data_demux_control_signal)
+      .mem_data_demux_control_signal(mem_data_demux_control_signal),
+
+      .data_addresss(data_address),
+      .data_offset(data_offset)
 );
 
 
@@ -105,7 +116,7 @@ ADDRESS_DECODER dec(
 
 MEM_TO_CPU_DATA_MUX mem_to_cpu_data_mux(
 
- .data_from_i_rom(data_from_i_rom),
+// .data_from_i_rom(data_from_i_rom),
  .data_from_ram(data_from_ram),
  .data_from_rodata(data_from_rodata),
  .data_from_dc_motor(data_from_dc_motor),
@@ -120,7 +131,7 @@ MEM_TO_CPU_DATA_MUX mem_to_cpu_data_mux(
 
  .control_signal(mux_sig),
 
- .data_to_cpu(data_to_cpu)
+ .data_to_cpu(fetched_data)
 
 );
 
@@ -132,7 +143,7 @@ INSTRUCTION_ROM i_rom(
     .rst(rst),
     .enable(enable_irom),
     .offset(offset),
-    .instruction(data_from_i_rom)
+    .instruction(data_to_cpu)
 );
 
 
@@ -142,7 +153,7 @@ RAM ram(
    .rst(rst),
 
 
-   .offset(offset),
+   .offset(data_offset),
    .data_to_cpu(data_from_ram),
    .data_from_cpu(data_from_cpu),
    .enable(enable_ram),
@@ -163,7 +174,7 @@ RAM ram(
 
 //    .data_from_cpu(data_from_cpu),
 //    .data_to_cpu(data_from_rodata),
-//    .offset(offset),
+//    .offset(data_offset),
 //    .write_en(write_en),
 //    .enable(enable_rodata)
 //);
@@ -184,7 +195,7 @@ DC_DRIVER_MOTOR dc(
 
     .data_from_cpu(data_from_cpu),
     .data_to_cpu(data_from_dc_motor),
-    .offset(offset),
+    .offset(data_offset),
     .write_en(write_en),
     .enable(enable_dc_motor),
 
@@ -213,7 +224,7 @@ EXCAVATOR_ARM_BASE_STEPPER_MOTOR ex_base_motor(
 
     .enable(enable_stepper_motor),
     // .system_mode_reg_bits(system_reg_bits), //=================will come from system regs peripheral
-    .offset(offset),
+    .offset(data_offset),
     .data_from_cpu(data_from_cpu),
     .data_to_cpu(data_from_stepper),
 
@@ -233,7 +244,7 @@ STEERING_STEPPER_MOTOR servo(
 
     .enable(enable_servo_motor),
     // .system_mode_reg_bits(system_reg_bits)  //=================will come from system regs peripheral
-    .offset(offset),
+    .offset(data_offset),
     .data_from_cpu(data_from_cpu),
     .data_to_cpu(data_from_servo),
     .write_en(write_en),
@@ -256,7 +267,7 @@ NRF_RECEIVER nrf(
 
     .write_en(write_en),
     .enable(enable_nrf),
-    .offset(offset)
+    .offset(data_offset)
     
 
 );
@@ -274,7 +285,7 @@ SPI spi(
     .clk(clk),
     .rst(rst),
 
-    .offset(offset),
+    .offset(data_offset),
     .write_en(write_en),
     .enable(enable_spi),
 
@@ -301,7 +312,7 @@ SYSTEM_REGS sys_regs(
     .data_to_cpu(data_from_syst_regs),
     .enable(enable_sys_regs),
     .write_en(write_en),
-    .offset(offset)
+    .offset(data_offset)
 
     
 

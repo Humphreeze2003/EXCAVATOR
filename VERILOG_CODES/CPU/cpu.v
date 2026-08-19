@@ -6,9 +6,14 @@ module CPU(
 
     // buses 
     output wire[31:0] cpu_to_mem_data_bus,
-    input wire[31:0] mem_to_cpu_data_bus,
-    output wire[31:0] address_bus,
+    input wire[31:0] mem_to_cpu_data_bus,  // instruction fetched
+    output wire[31:0] address_bus,  // for instructions fetch
     output  write_en_bus,
+
+                    ////////////////////////##############
+
+    output wire[31:0] data_address_bus, // for data fetch
+    input wire[31:0] fetched_data,   // data fetched from memory   
     
 
 // debugging signals
@@ -35,7 +40,7 @@ module CPU(
 
 
 reg [31:0] instruction_register;
-wire[31:0] instruction_register_wire;
+//wire[31:0] instruction_register_wire;
 assign debug_instruction_register = instruction_register;
 
 always @(posedge clk or negedge rst)begin
@@ -46,7 +51,8 @@ instruction_register <= 32'b0;
 
 end  else begin  // posedge clk
 
-instruction_register <= instruction_register_wire;  // store the instruction
+//instruction_register <= instruction_register_wire;  // store the instruction
+instruction_register <= mem_to_cpu_data_bus;  // store the instruction
 
 end
 
@@ -145,21 +151,29 @@ assign debug_pc_address_to_mem = pc_mem_address_out;
 //wire[31:0] mem_address_bus_mux_out_to_pc;
 //wire[31:0] mem_address_bus_mux_out_to_address_bus;  
 
-CPU_ADDRESS_BUS_MUX cpu_add_mux(
- .control_signal(control_signal),
- 
-// .pc_val(pc_mem_address_out) , // address from pc_counter
-   .alu_val(alu_mem_address_out) , // address from alu
-  .pc_val(pc_mem_address_out) , // address from pc_couneter
-  .mux_out(address_bus)
 
-);
+
+
+
+//CPU_ADDRESS_BUS_MUX cpu_add_mux(
+// .control_signal(control_signal),
+// 
+// .pc_val(pc_mem_address_out) , // address from pc_counter
+//   .alu_val(alu_mem_address_out) , // address from alu
+//  .pc_val(pc_mem_address_out) , // address from pc_couneter
+//  .mux_out(address_bus)
+
+//);
+
+
+
 
 PROGRAM_COUNTER pc(
 .clk(clk),
 .rst(rst),
 .next_address(next_instruction_address_from_op_dec), // input--------------------------from op decoder
-.current_address_to_mem(pc_mem_address_out), // output =========================
+//.current_address_to_mem(pc_mem_address_out), // output =========================
+.current_address_to_mem(address_bus), // output =========================
 .current_address_to_op_dec(pc_current_address_to_op_dec)// output  --------------------- to op decoder
 //.cpu_address_bus_mux_signal(control_signal)
 );
@@ -168,14 +182,14 @@ PROGRAM_COUNTER pc(
 
 
 
-MEM_DATA_DEMULTIPLEXER data_demux(
-.control_signal(data_demux_control_signal),
+//MEM_DATA_DEMULTIPLEXER data_demux(
+//.control_signal(data_demux_control_signal),
 
-.data(mem_to_cpu_data_bus),  // from memory 
-.to_ccu(instruction_register_wire),
-.to_write_back_mux(to_write_back_mux)
+//.data(mem_to_cpu_data_bus),  // from memory 
+//.to_ccu(instruction_register_wire),
+//.to_write_back_mux(to_write_back_mux)
 
-);
+//);
 
 
 
@@ -246,7 +260,8 @@ ALU alu(
     .operation(op_dec_alu_op),
 
     .result(alu_result),
-    .mem_address(alu_mem_address_out),   //===========================================
+//    .mem_address(alu_mem_address_out),   //===========================================
+     .mem_address(data_address_bus),
     .instruction(instruction_register),
     .instruction_address(pc_current_address_to_op_dec)
 
@@ -279,7 +294,8 @@ PLUS_1 plus_one(
     .control_signal(mux_control_signal),
     .from_alu(alu_result),
 //    .from_mem(instruction_register_wire),
-    .from_mem(to_write_back_mux),
+//    .from_mem(to_write_back_mux),
+     .from_mem(fetched_data),
 
     .address_plus_1(plus_one_out),
     .mux_out(mux_output)

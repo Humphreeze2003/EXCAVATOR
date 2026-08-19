@@ -3,7 +3,12 @@ module ADDRESS_DECODER(
     input rst,
 
 
-    input wire[31:0] address_bus,
+    input wire[31:0] address_bus, // for instruction
+
+
+                  ////////////////////////##############
+   input wire[31:0] data_addresss,
+   output wire[31:0] data_offset,
 
     output enable_rodata,
     output  enable_instruction_rom,
@@ -25,6 +30,9 @@ module ADDRESS_DECODER(
     output wire[31:0] offset,
     output wire[15:0] mem_to_cpu_data_mux_sig,
 
+
+
+
     output wire[15:0] mem_data_demux_control_signal
 
 );
@@ -43,17 +51,19 @@ localparam[31:0]   RODATA_BASE = 32'd2303 , RODATA_END = 32'd2558,
 
 
 
-wire is_rodata = (address_bus >= RODATA_BASE && address_bus <= RODATA_END);
 wire is_irom = (address_bus >= I_ROM_BASE && address_bus <= I_ROM_END);
-wire is_dc_motor = (address_bus >= DC_MOTOR_BASE && address_bus <= DC_MOTOR_END);
-wire is_stepper_motor = (address_bus >= STEPPER_BASE && address_bus <= STEPPER_END);
-wire is_servo = (address_bus >= SERVO_BASE && address_bus <= SERVO_END);
-wire is_nrf = (address_bus >= NRF_BASE && address_bus <= NRF_END) ;
-wire is_spi = (address_bus >= SPI_BASE && address_bus <= SPI_END);
-wire is_sys_regs = (address_bus >= SYST_REGS_BASE && address_bus <= SYST_REGS_END);
-wire is_ram = (address_bus >= RAM_BASE && address_bus <= RAM_END);
 
-assign mem_data_demux_control_signal = (is_irom)?16'd1:16'd2;
+
+wire is_rodata = (data_addresss >= RODATA_BASE && data_addresss <= RODATA_END);
+wire is_dc_motor = (data_addresss >= DC_MOTOR_BASE && data_addresss <= DC_MOTOR_END);
+wire is_stepper_motor = (data_addresss >= STEPPER_BASE && data_addresss <= STEPPER_END);
+wire is_servo = (data_addresss >= SERVO_BASE && data_addresss <= SERVO_END);
+wire is_nrf = (data_addresss >= NRF_BASE && data_addresss <= NRF_END) ;
+wire is_spi = (data_addresss >= SPI_BASE && data_addresss <= SPI_END);
+wire is_sys_regs = (data_addresss >= SYST_REGS_BASE && data_addresss <= SYST_REGS_END);
+wire is_ram = (data_addresss >= RAM_BASE && data_addresss <= RAM_END);
+
+
 
 assign enable_rodata = is_rodata;
 assign enable_instruction_rom = is_irom;
@@ -66,8 +76,17 @@ assign enable_spi = is_spi;
 assign enable_system_regs = is_sys_regs;
 
 
-assign offset = (is_rodata)?(address_bus - RODATA_BASE):(is_irom)?(address_bus - I_ROM_BASE):(is_dc_motor)?(address_bus - DC_MOTOR_BASE):(is_stepper_motor)?(address_bus - STEPPER_BASE):(is_servo)?(address_bus - SERVO_BASE):(is_nrf)?(address_bus - NRF_BASE):(is_spi)?(address_bus - SPI_BASE):(is_sys_regs)?(address_bus - SYST_REGS_BASE):is_ram?(address_bus - RAM_BASE):32'b0;
-assign mem_to_cpu_data_mux_sig = (is_rodata)?16'd3:(is_irom)?16'd1:(is_dc_motor)?16'd4:(is_stepper_motor)?16'd5:(is_servo)?16'd6:(is_nrf)?16'd7:(is_spi)?16'd8:(is_sys_regs)?16'd9:(is_ram)?16'd2:32'b0; 
+assign offset = (is_rodata)?(address_bus - RODATA_BASE):32'b0;
+assign data_offset = (is_rodata)?(address_bus - RODATA_BASE):(is_dc_motor)?(address_bus - DC_MOTOR_BASE):(is_stepper_motor)?(address_bus - STEPPER_BASE):(is_servo)?(address_bus - SERVO_BASE):(is_nrf)?(address_bus - NRF_BASE):(is_spi)?(address_bus - SPI_BASE):(is_sys_regs)?(address_bus - SYST_REGS_BASE):is_ram?(address_bus - RAM_BASE):32'b0;
+
+
+
+
+
+assign mem_data_demux_control_signal = (is_irom)?16'd1:16'd2;  // controls if data goes to ccu or write back mux ( not needed since we will now have separate buses for instructions and data
+//assign mem_to_cpu_data_mux_sig = (is_rodata)?16'd3:(is_irom)?16'd1:(is_dc_motor)?16'd4:(is_stepper_motor)?16'd5:(is_servo)?16'd6:(is_nrf)?16'd7:(is_spi)?16'd8:(is_sys_regs)?16'd9:(is_ram)?16'd2:32'b0; 
+// removed irom since there are now separate lines/buses for instructions and data
+assign mem_to_cpu_data_mux_sig = (is_rodata)?16'd3:(is_dc_motor)?16'd4:(is_stepper_motor)?16'd5:(is_servo)?16'd6:(is_nrf)?16'd7:(is_spi)?16'd8:(is_sys_regs)?16'd9:(is_ram)?16'd2:32'b0; 
 
 
 
