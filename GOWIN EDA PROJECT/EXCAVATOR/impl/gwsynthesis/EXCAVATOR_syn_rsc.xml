@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module name="COMPUTER" T_Register="817(0)" T_Alu="364(0)" T_Lut="2992(0)" T_Bsram="2(0)" T_Ssram="168(0)">
+ <SubModule name="cpu" Register="31" T_Register="73(31)" T_Alu="319(0)" T_Lut="1917(0)" T_Ssram="40(0)">
+  <SubModule name="pc" Register="32" Lut="1" T_Register="32(32)" T_Lut="1(1)"/>
+  <SubModule name="data_demux" Lut="33" T_Lut="33(33)"/>
+  <SubModule name="ccu" Lut="69" T_Lut="69(69)"/>
+  <SubModule name="op_dec" Alu="191" Lut="455" T_Alu="191(191)" T_Lut="455(455)"/>
+  <SubModule name="alu" Alu="128" Lut="104" T_Alu="128(128)" T_Lut="104(104)"/>
+  <SubModule name="write_back_mux" Lut="1060" T_Lut="1060(1060)"/>
+  <SubModule name="reg_file" Register="10" Lut="195" Ssram="40" T_Register="10(10)" T_Lut="195(195)" T_Ssram="40(40)"/>
+ </SubModule>
+ <SubModule name="mem" T_Register="744(0)" T_Alu="45(0)" T_Lut="1075(0)" T_Bsram="2(0)" T_Ssram="128(0)">
+  <SubModule name="dec" Lut="122" T_Lut="122(122)"/>
+  <SubModule name="i_rom" Register="33" Lut="31" Bsram="2" T_Register="33(33)" T_Lut="31(31)" T_Bsram="2(2)"/>
+  <SubModule name="ram" Lut="256" Ssram="128" T_Lut="256(256)" T_Ssram="128(128)"/>
+  <SubModule name="dc" Register="129" Alu="8" Lut="145" T_Register="129(129)" T_Alu="8(8)" T_Lut="145(145)"/>
+  <SubModule name="ex_base_motor" Register="128" Alu="8" Lut="98" T_Register="128(128)" T_Alu="8(8)" T_Lut="98(98)"/>
+  <SubModule name="servo" Register="162" Lut="222" T_Register="162(162)" T_Lut="222(222)"/>
+  <SubModule name="nrf" Register="65" Lut="7" T_Register="65(65)" T_Lut="7(7)"/>
+  <SubModule name="spi" Register="163" Alu="29" Lut="191" T_Register="163(163)" T_Alu="29(29)" T_Lut="191(191)"/>
+  <SubModule name="sys_regs" Register="64" Lut="3" T_Register="64(64)" T_Lut="3(3)"/>
+ </SubModule>
+</Module>

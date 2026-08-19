@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gowin-synthesis-project>
+<Project>
+    <Version>beta</Version>
+    <Device id="GW1NR-9C" package="QFN88P" speed="6" partNumber="GW1NR-LV9QN88PC6/I5"/>
+    <FileList>
+        <File path="E:\FPGA projects\EXCAVATOR\src\ALU.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\CENTRAL CONTROL UNIT.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\cpu.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\OPERATION DECODER.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\PLUS 1 ADDER.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\PROGRAM COUNTER.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\REGISTER FILE.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\WRITE_BACK_MUX.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\computer.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\SPI.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\DRIVER_DC_MOTOR.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\EXCAVATOR_ARM_BASE_STREPPER_MOTOR.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\NRF receiver.V" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\STEERING_ERVO_MOTOR.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\ADDRESS DECODER.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\BSS SECTION .v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\DATA SECTION.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\INSTRUCTION ROM.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\MEMORY_MODULE.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\RAM.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\RODATA.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\SYSTEM REGS.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\CPU ADDRESS_BUS MUX.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\MEM TO CPU DATA MUX.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\memory data decoder.v" type="verilog"/>
+        <File path="E:\FPGA projects\EXCAVATOR\src\computer_testbench.v" type="verilog"/>
+    </FileList>
+    <OptionList>
+        <Option type="disable_insert_pad" value="0"/>
+        <Option type="global_freq" value="50.000"/>
+        <Option type="looplimit" value="2000"/>
+        <Option type="output_file" value="E:\FPGA projects\EXCAVATOR\impl\gwsynthesis\EXCAVATOR.vg"/>
+        <Option type="print_all_synthesis_warning" value="0"/>
+        <Option type="ram_rw_check" value="0"/>
+        <Option type="vcc" value="1.2"/>
+        <Option type="verilog_language" value="verilog-2001"/>
+        <Option type="vhdl_language" value="vhdl-1993"/>
+    </OptionList>
+</Project>

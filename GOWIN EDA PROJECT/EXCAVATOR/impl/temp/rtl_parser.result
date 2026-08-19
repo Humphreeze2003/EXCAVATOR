@@ -1,0 +1,184 @@
+[
+ {
+  "InstFile" : "E:/FPGA projects/EXCAVATOR/src/computer.v",
+  "InstLine" : 1,
+  "InstName" : "COMPUTER",
+  "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/computer.v",
+  "ModuleLine" : 1,
+  "ModuleName" : "COMPUTER",
+  "SubInsts" : [
+   {
+    "InstFile" : "E:/FPGA projects/EXCAVATOR/src/computer.v",
+    "InstLine" : 73,
+    "InstName" : "cpu",
+    "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/cpu.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "CPU",
+    "SubInsts" : [
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/cpu.v",
+      "InstLine" : 148,
+      "InstName" : "cpu_add_mux",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/CPU ADDRESS_BUS MUX.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "CPU_ADDRESS_BUS_MUX"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/cpu.v",
+      "InstLine" : 158,
+      "InstName" : "pc",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/PROGRAM COUNTER.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "PROGRAM_COUNTER"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/cpu.v",
+      "InstLine" : 171,
+      "InstName" : "data_demux",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/memory data decoder.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "MEM_DATA_DEMULTIPLEXER"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/cpu.v",
+      "InstLine" : 183,
+      "InstName" : "ccu",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/CENTRAL CONTROL UNIT.v",
+      "ModuleLine" : 3,
+      "ModuleName" : "CENTRAL_CONTROL_UNIT"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/cpu.v",
+      "InstLine" : 204,
+      "InstName" : "op_dec",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/OPERATION DECODER.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "OP_DECODER"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/cpu.v",
+      "InstLine" : 241,
+      "InstName" : "alu",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/ALU.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "ALU"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/cpu.v",
+      "InstLine" : 266,
+      "InstName" : "plus_one",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/PLUS 1 ADDER.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "PLUS_1"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/cpu.v",
+      "InstLine" : 278,
+      "InstName" : "write_back_mux",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/WRITE_BACK_MUX.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "WRITE_BACK_MUX"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/cpu.v",
+      "InstLine" : 296,
+      "InstName" : "reg_file",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/REGISTER FILE.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "CPU_REGS"
+     }
+    ]
+   },
+   {
+    "InstFile" : "E:/FPGA projects/EXCAVATOR/src/computer.v",
+    "InstLine" : 106,
+    "InstName" : "mem",
+    "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "MEMORY",
+    "SubInsts" : [
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+      "InstLine" : 73,
+      "InstName" : "dec",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/ADDRESS DECODER.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "ADDRESS_DECODER"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+      "InstLine" : 106,
+      "InstName" : "mem_to_cpu_data_mux",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/MEM TO CPU DATA MUX.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "MEM_TO_CPU_DATA_MUX"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+      "InstLine" : 130,
+      "InstName" : "i_rom",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/INSTRUCTION ROM.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "INSTRUCTION_ROM"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+      "InstLine" : 140,
+      "InstName" : "ram",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/RAM.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "RAM"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+      "InstLine" : 180,
+      "InstName" : "dc",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/DRIVER_DC_MOTOR.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "DC_DRIVER_MOTOR"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+      "InstLine" : 209,
+      "InstName" : "ex_base_motor",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/EXCAVATOR_ARM_BASE_STREPPER_MOTOR.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "EXCAVATOR_ARM_BASE_STEPPER_MOTOR"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+      "InstLine" : 230,
+      "InstName" : "servo",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/STEERING_ERVO_MOTOR.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "STEERING_STEPPER_MOTOR"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+      "InstLine" : 249,
+      "InstName" : "nrf",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/NRF receiver.V",
+      "ModuleLine" : 1,
+      "ModuleName" : "NRF_RECEIVER"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+      "InstLine" : 273,
+      "InstName" : "spi",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/SPI.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "SPI"
+     },
+     {
+      "InstFile" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+      "InstLine" : 296,
+      "InstName" : "sys_regs",
+      "ModuleFile" : "E:/FPGA projects/EXCAVATOR/src/SYSTEM REGS.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "SYSTEM_REGS"
+     }
+    ]
+   }
+  ]
+ }
+]

@@ -1,0 +1,119 @@
+GowinSynthesis start
+Running parser ...
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\ALU.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\CENTRAL CONTROL UNIT.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\cpu.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\OPERATION DECODER.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\PLUS 1 ADDER.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\PROGRAM COUNTER.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\REGISTER FILE.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\WRITE_BACK_MUX.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\computer.v'
+Undeclared symbol 'debug_cpu_to_mem', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":62)
+Undeclared symbol 'debug_mem_to_cpu', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":64)
+Undeclared symbol 'debug__address_bus', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":66)
+Undeclared symbol 'debug_write_enable', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":68)
+Undeclared symbol 'debug_op_dec_next_address', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":85)
+Undeclared symbol 'debug_alu_result', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":86)
+Undeclared symbol 'debug_alu_address_out', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":87)
+Undeclared symbol 'debug_ccu_opcode', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":89)
+Undeclared symbol 'debug_ccu_optype', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":90)
+Undeclared symbol 'debug_ccu_rd', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":91)
+Undeclared symbol 'debug_ccu_rs1', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":92)
+Undeclared symbol 'debug_ccu_rs2', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":93)
+Undeclared symbol 'debug_ccu_imm', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":94)
+Undeclared symbol 'debug_ccu_funct_bits', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":95)
+Undeclared symbol 'debug_plus_1_out_bits', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":96)
+Undeclared symbol 'debug_instruction_register', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":97)
+Undeclared symbol 'debug_ipc_address_to_opdec', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":98)
+Undeclared symbol 'debug_pc_address_to_mem', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":99)
+Undeclared symbol 'debug_cpu_address_bus_mux_signal', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":100)
+Undeclared symbol 'debug_enable_irom', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":135)
+Undeclared symbol 'debug_enable_ram', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":136)
+Undeclared symbol 'debug_offset', assumed default net type 'wire'("E:\FPGA projects\EXCAVATOR\src\computer.v":137)
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\SPI.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\DRIVER_DC_MOTOR.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\EXCAVATOR_ARM_BASE_STREPPER_MOTOR.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\NRF receiver.V'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\STEERING_ERVO_MOTOR.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\ADDRESS DECODER.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\BSS SECTION .v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\DATA SECTION.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\INSTRUCTION ROM.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\MEMORY_MODULE.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\RAM.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\RODATA.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\SYSTEM REGS.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\CPU ADDRESS_BUS MUX.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\MEM TO CPU DATA MUX.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\memory data decoder.v'
+Analyzing Verilog file 'E:\FPGA projects\EXCAVATOR\src\computer_testbench.v'
+Compiling module 'COMPUTER'("E:\FPGA projects\EXCAVATOR\src\computer.v":1)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 1("E:\FPGA projects\EXCAVATOR\src\computer.v":62)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 1("E:\FPGA projects\EXCAVATOR\src\computer.v":64)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 1("E:\FPGA projects\EXCAVATOR\src\computer.v":66)
+Compiling module 'CPU'("E:\FPGA projects\EXCAVATOR\src\cpu.v":1)
+Compiling module 'CPU_ADDRESS_BUS_MUX'("E:\FPGA projects\EXCAVATOR\src\CPU ADDRESS_BUS MUX.v":1)
+Compiling module 'PROGRAM_COUNTER'("E:\FPGA projects\EXCAVATOR\src\PROGRAM COUNTER.v":1)
+Compiling module 'MEM_DATA_DEMULTIPLEXER'("E:\FPGA projects\EXCAVATOR\src\memory data decoder.v":1)
+Compiling module 'CENTRAL_CONTROL_UNIT'("E:\FPGA projects\EXCAVATOR\src\CENTRAL CONTROL UNIT.v":3)
+Compiling module 'OP_DECODER'("E:\FPGA projects\EXCAVATOR\src\OPERATION DECODER.v":1)
+Compiling module 'ALU'("E:\FPGA projects\EXCAVATOR\src\ALU.v":1)
+Compiling module 'PLUS_1'("E:\FPGA projects\EXCAVATOR\src\PLUS 1 ADDER.v":1)
+Compiling module 'WRITE_BACK_MUX'("E:\FPGA projects\EXCAVATOR\src\WRITE_BACK_MUX.v":1)
+Compiling module 'CPU_REGS'("E:\FPGA projects\EXCAVATOR\src\REGISTER FILE.v":1)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_op_dec_next_address'("E:\FPGA projects\EXCAVATOR\src\computer.v":85)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_alu_result'("E:\FPGA projects\EXCAVATOR\src\computer.v":86)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_alu_address_out'("E:\FPGA projects\EXCAVATOR\src\computer.v":87)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_ccu_opcode'("E:\FPGA projects\EXCAVATOR\src\computer.v":89)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_ccu_optype'("E:\FPGA projects\EXCAVATOR\src\computer.v":90)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_ccu_rd'("E:\FPGA projects\EXCAVATOR\src\computer.v":91)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_ccu_rs1'("E:\FPGA projects\EXCAVATOR\src\computer.v":92)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_ccu_rs2'("E:\FPGA projects\EXCAVATOR\src\computer.v":93)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_ccu_imm'("E:\FPGA projects\EXCAVATOR\src\computer.v":94)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_ccu_funct_bits'("E:\FPGA projects\EXCAVATOR\src\computer.v":95)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_plus_1_out_bits'("E:\FPGA projects\EXCAVATOR\src\computer.v":96)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_instruction_register'("E:\FPGA projects\EXCAVATOR\src\computer.v":97)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_ipc_address_to_opdec'("E:\FPGA projects\EXCAVATOR\src\computer.v":98)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_pc_address_to_mem'("E:\FPGA projects\EXCAVATOR\src\computer.v":99)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 16 for port 'debug_cpu_address_bus_mux_signal'("E:\FPGA projects\EXCAVATOR\src\computer.v":100)
+Compiling module 'MEMORY'("E:\FPGA projects\EXCAVATOR\src\MEMORY_MODULE.v":1)
+Compiling module 'ADDRESS_DECODER'("E:\FPGA projects\EXCAVATOR\src\ADDRESS DECODER.v":1)
+Compiling module 'MEM_TO_CPU_DATA_MUX'("E:\FPGA projects\EXCAVATOR\src\MEM TO CPU DATA MUX.v":1)
+Compiling module 'INSTRUCTION_ROM'("E:\FPGA projects\EXCAVATOR\src\INSTRUCTION ROM.v":1)
+Extracting RAM for identifier 'instruction_ROM'("E:\FPGA projects\EXCAVATOR\src\INSTRUCTION ROM.v":17)
+Compiling module 'RAM'("E:\FPGA projects\EXCAVATOR\src\RAM.v":1)
+Extracting RAM for identifier 'RAM'("E:\FPGA projects\EXCAVATOR\src\RAM.v":15)
+Compiling module 'DC_DRIVER_MOTOR'("E:\FPGA projects\EXCAVATOR\src\DRIVER_DC_MOTOR.v":1)
+Compiling module 'EXCAVATOR_ARM_BASE_STEPPER_MOTOR'("E:\FPGA projects\EXCAVATOR\src\EXCAVATOR_ARM_BASE_STREPPER_MOTOR.v":1)
+Compiling module 'STEERING_STEPPER_MOTOR'("E:\FPGA projects\EXCAVATOR\src\STEERING_ERVO_MOTOR.v":1)
+Compiling module 'NRF_RECEIVER'("E:\FPGA projects\EXCAVATOR\src\NRF receiver.V":1)
+Compiling module 'SPI'("E:\FPGA projects\EXCAVATOR\src\SPI.v":1)
+Compiling module 'SYSTEM_REGS'("E:\FPGA projects\EXCAVATOR\src\SYSTEM REGS.v":1)
+WARN  (EX1998) : Net 'data_from_rodata[31]' does not have a driver("E:\FPGA projects\EXCAVATOR\src\MEMORY_MODULE.v":98)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_enable_irom'("E:\FPGA projects\EXCAVATOR\src\computer.v":135)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_enable_ram'("E:\FPGA projects\EXCAVATOR\src\computer.v":136)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 32 for port 'debug_offset'("E:\FPGA projects\EXCAVATOR\src\computer.v":137)
+NOTE  (EX0101) : Current top module is "COMPUTER"
+[5%] Running netlist conversion ...
+Running device independent optimization ...
+[10%] Optimizing Phase 0 completed
+[15%] Optimizing Phase 1 completed
+[25%] Optimizing Phase 2 completed
+Running inference ...
+[30%] Inferring Phase 0 completed
+[40%] Inferring Phase 1 completed
+[50%] Inferring Phase 2 completed
+[55%] Inferring Phase 3 completed
+Running technical mapping ...
+[60%] Tech-Mapping Phase 0 completed
+[65%] Tech-Mapping Phase 1 completed
+[75%] Tech-Mapping Phase 2 completed
+[80%] Tech-Mapping Phase 3 completed
+[90%] Tech-Mapping Phase 4 completed
+WARN  (NL0002) : The module "CPU_ADDRESS_BUS_MUX" instantiated to "cpu_add_mux" is swept in optimizing("E:\FPGA projects\EXCAVATOR\src\cpu.v":156)
+WARN  (NL0002) : The module "PLUS_1" instantiated to "plus_one" is swept in optimizing("E:\FPGA projects\EXCAVATOR\src\cpu.v":269)
+WARN  (NL0002) : The module "MEM_TO_CPU_DATA_MUX" instantiated to "mem_to_cpu_data_mux" is swept in optimizing("E:\FPGA projects\EXCAVATOR\src\MEMORY_MODULE.v":125)
+[95%] Generate netlist file "E:\FPGA projects\EXCAVATOR\impl\gwsynthesis\EXCAVATOR.vg" completed
+[100%] Generate report file "E:\FPGA projects\EXCAVATOR\impl\gwsynthesis\EXCAVATOR_syn.rpt.html" completed
+GowinSynthesis finish

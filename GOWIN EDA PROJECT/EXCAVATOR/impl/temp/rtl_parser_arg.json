@@ -1,0 +1,117 @@
+{
+ "Device" : "GW1NR-9C",
+ "Files" : [
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/ALU.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/CENTRAL CONTROL UNIT.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/cpu.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/OPERATION DECODER.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/PLUS 1 ADDER.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/PROGRAM COUNTER.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/REGISTER FILE.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/WRITE_BACK_MUX.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/computer.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/SPI.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/DRIVER_DC_MOTOR.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/EXCAVATOR_ARM_BASE_STREPPER_MOTOR.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/NRF receiver.V",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/STEERING_ERVO_MOTOR.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/ADDRESS DECODER.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/BSS SECTION .v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/DATA SECTION.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/INSTRUCTION ROM.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/MEMORY_MODULE.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/RAM.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/RODATA.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/SYSTEM REGS.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/CPU ADDRESS_BUS MUX.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/MEM TO CPU DATA MUX.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/memory data decoder.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "E:/FPGA projects/EXCAVATOR/src/computer_testbench.v",
+   "Type" : "verilog"
+  }
+ ],
+ "IncludePath" : [
+
+ ],
+ "LoopLimit" : 2000,
+ "ResultFile" : "E:/FPGA projects/EXCAVATOR/impl/temp/rtl_parser.result",
+ "Top" : "",
+ "VerilogStd" : "verilog_2001",
+ "VhdlStd" : "vhdl_93"
+}

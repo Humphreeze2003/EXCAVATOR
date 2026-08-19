@@ -1,0 +1,35 @@
+<?xml version="1" encoding="UTF-8"?>
+<!DOCTYPE gowin-fpga-project>
+<Project>
+    <Template>FPGA</Template>
+    <Version>5</Version>
+    <Device name="GW1NR-9C" pn="GW1NR-LV9QN88PC6/I5">gw1nr9c-004</Device>
+    <FileList>
+        <File path="src/ADDRESS DECODER.v" type="file.verilog" enable="1"/>
+        <File path="src/ALU.v" type="file.verilog" enable="1"/>
+        <File path="src/BSS SECTION .v" type="file.verilog" enable="1"/>
+        <File path="src/CENTRAL CONTROL UNIT.v" type="file.verilog" enable="1"/>
+        <File path="src/CPU ADDRESS_BUS MUX.v" type="file.verilog" enable="1"/>
+        <File path="src/DATA SECTION.v" type="file.verilog" enable="1"/>
+        <File path="src/DRIVER_DC_MOTOR.v" type="file.verilog" enable="1"/>
+        <File path="src/EXCAVATOR_ARM_BASE_STREPPER_MOTOR.v" type="file.verilog" enable="1"/>
+        <File path="src/INSTRUCTION ROM.v" type="file.verilog" enable="1"/>
+        <File path="src/MEM TO CPU DATA MUX.v" type="file.verilog" enable="1"/>
+        <File path="src/MEMORY_MODULE.v" type="file.verilog" enable="1"/>
+        <File path="src/NRF receiver.V" type="file.verilog" enable="1"/>
+        <File path="src/OPERATION DECODER.v" type="file.verilog" enable="1"/>
+        <File path="src/PLUS 1 ADDER.v" type="file.verilog" enable="1"/>
+        <File path="src/PROGRAM COUNTER.v" type="file.verilog" enable="1"/>
+        <File path="src/RAM.v" type="file.verilog" enable="1"/>
+        <File path="src/REGISTER FILE.v" type="file.verilog" enable="1"/>
+        <File path="src/RODATA.v" type="file.verilog" enable="1"/>
+        <File path="src/SPI.v" type="file.verilog" enable="1"/>
+        <File path="src/STEERING_ERVO_MOTOR.v" type="file.verilog" enable="1"/>
+        <File path="src/SYSTEM REGS.v" type="file.verilog" enable="1"/>
+        <File path="src/WRITE_BACK_MUX.v" type="file.verilog" enable="1"/>
+        <File path="src/computer.v" type="file.verilog" enable="1"/>
+        <File path="src/computer_testbench.v" type="file.verilog" enable="1"/>
+        <File path="src/cpu.v" type="file.verilog" enable="1"/>
+        <File path="src/memory data decoder.v" type="file.verilog" enable="1"/>
+    </FileList>
+</Project>
