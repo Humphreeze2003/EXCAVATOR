@@ -45,31 +45,38 @@ always @(posedge clk or negedge rst) begin
         miliseconds_counter <= 32'b0;
         state <= IDLE;
         
+        control_reg[15:0] <= 16'd1500 ;
+        control_reg[31:16] <= 16'b0;
+        status_reg <= 32'b0;
     end else begin
         data_out <= data_out_next;
         if(enable)begin
             if(state == WAIT)begin
             miliseconds_counter <= (miliseconds_counter == (32'd540000 - 1'b1))?32'b0:miliseconds_counter_next;
 
-        end
+            end else begin
+                       miliseconds_counter <= miliseconds_counter_next;
+ 
+            end
 
           if(state == SEND_PULSE)begin
             microseconds_counter <= (microseconds_counter >= (control_reg[15:0] - 1'b1))?32'b0:microseconds_counter_next;
             
-        end
+          end else begin
+                    microseconds_counter <= microseconds_counter_next;
 
-        if(write_en)begin
-            control_reg <= data_from_cpu;
-        end
+          end
 
-        microseconds_counter <= microseconds_counter_next;
-        miliseconds_counter <= miliseconds_counter_next;
+        // if(write_en)begin
+        //     control_reg <= data_from_cpu;
+        // end
+
         state <= next_state;
 
-        if(write_en)begin
+        if(write_en && enable)begin
             case (offset)
                 0: control_reg <= data_from_cpu;
-                1: status_reg  <= data_from_cpu;
+                4: status_reg  <= data_from_cpu;
                 default: ;
             endcase
         end
@@ -94,7 +101,7 @@ always @(*) begin
         if(!write_en)begin
                 case (offset)
             0: data_out_next = control_reg;
-            1: data_out_next = status_reg; 
+            4: data_out_next = status_reg; 
             default: ;
         endcase
         end

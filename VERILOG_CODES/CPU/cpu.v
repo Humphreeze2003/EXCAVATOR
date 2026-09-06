@@ -18,6 +18,7 @@ module CPU(
 
 // debugging signals
    output wire[31:0] debug_op_dec_next_address,
+   output wire[31:0] debug_op_dec_current_address_reg,
    output wire[31:0] debug_alu_result,
    output wire[31:0] debug_alu_address_out,
 
@@ -32,7 +33,21 @@ module CPU(
    output wire[31:0] debug_instruction_register,
    output wire[31:0] debug_ipc_address_to_opdec,
    output wire[31:0] debug_pc_address_to_mem,
-   output wire[15:0] debug_cpu_address_bus_mux_signal
+   output wire[15:0] debug_cpu_address_bus_mux_signal,
+   output wire[31:0] debug_reg_file_read_data_1,
+   output wire[31:0] debug_reg_file_read_data_2,
+   output wire[31:0] debug_write_back_mux_output,
+   output wire[31:0] debug_write_back_mux_control_signal,
+
+output wire[31:0] debug_reg_a0,
+output wire[31:0] debug_reg_a1,
+output wire[31:0] debug_reg_a2,
+output wire[31:0] debug_reg_a3,
+output wire[31:0] debug_reg_a4,
+output wire[31:0] debug_reg_a5,
+output wire[31:0] debug_reg_a6,
+output wire[31:0] debug_reg_a7,
+output wire[31:0] debug_reg_sp
 
 
   
@@ -42,6 +57,77 @@ module CPU(
 reg [31:0] instruction_register;
 //wire[31:0] instruction_register_wire;
 assign debug_instruction_register = instruction_register;
+
+
+// synchroizing stages for current pc adress to op dec signals
+
+reg[31:0] current_pc_address_to_op_dec_stage_1;
+//reg[31:0] current_pc_address_to_op_dec_stage_2;
+reg[31:0] current_pc_address_to_op_dec_stage_3;
+
+wire[31:0] current_pc_address_to_op_dec_wire;
+
+
+always @(posedge clk or negedge rst)begin
+
+if(!rst)begin  
+ current_pc_address_to_op_dec_stage_1 <= 32'd1130;
+// current_pc_address_to_op_dec_stage_2 <= 32'd1130;
+ current_pc_address_to_op_dec_stage_3 <= 32'd1130;
+
+end  else begin
+
+ current_pc_address_to_op_dec_stage_1 <= current_pc_address_to_op_dec_wire;
+// current_pc_address_to_op_dec_stage_2 <= current_pc_address_to_op_dec_stage_1;
+ current_pc_address_to_op_dec_stage_3 <= current_pc_address_to_op_dec_stage_1;
+
+
+
+end
+
+
+end
+
+
+assign debug_op_dec_current_address_reg = current_pc_address_to_op_dec_wire;
+
+
+
+
+
+// synchroizing stages for next address from op dec to PC
+
+reg[31:0] next_adress_to_pc_stage_1;
+//reg[31:0] next_adress_to_pc_stage_2;  // skip stage 2 to remove 1 stage
+reg[31:0] next_adress_to_pc_stage_3;
+
+
+always @(posedge clk or negedge rst)begin
+
+
+if(!rst)begin
+     next_adress_to_pc_stage_1 <= 32'd1130;
+//     next_adress_to_pc_stage_2 <= 32'd1130;
+     next_adress_to_pc_stage_3 <= 32'd1130;
+
+end else begin 
+         next_adress_to_pc_stage_1 <= next_instruction_address_from_op_dec ;
+//         next_adress_to_pc_stage_2 <= next_adress_to_pc_stage_1 ;
+         next_adress_to_pc_stage_3 <=  next_adress_to_pc_stage_1;
+
+end
+
+
+
+end
+
+
+
+
+
+
+
+
 
 always @(posedge clk or negedge rst)begin
 
@@ -114,14 +200,15 @@ wire[31:0] next_instruction_address_from_op_dec;
 assign debug_op_dec_next_address =  next_instruction_address_from_op_dec;
 wire[9:0] op_dec_alu_op;
 wire[7:0] mux_control_signal;
-
+assign debug_write_back_mux_control_signal = mux_control_signal;
 
 
 
     // reg file wires
 wire[31:0] reg_file_read_data_1;
 wire[31:0] reg_file_read_data_2; 
-
+assign debug_reg_file_read_data_1 = reg_file_read_data_1;
+assign debug_reg_file_read_data_2 = reg_file_read_data_2;
 
 
 
@@ -132,20 +219,29 @@ assign debug_alu_result = alu_result;
 
 
 // mux wires
-wire[31:0] mux_output;
-
+wire[31:0] mux_output;  // output for write back mux
+assign debug_write_back_mux_output = mux_output;
 
 
 // plus_1 wires
 wire[31:0] plus_one_out;
 assign debug_plus_1_out_bits = plus_one_out;
+
+
+
+
 // address bus mux wires
 wire[15:0] control_signal;
 assign debug_cpu_address_bus_mux_signal = control_signal;
 wire[31:0] alu_mem_address_out;
-assign debug_alu_address_out = alu_mem_address_out;
+assign debug_alu_address_out = data_address_bus;
 wire[31:0] pc_mem_address_out;
 assign debug_pc_address_to_mem = pc_mem_address_out;
+
+
+
+
+
 // new wires
 
 //wire[31:0] mem_address_bus_mux_out_to_pc;
@@ -174,7 +270,8 @@ PROGRAM_COUNTER pc(
 .next_address(next_instruction_address_from_op_dec), // input--------------------------from op decoder
 //.current_address_to_mem(pc_mem_address_out), // output =========================
 .current_address_to_mem(address_bus), // output =========================
-.current_address_to_op_dec(pc_current_address_to_op_dec)// output  --------------------- to op decoder
+//.current_address_to_op_dec(pc_current_address_to_op_dec)// output  --------------------- to op decoder
+ .current_address_to_op_dec( current_pc_address_to_op_dec_wire)// output  --------------------- to op decoder                                            
 //.cpu_address_bus_mux_signal(control_signal)
 );
 
@@ -198,7 +295,7 @@ CENTRAL_CONTROL_UNIT  ccu(
 
     .instruction(instruction_register),
 
-
+//    .instruction(mem_to_cpu_data_bus),
 
 
     .op_code(ccu_op_code),
@@ -219,8 +316,8 @@ OP_DECODER op_dec(
     .op_code(ccu_op_code),
     .op_type(ccu_op_type),
     .funct_bits(ccu_funct_bits),
-    .current_instruction_address(pc_current_address_to_op_dec),  // address of the current instruction
-
+//    .current_instruction_address(pc_current_address_to_op_dec),  // address of the current instruction
+.current_instruction_address(current_pc_address_to_op_dec_stage_3),
 
     .rs1(ccu_rs1),
     .rs2(ccu_rs2),
@@ -263,7 +360,9 @@ ALU alu(
 //    .mem_address(alu_mem_address_out),   //===========================================
      .mem_address(data_address_bus),
     .instruction(instruction_register),
-    .instruction_address(pc_current_address_to_op_dec)
+//     .instruction(mem_to_cpu_data_bus),
+//    .instruction_address(pc_current_address_to_op_dec)
+    .instruction_address(current_pc_address_to_op_dec_stage_3)
 
 //    .cpu_address_bus_mux_signal(control_signal)
 
@@ -279,7 +378,8 @@ ALU alu(
 
 
 PLUS_1 plus_one(
-    .val(pc_current_address_to_op_dec), //current instruction's address
+//    .val(pc_current_address_to_op_dec), //current instruction's address
+    .val(current_pc_address_to_op_dec_stage_3),  //current instruction's address
     .plus_1(plus_one_out)
 );
 
@@ -322,7 +422,18 @@ CPU_REGS  reg_file(
    
 
     .read_data1(reg_file_read_data_1), /////////////////// to ALU
-    .read_data2(reg_file_read_data_2) //////////// to ALU
+    .read_data2(reg_file_read_data_2), //////////// to ALU
+  
+
+    .reg_a0(debug_reg_a0),
+    .reg_a1(debug_reg_a1),
+    .reg_a2(debug_reg_a2),
+    .reg_a3(debug_reg_a3),
+    .reg_a4(debug_reg_a4),
+    .reg_a5(debug_reg_a5),
+    .reg_a6(debug_reg_a6),
+    .reg_a7(debug_reg_a7),
+    .reg_sp(debug_reg_sp)
 
 
 ); 

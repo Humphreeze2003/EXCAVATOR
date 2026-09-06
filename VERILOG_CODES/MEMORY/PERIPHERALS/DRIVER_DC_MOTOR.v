@@ -54,25 +54,24 @@ always @(posedge clk or negedge rst) begin
         data_out <= 32'b0;
         control_reg[9:1] <= 32'd256;
         control_reg[0] <= 1'b1;
-        
+        control_reg[31:10] <= 32'b0;
+        status_reg <= 32'b0;
         sig_a <= 1'b0;
         sig_b <= 1'b0;
         sig_c <= 1'b0;
-        sig_c <= 1'b0;
+        sig_d <= 1'b0;
 
         motor_frequency_counter <= 1'b0;
         // motor_pulse_tick <= 1'b0;
       end else begin
-        data_out <= data_out_next;
-        control_reg <= control_reg_next;
-        status_reg <= status_reg_next;
+       
         if(enable)begin
       motor_frequency_counter <= (motor_frequency_counter >= (control_reg[9:1])-1'b1)?1'b0:motor_frequency_counter+1'b1;
       if(write_en)begin
         // writes are synchronous
        case (offset)
         0: control_reg <= data_from_cpu;
-        1: status_reg <= data_from_cpu; 
+        4: status_reg <= data_from_cpu; 
         default: ;
        endcase
       end
@@ -82,13 +81,17 @@ always @(posedge clk or negedge rst) begin
       sig_c <= sig_c_next;
       sig_d <= sig_d_next;
 
-        end
+        end else begin
+
+        data_out <= data_out_next;
+        control_reg <= control_reg_next;
+        status_reg <= status_reg_next;
 
       sig_a <= 1'b0;
       sig_b <= 1'b0;
       sig_c <= 1'b0;
-      sig_c <= 1'b0;
-
+      sig_d <= 1'b0;
+           end
       end
 end
 
@@ -107,7 +110,7 @@ if(enable)begin // mode 1 = drive
 if(!write_en )begin
    case (offset)
     0: data_out_next = control_reg;
-    1: data_out_next = status_reg;
+    4: data_out_next = status_reg;
     default:  data_out_next = 32'b0;
    endcase
 end

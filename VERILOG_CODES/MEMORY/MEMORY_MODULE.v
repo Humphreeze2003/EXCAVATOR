@@ -20,6 +20,7 @@ module MEMORY(
 
 
 
+
   // PERIPHERAL OUTPUTS / inputs
     
     // dc outputs / inputs
@@ -55,7 +56,8 @@ output wire[15:0] mem_data_demux_control_signal,
 
 output wire[31:0] debug_enable_irom,
 output wire[31:0] debug_enable_ram,
-output wire[31:0] debug_offset
+output wire[31:0] debug_offset,
+output wire[31:0] gebug_data_offset
 //output wire[31:0] debug_mux_sig
 
 );
@@ -75,6 +77,7 @@ assign debug_enable_ram = enable_ram;
   wire enable_sys_regs;
   wire[31:0] offset;
   wire[31:0] data_offset;
+assign gebug_data_offset = data_offset;
 assign debug_offset = offset;
   wire[15:0] mux_sig;
 

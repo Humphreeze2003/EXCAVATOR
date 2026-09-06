@@ -17,7 +17,7 @@ always @(*) begin
         8'd0:mux_out = from_alu;
         8'd1:mux_out = from_mem;
         8'd2:mux_out = address_plus_1;
-        default: ;
+        default:mux_out = 32'd0;
      endcase
 end
 

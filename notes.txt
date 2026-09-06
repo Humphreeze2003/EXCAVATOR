@@ -33,3 +33,327 @@ investigate current_address_to_op_dec from pc , and what an how it influences
 Connection of cpu_address_bus_mux_signal and also where the respective mux output connects , and whether it shoud be a demux insead , where based on control signal , the value is connected to PC or address bus directly , currently , it seems like it connects to address bus directly in whichever case
 
 the issue as to why the 4dE instruction or instructions after sw/lw instructions get skipped is because the cpu address bus mux control signal remains 2 after the sw / lw thus the next instruction fo be fetched over the PC gets ignored , and that leads to certain instructions gettinf skipped
+
+
+
+
+
+the index of the instruction is calculated as adress_bus_address - 256 ( i rom's base address) , and the addtess bus starts as 1130 , where 1130 - 256 = 874 ( main's address) , so when we jump to initialize system , the jump is -204 for byte adressed memory , but sinse mine is word adressed , it is -76 , but the -304 as you said is well captured , thus
+
+
+
+
+
+
+
+here is the assembly for initialize system
+
+
+
+
+
+
+
+
+
+//and initialize_system:
+
+
+
+    addi    sp,sp,-16
+
+
+
+    sw  ra,12(sp)
+
+
+
+    sw  s0,8(sp)
+
+
+
+    addi    s0,sp,16
+
+
+
+    li  a3,0
+
+
+
+    li  a2,0
+
+
+
+    li  a1,-1
+
+
+
+    li  a5,4096
+
+
+
+    addi    a0,a5,-865
+
+
+
+    call    modify_register
+
+
+
+    li  a3,1
+
+
+
+    li  a2,0
+
+
+
+    li  a1,1
+
+
+
+    li  a5,4096
+
+
+
+    addi    a0,a5,-1025
+
+
+
+    call    modify_register
+
+
+
+    li  a3,511
+
+
+
+    li  a2,1
+
+
+
+    li  a1,1022
+
+
+
+    li  a5,4096
+
+
+
+    addi    a0,a5,-1025
+
+
+
+    call    modify_register
+
+
+
+    li  a3,0
+
+
+
+    li  a2,10
+
+
+
+    li  a1,1024
+
+
+
+    li  a5,4096
+
+
+
+    addi    a0,a5,-1025
+
+
+
+    call    modify_register
+
+
+
+    li  a3,1
+
+
+
+    li  a2,0
+
+
+
+    li  a1,1
+
+
+
+    li  a5,4096
+
+
+
+    addi    a0,a5,-993
+
+
+
+    call    modify_register
+
+
+
+    li  a3,511
+
+
+
+    li  a2,1
+
+
+
+    li  a1,1022
+
+
+
+    li  a5,4096
+
+
+
+    addi    a0,a5,-993
+
+
+
+    call    modify_register
+
+
+
+    li  a3,0
+
+
+
+    li  a2,10
+
+
+
+    li  a1,1024
+
+
+
+    li  a5,4096
+
+
+
+    addi    a0,a5,-993
+
+
+
+    call    modify_register
+
+
+
+    li  a3,1500
+
+
+
+    li  a2,0
+
+
+
+    li  a5,65536
+
+
+
+    addi    a1,a5,-1
+
+
+
+    li  a5,4096
+
+
+
+    addi    a0,a5,-961
+
+
+
+    call    modify_register
+
+
+
+    li  a3,0
+
+
+
+    li  a2,16
+
+
+
+    li  a1,65536
+
+
+
+    li  a5,4096
+
+
+
+    addi    a0,a5,-961
+
+
+
+    call    modify_register
+
+
+
+    call    initialize_nrf_module
+
+
+
+    li  a3,0
+
+
+
+    li  a2,0
+
+
+
+    li  a1,-1
+
+
+
+    li  a5,4096
+
+
+
+    addi    a0,a5,-861
+
+
+
+    call    modify_register
+
+
+
+    nop
+
+
+
+    lw  ra,12(sp)
+
+
+
+    lw  s0,8(sp)
+
+
+
+    addi    sp,sp,16
+
+
+
+    jr  ra
+
+
+
+    .size   initialize_system, .-initialize_system
+
+
+
+    .align  2
+
+
+
+    .globl  main
+
+
+
+    .type   main, @functionthe respective machine code

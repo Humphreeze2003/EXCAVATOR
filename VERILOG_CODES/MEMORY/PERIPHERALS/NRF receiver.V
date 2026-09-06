@@ -20,7 +20,7 @@ module NRF_RECEIVER(
  reg[31:0] status_reg , status_reg_next;
 
  reg irq_reg;
- assign data_to_cpu = (enable  && !write_en && offset == 0)?control_reg:(enable && !write_en && offset == 1)?status_reg:32'b0;
+ assign data_to_cpu = (enable  && !write_en && offset == 0)?control_reg:(enable && !write_en && offset == 4)?status_reg:32'b0;
 
 always @(posedge clk or negedge rst) begin
       if(!rst)begin
@@ -38,7 +38,7 @@ always @(posedge clk or negedge rst) begin
                control_reg <= data_from_cpu; 
              end
 
-             1:begin
+             4:begin
                 status_reg <= data_from_cpu;
              end
                 default: ;

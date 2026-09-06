@@ -40,7 +40,11 @@ end
 
 
 
+default : begin
+to_ccu = 32'b0;
+to_write_back_mux = 32'b0;
 
+end
 
 
 endcase

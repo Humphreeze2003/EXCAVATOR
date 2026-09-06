@@ -44,7 +44,22 @@ wire[31:0] debug_pc_address_to_mem;
 wire[15:0] debug_cpu_address_bus_mux_signal;
 wire[31:0] debug_cpu_data_address_bus;
 wire[31:0] debug_mem_fetched_data_bus;
+wire[31:0] debug_op_dec_current_address_reg;
+wire[31:0] debug_reg_file_read_data_1;
+wire[31:0] debug_reg_file_read_data_2;
+wire[31:0] debug_write_back_mux_output;
+wire[31:0] debug_write_back_mux_control_signal;
+wire[31:0] debug_reg_a0;
+wire[31:0] debug_reg_a1;
+wire[31:0] debug_reg_a2;
+wire[31:0] debug_reg_a3;
+wire[31:0] debug_reg_a4;
+wire[31:0] debug_reg_a5;
+wire[31:0] debug_reg_a6;
+wire[31:0] debug_reg_a7;
+wire[31:0] debug_reg_sp;
 
+wire[31:0] gebug_data_offset;
 
     wire sig_a;
     wire sig_b;
@@ -94,6 +109,23 @@ wire[31:0] debug_mem_fetched_data_bus;
         .debug_cpu_address_bus_mux_signal(debug_cpu_address_bus_mux_signal),
         .debug_cpu_data_address_bus(debug_cpu_data_address_bus),
         .debug_mem_fetched_data_bus(debug_mem_fetched_data_bus),
+        .debug_op_dec_current_address_reg(debug_op_dec_current_address_reg),
+        .debug_reg_file_read_data_1(debug_reg_file_read_data_1),
+        .debug_reg_file_read_data_2(debug_reg_file_read_data_2),
+        .debug_write_back_mux_output(debug_write_back_mux_output),
+        .debug_write_back_mux_control_signal(debug_write_back_mux_control_signal),
+        .debug_reg_a0(debug_reg_a0),
+        .debug_reg_a1(debug_reg_a1),
+        .debug_reg_a2(debug_reg_a2),
+        .debug_reg_a3(debug_reg_a3),
+        .debug_reg_a4(debug_reg_a4),
+        .debug_reg_a5(debug_reg_a5),
+        .debug_reg_a6(debug_reg_a6),
+        .debug_reg_a7(debug_reg_a7),
+        .debug_reg_sp(debug_reg_sp),
+        .gebug_data_offset(gebug_data_offset),
+
+
 
         .sig_a(sig_a),
         .sig_b(sig_b),
@@ -143,9 +175,13 @@ wire[31:0] debug_mem_fetched_data_bus;
 
         #20;
        
+       
+     
         rst = 1;
 
-
+        NRF_IRQ = 0;
+      #200000
+      NRF_IRQ = 1;
         #20000000;
 
         $finish;

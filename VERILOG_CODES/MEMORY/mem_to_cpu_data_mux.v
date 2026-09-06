@@ -43,7 +43,7 @@ case(control_signal)
 16'd8: data_to_cpu = data_from_spi;
 16'd9: data_to_cpu = data_from_syst_regs;
 //16'd0: data_to_cpu = 32'b0;
-
+default : data_to_cpu = 32'b0;
 endcase
 
 

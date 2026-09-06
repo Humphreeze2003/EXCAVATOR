@@ -29,7 +29,7 @@ module SPI (
  
     
 
-assign data_to_cpu = (enable && !write_en && offset ==0)?control_reg : (enable && !write_en && offset == 1)?status_reg:(enable && !write_en && offset == 2)?buffer_reg_0:(enable && !write_en && offset == 3)?buffer_reg_1:32'b0;
+assign data_to_cpu = (enable && !write_en && offset ==0)?control_reg : (enable && !write_en && offset == 4)?status_reg:(enable && !write_en && offset == 8)?buffer_reg_0:(enable && !write_en && offset == 12)?buffer_reg_1:32'b0;
 
     reg[31:0] control_reg , control_reg_next;
     reg[31:0] status_reg , status_reg_next;
@@ -125,11 +125,15 @@ always @(posedge clk or negedge rst) begin
         buffer_reg_3 <= buffer_reg_3_next;
 
         enable_cycles_counter <= enable_cycles_counter_next; 
-        clock_cycles_counter <= clock_cycles_counter_next;
 
         if(enable_cycles_counter)begin
               clock_cycles_counter <= (clock_cycles_counter == (clock_period - 1'b1))?32'b0:clock_cycles_counter_next;
+        end else begin
+                  clock_cycles_counter <= clock_cycles_counter_next;
+
         end
+
+        bits_counter <= bits_counter_next;
 
         // if(state == TRANSMIT)begin
         //     control_reg[24] <= 1'b0;
@@ -168,12 +172,14 @@ always @(*) begin
      buffer_reg_2_next = buffer_reg_2;
      buffer_reg_3_next = buffer_reg_3;
 
+     
+
      if(write_en && enable)begin
           case (offset)
             0: control_reg_next = data_from_cpu;
-            1: status_reg_next = data_from_cpu;
-            2: buffer_reg_0_next = data_from_cpu;
-            3: buffer_reg_1_next = data_from_cpu;
+            4: status_reg_next = data_from_cpu;
+            8: buffer_reg_0_next = data_from_cpu;
+            12: buffer_reg_1_next = data_from_cpu;
             default: ;
           endcase
         end

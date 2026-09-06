@@ -226,8 +226,8 @@ end else if(op_type == I_TYPE)begin
         
         alu_operation = JALR;
 
-        next_address = ($signed(rs1_value) >>> 2) + ($signed(immediate_value) >>> 2);
-        
+        next_address = $signed(rs1_value)  + ($signed(immediate_value) >>> 2);
+//        next_address = ($signed(rs1_value) + $signed(immediate_value)) >>> 2;
     end
          
 
@@ -244,7 +244,8 @@ end else if(op_type == J_TYPE)begin                                   //========
 
                     alu_operation = JAL;
                     mux_control_signal = 16'd2;  // val from plus_1 adder ( address + 1)
-                    next_address = current_instruction_address + ($signed(immediate_value) >>> 2);
+//                    next_address = current_instruction_address + ($signed(immediate_value) >>> 2);
+next_address = $signed(current_instruction_address) + ($signed(immediate_value) >>> 2);
 
 end else if(op_type == B_TYPE)begin
 

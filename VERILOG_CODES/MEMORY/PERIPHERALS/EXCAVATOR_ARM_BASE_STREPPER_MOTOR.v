@@ -47,6 +47,8 @@ always @(posedge clk or negedge rst) begin
 
         control_reg[0] <= 1'b1;
         control_reg[9:1] <= 9'd256;
+        control_reg[31:10] <= 32'b0;
+        status_reg <= 32'b0;
         period_counter <= 32'b0;
      end else begin
 
@@ -57,17 +59,19 @@ always @(posedge clk or negedge rst) begin
          
          if(enable_period_counter)begin
             period_counter <= (period_counter >= (freq_counter_val - 1'b1))?32'b0:period_counter_next;
+         end else begin
+                     period_counter <= period_counter_next;
+
          end
 
           if(enable && write_en)begin
             case (offset)
                 0: control_reg <= data_from_cpu;
-                1: status_reg <= data_from_cpu;
+                4: status_reg <= data_from_cpu;
                 default: ;
             endcase
         end
 
-         period_counter <= period_counter_next;
 
     
     
@@ -90,7 +94,7 @@ always @(*) begin
         if(!write_en)begin
    case (offset)
     0: data_out_next = control_reg;
-    1: data_out_next = status_reg;
+    4: data_out_next = status_reg;
     default:  data_out_next = 32'b0;
 
    endcase

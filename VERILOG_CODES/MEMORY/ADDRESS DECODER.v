@@ -76,8 +76,8 @@ assign enable_spi = is_spi;
 assign enable_system_regs = is_sys_regs;
 
 
-assign offset = (is_rodata)?(address_bus - RODATA_BASE):32'b0;
-assign data_offset = (is_rodata)?(address_bus - RODATA_BASE):(is_dc_motor)?(address_bus - DC_MOTOR_BASE):(is_stepper_motor)?(address_bus - STEPPER_BASE):(is_servo)?(address_bus - SERVO_BASE):(is_nrf)?(address_bus - NRF_BASE):(is_spi)?(address_bus - SPI_BASE):(is_sys_regs)?(address_bus - SYST_REGS_BASE):is_ram?(address_bus - RAM_BASE):32'b0;
+assign offset = (is_irom)?(address_bus - I_ROM_BASE):32'b0; // for instructions
+assign data_offset = (is_rodata)?(data_addresss - RODATA_BASE):(is_dc_motor)?(data_addresss - DC_MOTOR_BASE):(is_stepper_motor)?(data_addresss - STEPPER_BASE):(is_servo)?(data_addresss - SERVO_BASE):(is_nrf)?(data_addresss - NRF_BASE):(is_spi)?(data_addresss - SPI_BASE):(is_sys_regs)?(data_addresss - SYST_REGS_BASE):is_ram?( data_addresss - RAM_BASE):32'b0;
 
 
 

@@ -11,9 +11,17 @@ module CPU_REGS (
    
 
     output wire[31:0] read_data1,
-    output wire[31:0] read_data2
+    output wire[31:0] read_data2,
 
-    
+    output wire[31:0] reg_a0,
+    output wire[31:0] reg_a1,
+    output wire[31:0] reg_a2,
+    output wire[31:0] reg_a3,
+    output wire[31:0] reg_a4,
+    output wire[31:0] reg_a5,
+    output wire[31:0] reg_a6,
+    output wire[31:0] reg_a7,
+    output wire[31:0] reg_sp
 
 ); 
 integer i;
@@ -21,7 +29,15 @@ integer i;
 reg[31:0] CPU_REGISTERS [0:31];
 
 
-
+  assign reg_a0 = CPU_REGISTERS[10];
+  assign reg_a1 = CPU_REGISTERS[11];
+  assign reg_a2 = CPU_REGISTERS[12];
+  assign reg_a3 = CPU_REGISTERS[13];
+  assign reg_a4 = CPU_REGISTERS[14];
+  assign reg_a5 = CPU_REGISTERS[15];
+  assign reg_a6=  CPU_REGISTERS[16];
+  assign reg_a7 = CPU_REGISTERS[17];
+  assign reg_sp = CPU_REGISTERS[2];
 
 // reads are asynchronous wile rites are synchronous
     assign read_data1 = (rs1 == 5'd0)?32'b0 : CPU_REGISTERS[rs1];

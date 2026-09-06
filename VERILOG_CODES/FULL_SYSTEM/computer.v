@@ -29,6 +29,25 @@ output wire[31:0] debug_pc_address_to_mem,
 output wire[15:0] debug_cpu_address_bus_mux_signal,
 output wire[31:0] debug_cpu_data_address_bus,
 output wire[31:0] debug_mem_fetched_data_bus,
+output wire[31:0] debug_op_dec_current_address_reg,
+output wire[31:0] debug_reg_file_read_data_1,
+output wire[31:0] debug_reg_file_read_data_2,
+output wire[31:0] debug_write_back_mux_output,
+output wire[31:0] debug_write_back_mux_control_signal,
+
+
+output wire[31:0] debug_reg_a0,
+output wire[31:0] debug_reg_a1,
+output wire[31:0] debug_reg_a2,
+output wire[31:0] debug_reg_a3,
+output wire[31:0] debug_reg_a4,
+output wire[31:0] debug_reg_a5,
+output wire[31:0] debug_reg_a6,
+output wire[31:0] debug_reg_a7,
+output wire[31:0] debug_reg_sp,
+
+output wire[31:0] gebug_data_offset,
+//output wire[31:0] debug_data_from_cpu, 
     // PERIPHERAL OUTPUTS / inputs
     
     // dc outputs / inputs
@@ -110,7 +129,22 @@ CPU cpu(
    .debug_instruction_register(debug_instruction_register),
    .debug_ipc_address_to_opdec(debug_ipc_address_to_opdec),
    .debug_pc_address_to_mem(debug_pc_address_to_mem),
-   .debug_cpu_address_bus_mux_signal(debug_cpu_address_bus_mux_signal)
+   .debug_cpu_address_bus_mux_signal(debug_cpu_address_bus_mux_signal),
+   .debug_op_dec_current_address_reg(debug_op_dec_current_address_reg),
+   .debug_reg_file_read_data_1(debug_reg_file_read_data_1),
+   .debug_reg_file_read_data_2(debug_reg_file_read_data_2),
+   .debug_write_back_mux_output(debug_write_back_mux_output),
+   .debug_write_back_mux_control_signal(debug_write_back_mux_control_signal),
+
+   .debug_reg_a0(debug_reg_a0),
+   .debug_reg_a1(debug_reg_a1),
+   .debug_reg_a2(debug_reg_a2),
+   .debug_reg_a3(debug_reg_a3),
+   .debug_reg_a4(debug_reg_a4),
+   .debug_reg_a5(debug_reg_a5),
+   .debug_reg_a6(debug_reg_a6),
+   .debug_reg_a7(debug_reg_a7),
+   .debug_reg_sp(debug_reg_sp)
 );
 
 
@@ -153,7 +187,8 @@ MEMORY mem(
 
     .debug_enable_irom(debug_enable_irom),
     .debug_enable_ram(debug_enable_ram),
-    .debug_offset(debug_offset)
+    .debug_offset(debug_offset),
+    .gebug_data_offset(gebug_data_offset)
 );
 
 
