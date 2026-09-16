@@ -1,53 +1,94 @@
 module COMPUTER(
     input clk,
     input rst,
-
+ output debug_clk,
 // debugging signals
 
-output wire[31:0] debug__address_bus,
-output wire[31:0] debug_mem_to_cpu,
-output wire[31:0] debug_cpu_to_mem,
-output wire[31:0] debug_write_enable,
-output wire[31:0] debug_op_dec_next_address,
-output wire[31:0] debug_alu_result,
-output wire[31:0] debug_alu_address_out,
+//output wire[31:0] debug__address_bus,
+//output wire[31:0] debug_mem_to_cpu,
+//output wire[31:0] debug_cpu_to_mem,
+//output wire[31:0] debug_write_enable,
+//output wire[31:0] debug_op_dec_next_address,
+//output wire[31:0] debug_alu_result,
+//output wire[31:0] debug_alu_address_out,
 
-   output wire[31:0] debug_ccu_opcode,
-   output wire[31:0] debug_ccu_optype,
-   output wire[31:0] debug_ccu_rd,
-   output wire[31:0] debug_ccu_rs1,
-   output wire[31:0] debug_ccu_rs2,
-   output wire[31:0] debug_ccu_imm,
-   output wire[31:0] debug_ccu_funct_bits,
-   output wire[31:0] debug_plus_1_out_bits,
-   output wire[31:0] debug_instruction_register,
-output wire[31:0] debug_enable_irom,
-output wire[31:0] debug_enable_ram,
-output wire[31:0] debug_offset,
-output wire[31:0] debug_ipc_address_to_opdec,
-output wire[31:0] debug_pc_address_to_mem,
-output wire[15:0] debug_cpu_address_bus_mux_signal,
-output wire[31:0] debug_cpu_data_address_bus,
-output wire[31:0] debug_mem_fetched_data_bus,
-output wire[31:0] debug_op_dec_current_address_reg,
-output wire[31:0] debug_reg_file_read_data_1,
-output wire[31:0] debug_reg_file_read_data_2,
-output wire[31:0] debug_write_back_mux_output,
-output wire[31:0] debug_write_back_mux_control_signal,
+//   output wire[31:0] debug_ccu_opcode,
+//   output wire[31:0] debug_ccu_optype,
+//   output wire[31:0] debug_ccu_rd,
+//   output wire[31:0] debug_ccu_rs1,
+//   output wire[31:0] debug_ccu_rs2,
+//   output wire[31:0] debug_ccu_imm,
+//   output wire[31:0] debug_ccu_funct_bits,
+//   output wire[31:0] debug_plus_1_out_bits,
+//   output wire[31:0] debug_instruction_register,
+//output wire[31:0] debug_enable_irom,
+//output wire[31:0] debug_enable_ram,
+//output wire[31:0] debug_offset,
+//output wire[31:0] debug_ipc_address_to_opdec,
+//output wire[31:0] debug_pc_address_to_mem,
+//output wire[15:0] debug_cpu_address_bus_mux_signal,
+//output wire[31:0] debug_cpu_data_address_bus,
+//output wire[31:0] debug_mem_fetched_data_bus,
+//output wire[31:0] debug_op_dec_current_address_reg,
+//output wire[31:0] debug_reg_file_read_data_1,
+//output wire[31:0] debug_reg_file_read_data_2,
+//output wire[31:0] debug_write_back_mux_output,
+//output wire[31:0] debug_write_back_mux_control_signal,
 
 
-output wire[31:0] debug_reg_a0,
-output wire[31:0] debug_reg_a1,
-output wire[31:0] debug_reg_a2,
-output wire[31:0] debug_reg_a3,
-output wire[31:0] debug_reg_a4,
-output wire[31:0] debug_reg_a5,
-output wire[31:0] debug_reg_a6,
-output wire[31:0] debug_reg_a7,
-output wire[31:0] debug_reg_sp,
-
-output wire[31:0] gebug_data_offset,
+//output wire[31:0] debug_reg_a0,
+//output wire[31:0] debug_reg_a1,
+//output wire[31:0] debug_reg_a2,
+//output wire[31:0] debug_reg_a3,
+//output wire[31:0] debug_reg_a4,
+//output wire[31:0] debug_reg_a5,
+//output wire[31:0] debug_reg_a6,
+//output wire[31:0] debug_reg_a7,
+//output wire[31:0] debug_reg_sp,
+//output wire[31:0] debug_reg_s0,
+//output wire[31:0] gebug_data_offset,
 //output wire[31:0] debug_data_from_cpu, 
+//output wire[31:0] debug_alu_operation,
+//output wire[31:0] debug_cpu_write_enable,
+//output wire[31:0] debug_reg_ra,
+//output wire[31:0] debug_cpu_state,
+
+
+//output wire[31:0] debug_dc_control_reg,
+//output wire[31:0] debug_dc_status_reg,
+
+
+//output wire[31:0] debug_stepper_control_reg,
+//output wire[31:0] debug_stepper_status_reg,
+
+
+//output wire[31:0] debug_servo_control_reg,
+//output wire[31:0] debug_servo_status_reg,
+
+// output wire[31:0] debug_system_mode_reg,
+//  output wire[31:0] debug_system_reset_reg,
+
+
+//output wire[31:0] debug_shifted_immediate,
+// SPI DEBUG SIGNALS
+//output wire[31:0] debug_enable_spi,
+//output wire[31:0] debug_spi_control_reg,
+//output wire[31:0] debug_spi_status_reg,
+//output wire[31:0] debug_spi_buffer0,
+//output wire[31:0] debug_spi_buffer1,
+//output wire[31:0] debug_spi_state,
+//output wire[31:0] debug_bytes_to_send,
+//output wire[31:0] debug_bits_to_send,
+//output wire[31:0] debug_bits_sent,
+//output wire[31:0] debug_enable_spi,
+//output wire[31:0] debug_enable_spi,
+
+
+
+
+
+output wire[5:0] address_bus_bits,
+
     // PERIPHERAL OUTPUTS / inputs
     
     // dc outputs / inputs
@@ -78,12 +119,27 @@ output wire slave_select,
     input NRF_IRQ
 );
 
+
+
+//         GAO SAMPLE CLOCK SIGNALS
+reg clk_debug;
+//assign clk_debug = clk;
+assign debug_clk = clk_debug;
+always @(posedge clk or negedge rst) begin
+    if (!rst)
+        clk_debug <= 1'b0;
+    else
+        clk_debug <= ~clk_debug;
+end
+
+
 // cpu wires
 wire[31:0] cpu_to_mem;
 assign debug_cpu_to_mem = cpu_to_mem;
 wire[31:0] mem_to_cpu;
 assign debug_mem_to_cpu = mem_to_cpu;
 wire[31:0] address_bus;
+assign address_bus_bits = address_bus[5:0];
 assign debug__address_bus = address_bus;
 wire write_en_bus;
 assign debug_write_enable = write_en_bus;
@@ -144,7 +200,13 @@ CPU cpu(
    .debug_reg_a5(debug_reg_a5),
    .debug_reg_a6(debug_reg_a6),
    .debug_reg_a7(debug_reg_a7),
-   .debug_reg_sp(debug_reg_sp)
+   .debug_reg_sp(debug_reg_sp),
+   .debug_reg_s0(debug_reg_s0),
+   .debug_alu_operation(debug_alu_operation),
+   .debug_cpu_write_enable(debug_cpu_write_enable),
+   .debug_reg_ra(debug_reg_ra),
+   .debug_cpu_state(debug_cpu_state),
+   .debug_shifted_immediate(debug_shifted_immediate)
 );
 
 
@@ -181,14 +243,41 @@ MEMORY mem(
 
    
   .fetched_data(mem_fetched_data_bus) ,     /////////output
-  .data_address(cpu_data_address_bus) , ////////////input
+  .data_address(cpu_data_address_bus),  ////////////input
 
 
 
     .debug_enable_irom(debug_enable_irom),
     .debug_enable_ram(debug_enable_ram),
     .debug_offset(debug_offset),
-    .gebug_data_offset(gebug_data_offset)
+    .gebug_data_offset(gebug_data_offset),
+
+
+   .debug_dc_control_reg(debug_dc_control_reg),
+   .debug_dc_status_reg(debug_dc_status_reg),
+
+
+    .debug_stepper_control_reg(debug_stepper_control_reg),
+    .debug_stepper_status_reg(debug_stepper_status_reg),
+
+
+  .debug_servo_control_reg(debug_servo_control_reg),
+ .debug_servo_status_reg(debug_servo_status_reg),
+
+
+ .debug_system_mode_reg(debug_system_mode_reg),
+ .debug_system_reset_reg(debug_system_reset_reg),
+
+// SPI DEBUGGING SIGNALS
+   .debug_enable_spi(debug_enable_spi),
+   .debug_spi_control_reg(debug_spi_control_reg),
+   .debug_spi_status_reg(debug_spi_status_reg),
+   .debug_spi_buffer0(debug_spi_buffer0),
+   .debug_spi_buffer1(debug_spi_buffer1),
+   .debug_spi_state(debug_spi_state),
+   .debug_bytes_to_send(debug_bytes_to_send),
+   .debug_bits_to_send(debug_bits_to_send),
+   .debug_bits_sent(debug_bits_sent)
 );
 
 

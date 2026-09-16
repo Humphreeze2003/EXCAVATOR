@@ -6,7 +6,7 @@ module DC_DRIVER_MOTOR(
     input enable,
     input wire[31:0] offset,
     input wire[31:0] data_from_cpu,
-    output wire[31:0] data_to_cpu,
+    output reg[31:0] data_to_cpu,
     input wire write_en,
 
 
@@ -16,12 +16,16 @@ module DC_DRIVER_MOTOR(
     output signal_A,
     output signal_B,
     output signal_C,
-    output signal_D
+    output signal_D,
+
+    output wire[31:0] debug_dc_control_reg,
+    output wire[31:0] debug_dc_status_reg
+
 );
 
 
 reg[31:0] data_out , data_out_next;
-assign data_to_cpu = data_out;
+// assign data_to_cpu = data_out;
 
 // localparam[31:0]  DC_PERIPHERAL_BASE_ADDRESS = 32'd3071 ;
 
@@ -46,12 +50,14 @@ assign signal_B = sig_b;
 assign signal_C = sig_c;
 assign signal_D = sig_d;
 
+assign debug_dc_control_reg = control_reg;
+assign debug_dc_status_reg = status_reg;
 
 
 
 always @(posedge clk or negedge rst) begin
       if(!rst)begin
-        data_out <= 32'b0;
+        // data_out <= 32'b0;
         control_reg[9:1] <= 32'd256;
         control_reg[0] <= 1'b1;
         control_reg[31:10] <= 32'b0;
@@ -74,6 +80,9 @@ always @(posedge clk or negedge rst) begin
         4: status_reg <= data_from_cpu; 
         default: ;
        endcase
+      end else begin
+        control_reg <= control_reg_next;
+        status_reg <= status_reg_next;
       end
 
       sig_a <= sig_a_next;
@@ -83,9 +92,8 @@ always @(posedge clk or negedge rst) begin
 
         end else begin
 
-        data_out <= data_out_next;
-        control_reg <= control_reg_next;
-        status_reg <= status_reg_next;
+        // data_out <= data_out_next;
+        
 
       sig_a <= 1'b0;
       sig_b <= 1'b0;
@@ -97,7 +105,8 @@ end
 
 
 always @(*) begin
-  data_out_next = data_out;
+  // data_out_next = data_out;
+  data_to_cpu = 32'b0;
   control_reg_next = control_reg;
   status_reg_next = status_reg;
     sig_a_next = 0;
@@ -106,14 +115,20 @@ always @(*) begin
     sig_d_next = 0;
 
 if(enable)begin // mode 1 = drive
-  
-if(!write_en )begin
+
+  if(!write_en)begin
    case (offset)
-    0: data_out_next = control_reg;
-    4: data_out_next = status_reg;
-    default:  data_out_next = 32'b0;
+    0:begin
+      data_to_cpu = control_reg;
+    end
+
+    4: begin
+      data_to_cpu = status_reg;
+    end
+    default: data_to_cpu = 32'b0;
    endcase
 end
+   
    if(!standby)begin
        if(control_reg[0] == 1 && motor_pulse_tick)begin // clockwise
     sig_a_next = 1;

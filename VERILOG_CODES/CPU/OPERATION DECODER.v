@@ -3,13 +3,15 @@ module OP_DECODER (
     input wire[3:0] op_type,
     input wire[9:0] funct_bits,
     input wire[31:0] current_instruction_address,  // address of the current instruction
-
+    
+    input wire[31:0] cpu_fsm_state,
+    input wire[31:0] execute_cycles_counter,
 
     input wire[4:0] rs1,
     input wire[4:0] rs2,
     input wire[4:0] rd,
     input wire[31:0] immediate_value,
-
+//$display
 
     input wire[31:0] rs1_value,
     input wire[31:0] rs2_value,
@@ -31,10 +33,15 @@ module OP_DECODER (
 
      output reg[31:0] data_to_mem,
 
-     output reg[15:0] cpu_address_bus_mux_signal
-     
+     output reg[15:0] cpu_address_bus_mux_signal,
+     output wire[31:0] shifted_immediate
 
 );
+
+assign shifted_immediate = $signed(immediate_value) >>> 2;
+
+localparam[31:0] FETCHING = 32'd0 , 
+                 DECODE_EXECUTE = 32'd1;
     
     localparam[3:0]     R_TYPE = 4'b0001 ,
                         I_TYPE = 4'b0010 , 
@@ -112,6 +119,7 @@ localparam [9:0]
 
     data_to_mem = 32'b0;
     cpu_address_bus_mux_signal = 16'b1;  // normally the pc drives the cpu address bus
+
 if(op_type == R_TYPE)begin
 
             // next_address = current_instruction_address + (31'd4 / 31'd1);  // for ths project , my adresses progress by 1 , not 4 for simplicity
@@ -121,10 +129,10 @@ if(op_type == R_TYPE)begin
             //   alu_operation = SUB;
             // end
 
-               next_address = current_instruction_address + 1;
+               next_address =(cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?current_instruction_address + 1:current_instruction_address;
 
     // read_en = 1;
-    cpu_write_en = 1;
+    cpu_write_en = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3);
 
     case(funct_bits)
 
@@ -167,12 +175,13 @@ end else if(op_type == I_TYPE)begin
               
         //     end
 
-         next_address = current_instruction_address + 1;
+         next_address = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?current_instruction_address + 1:current_instruction_address;
 
     if(op_code == 7'b0010011) begin
 
         // read_en = 1;
-        cpu_write_en = 1;
+        cpu_write_en = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3);
+                    mux_control_signal = 8'b0 ;// data from alu
 
         case(funct_bits[2:0])
 
@@ -189,7 +198,7 @@ end else if(op_type == I_TYPE)begin
 //            10'b0000000101 : alu_operation = SRLI;
 
 //            10'b0100000101 : alu_operation = SRAI;
-
+            3'b001 : alu_operation = SLLI;
             3'b010 : alu_operation = SLTI;
 
             3'b011 : alu_operation = SLTIU;
@@ -205,7 +214,7 @@ end else if(op_type == I_TYPE)begin
 
             3'b010 :begin
             alu_operation = LW;
-            cpu_write_en = 1;  // we write to CPU
+            cpu_write_en = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3);  // we write to CPU
             mux_control_signal = 8'b1 ;// data from mem
 //            cpu_write_en = 1'b1;
             cpu_address_bus_mux_signal = 16'd2;
@@ -222,11 +231,13 @@ end else if(op_type == I_TYPE)begin
 // also normally rs1 == ra , but can be another register
         mux_control_signal = 16'd2; // writeback value is val from plus_1
         // read_en = 1;
-        cpu_write_en = 1;
+        cpu_write_en = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3);
         
         alu_operation = JALR;
 
-        next_address = $signed(rs1_value)  + ($signed(immediate_value) >>> 2);
+//        next_address =(cpu_fsm_state == DECODE_EXECUTE)?$signed(rs1_value)  + ($signed(immediate_value) >>> 2):current_instruction_address;
+        next_address =(cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?rs1_value  +  shifted_immediate:current_instruction_address;
+
 //        next_address = ($signed(rs1_value) + $signed(immediate_value)) >>> 2;
     end
          
@@ -240,12 +251,13 @@ end else if(op_type == J_TYPE)begin                                   //========
  // pc + pc+offset
  
                     // read_en = 0;
-                    cpu_write_en = 1;
+                    cpu_write_en = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3);
 
                     alu_operation = JAL;
                     mux_control_signal = 16'd2;  // val from plus_1 adder ( address + 1)
 //                    next_address = current_instruction_address + ($signed(immediate_value) >>> 2);
-next_address = $signed(current_instruction_address) + ($signed(immediate_value) >>> 2);
+//next_address = (cpu_fsm_state == DECODE_EXECUTE)?$signed(current_instruction_address) + ($signed(immediate_value) >>> 2):current_instruction_address;
+        next_address =(cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?current_instruction_address  + shifted_immediate:current_instruction_address;
 
 end else if(op_type == B_TYPE)begin
 
@@ -259,19 +271,19 @@ end else if(op_type == B_TYPE)begin
             alu_operation = BEQ;
 
             if(rs1_value == rs2_value)
-                next_address = current_instruction_address + ($signed(immediate_value) >>>2);
+                next_address = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?current_instruction_address + shifted_immediate:current_instruction_address;
             else
-                next_address = current_instruction_address + 1;
+                next_address = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?current_instruction_address + 1:current_instruction_address;
         end
 
         3'b001:
         begin
             alu_operation = BNE;
 
-            if(rs1_value != rs2_value)
-                next_address = current_instruction_address + ($signed(immediate_value ) >>> 2);
+            if($signed(rs1_value) != $signed(rs2_value))
+                next_address =(cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)? $signed(current_instruction_address) + shifted_immediate:current_instruction_address;
             else
-                next_address = current_instruction_address + 1;
+                next_address = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?current_instruction_address + 1:current_instruction_address;
         end
 
         3'b100:
@@ -279,9 +291,9 @@ end else if(op_type == B_TYPE)begin
             alu_operation = BLT;
 
             if($signed(rs1_value) < $signed(rs2_value))
-                next_address = current_instruction_address + ($signed(immediate_value )>>> 2);
+                next_address = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?$signed(current_instruction_address) + shifted_immediate:current_instruction_address;
             else
-                next_address = current_instruction_address + 1;
+                next_address = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?current_instruction_address + 1:current_instruction_address;
         end
 
         3'b101:
@@ -289,9 +301,9 @@ end else if(op_type == B_TYPE)begin
             alu_operation = BGE;
 
             if($signed(rs1_value) >= $signed(rs2_value))
-                next_address = current_instruction_address + ($signed(immediate_value )>>> 2);
+                next_address =(cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)? $signed(current_instruction_address) + shifted_immediate:current_instruction_address;
             else
-                next_address = current_instruction_address + 1;
+                next_address = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?current_instruction_address + 1:current_instruction_address;
         end
 
     endcase
@@ -303,24 +315,24 @@ end  else if(op_type == U_TYPE)begin                     //=====================
 //            cpu_address_bus_mux_signal = 16'd2;  // next instruction address is computed by ALU
 
 
-            cpu_write_en = 1;
+            cpu_write_en = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3);
             // read_en = 0;
 
             case(op_code)
 
                 7'b0110111 : begin
-                    next_address = current_instruction_address + 1;
+                    next_address = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?current_instruction_address + 1:current_instruction_address;
                     alu_operation = LUI;
                     end
                 7'b0010111 : begin
-                    next_address = current_instruction_address + 1;
+                    next_address = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?current_instruction_address + 1:current_instruction_address;
                     alu_operation = AUIPC;
 //                    cpu_address_bus_mux_signal = 16'd2;  // next instruction address is computed by ALU
                            end
             endcase
            
 end else if (op_type == S_TYPE)begin
-                                next_address = current_instruction_address + 1;
+                                next_address = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3)?current_instruction_address + 1:current_instruction_address;
 
                     // read_en = 1;
                    
@@ -329,7 +341,7 @@ end else if (op_type == S_TYPE)begin
 
                         3'b010 : begin // SW
                             //  cpu_write_en = 0;
-                            mem_write_enable = 1;
+                            mem_write_enable = (cpu_fsm_state == DECODE_EXECUTE && execute_cycles_counter == 32'd3);
                             alu_operation = SW;
                             data_to_mem = rs2_value;
                              cpu_address_bus_mux_signal = 16'd2;

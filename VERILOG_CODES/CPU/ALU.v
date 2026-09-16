@@ -9,7 +9,7 @@ module ALU (
     input[31:0] instruction_address,  // from PC
     output reg[31:0] result,
 
-
+    input wire[31:0] cpu_fsm_state,
 
 
 
@@ -35,6 +35,10 @@ module ALU (
   //                   ADDI = 8'd6;
 
 
+
+
+localparam[31:0] FETCHING = 32'd0 , 
+                 DECODE_EXECUTE = 32'd1;
 
   localparam [9:0]
     ADD   = 10'd1,

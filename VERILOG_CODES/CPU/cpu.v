@@ -22,6 +22,7 @@ module CPU(
    output wire[31:0] debug_alu_result,
    output wire[31:0] debug_alu_address_out,
 
+   output wire[31:0] debug_shifted_immediate,
    output wire[31:0] debug_ccu_opcode,
    output wire[31:0] debug_ccu_optype,
    output wire[31:0] debug_ccu_rd,
@@ -47,10 +48,12 @@ output wire[31:0] debug_reg_a4,
 output wire[31:0] debug_reg_a5,
 output wire[31:0] debug_reg_a6,
 output wire[31:0] debug_reg_a7,
-output wire[31:0] debug_reg_sp
-
-
-  
+output wire[31:0] debug_reg_sp,
+output wire[31:0] debug_reg_s0,
+output wire[31:0] debug_reg_ra,
+output wire[31:0] debug_alu_operation,
+output wire[31:0] debug_cpu_write_enable,
+   output[31:0] debug_cpu_state
 );
 
 
@@ -89,9 +92,11 @@ end
 end
 
 
-assign debug_op_dec_current_address_reg = current_pc_address_to_op_dec_wire;
 
 
+assign debug_ipc_address_to_opdec = current_pc_address_to_op_dec_wire;
+
+assign debug_op_dec_current_address_reg = current_pc_address_to_op_dec_stage_3;
 
 
 
@@ -159,6 +164,7 @@ end
 
    // global wires
 wire cpu_write_enable;
+assign debug_cpu_write_enable = cpu_write_enable;
 // wire[31:0] cpu_write_data_bus;
 // wire[31:0] cpu_read_data_bus
 // wire[31:0] cpu_address_bus
@@ -166,7 +172,7 @@ wire cpu_write_enable;
 
     // pc wires
 wire[31:0] pc_current_address_to_op_dec;
-assign debug_ipc_address_to_opdec = pc_current_address_to_op_dec;
+//assign debug_ipc_address_to_opdec = pc_current_address_to_op_dec;
 // wire[31:0] pc_current_address;
 
 
@@ -199,6 +205,7 @@ wire[31:0] to_write_back_mux;
 wire[31:0] next_instruction_address_from_op_dec;
 assign debug_op_dec_next_address =  next_instruction_address_from_op_dec;
 wire[9:0] op_dec_alu_op;
+assign debug_alu_operation = op_dec_alu_op;
 wire[7:0] mux_control_signal;
 assign debug_write_back_mux_control_signal = mux_control_signal;
 
@@ -240,12 +247,211 @@ assign debug_pc_address_to_mem = pc_mem_address_out;
 
 
 
+//always @(posedge clk) begin
+//    if(cpu_write_enable) begin
+//        $display(
+//            "WRITEBACK | time=%0t | instruction=0x%08h | rd=x%0d |  cpu_write_enable=%b | Write_back_mux_conrol_signal=%0d | ALU_ressult=0x%08h | MEM_fetched_data=0x%08h | Write_back_mux_output=0x%08h",
+//            
+//            $time,
+//            instruction_register,
+//            ccu_rd,
+//            cpu_write_enable,
+//            mux_control_signal,
+//            alu_result,
+//            fetched_data,
+//            mux_output
+//        );
+//    end
+//end
+
 
 
 // new wires
 
 //wire[31:0] mem_address_bus_mux_out_to_pc;
 //wire[31:0] mem_address_bus_mux_out_to_address_bus;  
+
+
+
+
+
+
+
+
+
+
+
+
+
+                           //       finite state machine
+
+
+// for detecting instruction address changes ,we will use current_pc_address_to_op_dec_wire and current_pc_address_to_op_dec_stage_1 ad our change detector
+reg[31:0] state , next_state;
+reg[31:0] cycles_counter , cycles_counter_next;
+reg[31:0] execute_cycles_counter , execute_cycles_counter_next;
+localparam[31:0] FETCHING = 32'd0 , 
+                 DECODE_EXECUTE = 32'd1;
+    
+
+
+
+
+
+always @(posedge clk or negedge rst)begin
+
+if(!rst)begin
+  state <= FETCHING;
+  cycles_counter <= 32'b0;
+   execute_cycles_counter <= 32'b0;
+
+end  else begin  
+   state <= next_state;
+   cycles_counter <= cycles_counter_next;
+   if(state == DECODE_EXECUTE)begin
+
+   execute_cycles_counter <= execute_cycles_counter_next;
+
+end else begin
+   execute_cycles_counter <= 32'b0;
+ end
+
+end
+
+
+end
+
+
+
+
+always @(*) begin
+next_state = FETCHING;
+cycles_counter_next = 32'b0;
+execute_cycles_counter_next = execute_cycles_counter;
+
+case(state)
+
+//IDLE:begin  
+// if(current_pc_address_to_op_dec_wire != current_pc_address_to_op_dec_stage_1)begin  
+//  next_state = FETCHING;
+
+//end else begin 
+//   next_state = IDLE;
+// end
+
+
+//end
+
+
+
+FETCHING: begin
+// if(current_pc_address_to_op_dec_wire != current_pc_address_to_op_dec_stage_1)begin  
+
+   if(cycles_counter < 32'd1) begin 
+     cycles_counter_next = cycles_counter + 1'b1;
+     next_state = FETCHING;
+ end else begin 
+     cycles_counter_next = 32'b0;
+      next_state = DECODE_EXECUTE;
+end
+
+//end else begin
+   
+// end
+end
+
+
+
+DECODE_EXECUTE: begin  
+  if(execute_cycles_counter < 3)begin 
+    execute_cycles_counter_next = execute_cycles_counter + 1'b1;
+    next_state = DECODE_EXECUTE;
+end else begin 
+next_state = FETCHING;
+    execute_cycles_counter_next = 32'b0;
+
+
+ end
+
+end
+
+
+
+endcase
+
+
+
+
+
+
+
+
+
+end
+
+
+
+
+
+
+
+
+assign debug_cpu_state = state;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -267,6 +473,8 @@ assign debug_pc_address_to_mem = pc_mem_address_out;
 PROGRAM_COUNTER pc(
 .clk(clk),
 .rst(rst),
+.cpu_fsm_state(state),
+.execute_cycles_counter(execute_cycles_counter),
 .next_address(next_instruction_address_from_op_dec), // input--------------------------from op decoder
 //.current_address_to_mem(pc_mem_address_out), // output =========================
 .current_address_to_mem(address_bus), // output =========================
@@ -327,7 +535,8 @@ OP_DECODER op_dec(
     .rs1_value(reg_file_read_data_1),
     .rs2_value(reg_file_read_data_2),
     
-    
+    .cpu_fsm_state(state),
+    .execute_cycles_counter(execute_cycles_counter),
     .next_address(next_instruction_address_from_op_dec),  // address of the next instruction( goes to the program counter)
     .alu_operation(op_dec_alu_op),
 
@@ -341,7 +550,8 @@ OP_DECODER op_dec(
 
     .mux_control_signal(mux_control_signal), // for write back mux
     .data_to_mem(cpu_to_mem_data_bus),
-    .cpu_address_bus_mux_signal(control_signal)
+    .cpu_address_bus_mux_signal(control_signal),
+    .shifted_immediate(debug_shifted_immediate)
 );
 
 
@@ -355,7 +565,7 @@ ALU alu(
     .rs2(reg_file_read_data_2),
     .immediate(ccu_immediate_value),
     .operation(op_dec_alu_op),
-
+    .cpu_fsm_state(state),
     .result(alu_result),
 //    .mem_address(alu_mem_address_out),   //===========================================
      .mem_address(data_address_bus),
@@ -433,11 +643,16 @@ CPU_REGS  reg_file(
     .reg_a5(debug_reg_a5),
     .reg_a6(debug_reg_a6),
     .reg_a7(debug_reg_a7),
-    .reg_sp(debug_reg_sp)
-
+    .reg_sp(debug_reg_sp),
+    .reg_s0(debug_reg_s0),
+    .reg_ra(debug_reg_ra)
 
 ); 
 
 
-    
+
+
+
 endmodule
+
+//$display

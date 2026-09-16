@@ -21,8 +21,9 @@ module CPU_REGS (
     output wire[31:0] reg_a5,
     output wire[31:0] reg_a6,
     output wire[31:0] reg_a7,
-    output wire[31:0] reg_sp
-
+    output wire[31:0] reg_sp,
+    output wire[31:0] reg_s0,
+    output wire[31:0] reg_ra
 ); 
 integer i;
 
@@ -38,7 +39,8 @@ reg[31:0] CPU_REGISTERS [0:31];
   assign reg_a6=  CPU_REGISTERS[16];
   assign reg_a7 = CPU_REGISTERS[17];
   assign reg_sp = CPU_REGISTERS[2];
-
+  assign reg_s0 = CPU_REGISTERS[8];
+  assign reg_ra = CPU_REGISTERS[1];
 // reads are asynchronous wile rites are synchronous
     assign read_data1 = (rs1 == 5'd0)?32'b0 : CPU_REGISTERS[rs1];
     assign read_data2 = (rs2 == 5'd0)?32'd0 : CPU_REGISTERS[rs2];
@@ -51,6 +53,14 @@ end
   end   else begin 
      if(write_enabled && destination_reg != 0)begin
             CPU_REGISTERS[destination_reg] <= write_data;
+
+     $display(
+                "REG_WRITE | time=%0t | rd=x%0d | data=0x%08h | WE=%b",
+                $time,
+                destination_reg,
+                write_data,
+                write_enabled
+            );
         end
  end
         

@@ -357,3 +357,76 @@ here is the assembly for initialize system
 
 
     .type   main, @functionthe respective machine code
+
+
+
+
+in the firmware , the init nrf sequence is we write the following values to the spi buffer one after the other
+
+
+
+200f , 2101  , 2201 , 2301 , 2400 , 254c , 2606 , 2770 , 2AAAAAAA , 3120 , E2  
+
+
+
+
+
+however  in the waveform , the values written are
+
+
+
+200f , 8404  , 8804 , 8c04 , 2400 , 254c , 2606 , 2770 , 2AAAAAAA , 3120 , E200  
+
+
+1030 - 1042
+1067 - 1070
+
+
+
+always @(debug__address_bus) begin
+
+    if ((debug__address_bus >= 32'h000002C0) &&
+        (debug__address_bus <= 32'h000003F7)) begin
+
+
+
+//((debug_address_bus >= 32'h000002C0) &&
+//        (debug_address_bus <= 32'h000002D8)) begin
+
+        $display(
+            "NRF_INIT | time=%0t ns | ADRESS_BUS_FROM_PC=0x%08h | ORIGINAL_ADDRESS=0x%08h | INSTRUCTION=0x%08h | a0=0x%08h a1=0x%08h a2=0x%08h a3=0x%08h a4=0x%08h a5=0x%08h |rd_vaue =0x%08h | rs1_value = 0x%08h | op_dec_next_address = 0x%08h | immediate_value = 0x%08h | alu_operation = 0x%08h",
+            $time,
+            debug__address_bus,
+            debug__address_bus * 4,
+            debug_instruction_register,
+            debug_reg_a0,
+            debug_reg_a1,
+            debug_reg_a2,
+            debug_reg_a3,
+            debug_reg_a4,
+            debug_reg_a5,
+            debug_ccu_rd,
+            debug_reg_file_read_data_1,
+            debug_op_dec_next_address,
+            debug_ccu_imm,
+            debug_alu_operation
+
+            
+        );
+
+    end
+
+end
+
+
+
+debug_cpu_write_enable
+debug_ccu_rd
+debug_write_back_mux_output
+debug_alu_result
+debug_reg_a5
+
+
+
+
+no , an instruction address lasts on the bus for 3 cycles , it takes 2 cycles for instruction to reach ccu , and  one cycle to execute . so in total , the fetch takes 2 cycles and execution takes 1 cycle , a total of 3 cycles. i want you to always have that in mind

@@ -57,9 +57,37 @@ output wire[15:0] mem_data_demux_control_signal,
 output wire[31:0] debug_enable_irom,
 output wire[31:0] debug_enable_ram,
 output wire[31:0] debug_offset,
-output wire[31:0] gebug_data_offset
+output wire[31:0] gebug_data_offset,
 //output wire[31:0] debug_mux_sig
 
+
+output wire[31:0] debug_dc_control_reg,
+output wire[31:0] debug_dc_status_reg,
+
+
+output wire[31:0] debug_stepper_control_reg,
+output wire[31:0] debug_stepper_status_reg,
+
+
+ output wire[31:0] debug_servo_control_reg,
+ output wire[31:0] debug_servo_status_reg,
+
+
+  output wire[31:0] debug_system_mode_reg,
+  output wire[31:0] debug_system_reset_reg,
+
+// SPI debug signals
+output wire[31:0] debug_enable_spi,
+output wire[31:0] debug_spi_control_reg,
+output wire[31:0] debug_spi_status_reg,
+output wire[31:0] debug_spi_buffer0,
+output wire[31:0] debug_spi_buffer1,
+output wire[31:0] debug_spi_state,
+output wire[31:0] debug_bytes_to_send,
+output wire[31:0] debug_bits_to_send,
+output wire[31:0] debug_bits_sent
+//output wire[31:0] debug_enable_spi,
+//output wire[31:0] debug_enable_spi,
 );
 
 
@@ -74,6 +102,7 @@ assign debug_enable_ram = enable_ram;
   wire enable_servo_motor;
   wire enable_nrf;
   wire enable_spi;
+assign debug_enable_spi = enable_spi;
   wire enable_sys_regs;
   wire[31:0] offset;
   wire[31:0] data_offset;
@@ -208,7 +237,9 @@ DC_DRIVER_MOTOR dc(
     .signal_A(sig_a),
     .signal_B(sig_b),
     .signal_C(sig_c),
-    .signal_D(sig_d)
+    .signal_D(sig_d),
+    .debug_dc_control_reg(debug_dc_control_reg),
+    .debug_dc_status_reg(debug_dc_status_reg)
 );
 
 
@@ -233,7 +264,9 @@ EXCAVATOR_ARM_BASE_STEPPER_MOTOR ex_base_motor(
 
     .write_en(write_en),
     .step(stepper_step_signal),
-    .direction(stepper_direction_signal)
+    .direction(stepper_direction_signal),
+    .debug_stepper_control_reg(debug_stepper_control_reg),
+    .debug_stepper_status_reg(debug_stepper_status_reg)
 );
 
 
@@ -252,7 +285,9 @@ STEERING_STEPPER_MOTOR servo(
     .data_to_cpu(data_from_servo),
     .write_en(write_en),
 
-    .pulse(servo_pulse)
+    .pulse(servo_pulse),
+    .debug_servo_control_reg(debug_servo_control_reg),
+    .debug_servo_status_reg(debug_servo_status_reg)
 );
 
 
@@ -299,8 +334,17 @@ SPI spi(
 
     .data_from_cpu(data_from_cpu),
 //    .write_en(write_en),
-    .data_to_cpu(data_from_spi)
+    .data_to_cpu(data_from_spi),
 //    .offset(offset)
+    .debug_control_reg(debug_spi_control_reg),
+    .debug_status_reg(debug_spi_status_reg),
+    .debug_buffer_reg0(debug_spi_buffer0),
+    .debug_buffer_reg1(debug_spi_buffer1),
+    .debug_spi_state(debug_spi_state),
+    .debug_bytes_to_send(debug_bytes_to_send),
+    .debug_bits_to_send(debug_bits_to_send),
+    .debug_bits_sent(debug_bits_sent)
+
 );
 
 
@@ -315,9 +359,9 @@ SYSTEM_REGS sys_regs(
     .data_to_cpu(data_from_syst_regs),
     .enable(enable_sys_regs),
     .write_en(write_en),
-    .offset(data_offset)
-
-    
+    .offset(data_offset),
+    .debug_system_mode_reg(debug_system_mode_reg),
+    .debug_system_reset_reg(debug_system_reset_reg)
 
 );
 

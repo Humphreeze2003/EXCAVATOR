@@ -7,7 +7,11 @@ module SYSTEM_REGS(
     output wire[31:0] data_to_cpu,
     input enable,
     input write_en,
-    input wire[31:0] offset
+    input wire[31:0] offset,
+
+
+    output wire[31:0] debug_system_mode_reg,
+    output wire[31:0] debug_system_reset_reg
 
     // output wire[31:0] data_out
 );
@@ -15,6 +19,11 @@ module SYSTEM_REGS(
 
 reg[31:0] system_mode_reg;
 reg[31:0] system_reset_reg;
+
+
+assign debug_system_mode_reg = system_mode_reg;
+assign debug_system_reset_reg = system_reset_reg;
+
 
 
 assign data_to_cpu = (enable && !write_en && offset == 0)?system_mode_reg:(enable && !write_en && offset == 4)?system_reset_reg:32'b0;

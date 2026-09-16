@@ -8,22 +8,29 @@ module EXCAVATOR_ARM_BASE_STEPPER_MOTOR(
 //    input wire[31:0] system_mode_reg_bits,
     input wire[31:0] offset,
     input wire[31:0] data_from_cpu,
-    output wire[31:0] data_to_cpu,
+    output reg[31:0] data_to_cpu,
 
     input write_en,
 
     output wire step,
-    output wire direction
+    output wire direction,
+    output wire[31:0] debug_stepper_control_reg,
+    output wire[31:0] debug_stepper_status_reg
+
 );
 
 
-reg[31:0] data_out , data_out_next;
-assign data_to_cpu = data_out;
+// reg[31:0] data_out , data_out_next;
+//assign data_to_cpu = data_out;
 
 reg[31:0] syst_mod_bts_buffer;
 
 reg[31:0] control_reg , control_reg_next;
 reg[31:0] status_reg , status_reg_next;
+
+assign debug_stepper_control_reg = control_reg;
+assign debug_stepper_status_reg = status_reg;
+
 
 wire standby = control_reg[10]; // when no key is pressed
 
@@ -43,7 +50,7 @@ assign step = step_tick;
 
 always @(posedge clk or negedge rst) begin
      if(!rst)begin
-                data_out <= 32'b0;
+                // data_out <= 32'b0;
 
         control_reg[0] <= 1'b1;
         control_reg[9:1] <= 9'd256;
@@ -52,7 +59,7 @@ always @(posedge clk or negedge rst) begin
         period_counter <= 32'b0;
      end else begin
 
-                data_out <= data_out_next;
+                // data_out <= data_out_next;
 
          control_reg <= control_reg_next;
          status_reg <= status_reg_next;
@@ -80,25 +87,31 @@ end
 
 
 always @(*) begin
-      data_out_next = data_out;
-
+    //   data_out_next = data_out;
+     data_to_cpu = 32'b0;
     control_reg_next = control_reg;
     status_reg_next = status_reg;
     period_counter_next = 1'b0;
 
     if(enable)begin
+
+    if(!write_en)begin
+
+        case (offset)
+            0:begin
+                data_to_cpu = control_reg;
+            end
+            4:begin
+                data_to_cpu = status_reg;
+            end
+            default: data_to_cpu = 32'b0; 
+        endcase
+        end
         if(!standby)begin
         period_counter_next = period_counter + 1'b1;
         end
    
-        if(!write_en)begin
-   case (offset)
-    0: data_out_next = control_reg;
-    4: data_out_next = status_reg;
-    default:  data_out_next = 32'b0;
-
-   endcase
-end
+        
     end
 end
 

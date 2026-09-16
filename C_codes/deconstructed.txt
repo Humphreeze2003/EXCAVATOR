@@ -1,0 +1,917 @@
+
+firmware.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000400 <modify_register>:
+     400:	fd010113          	addi	sp,sp,-48
+     404:	02112623          	sw	ra,44(sp)
+     408:	02812423          	sw	s0,40(sp)
+     40c:	03010413          	addi	s0,sp,48
+     410:	fca42e23          	sw	a0,-36(s0)
+     414:	fcb42c23          	sw	a1,-40(s0)
+     418:	fcc42a23          	sw	a2,-44(s0)
+     41c:	fcd42823          	sw	a3,-48(s0)
+     420:	fdc42783          	lw	a5,-36(s0)
+     424:	0007a783          	lw	a5,0(a5)
+     428:	fef42623          	sw	a5,-20(s0)
+     42c:	fd842783          	lw	a5,-40(s0)
+     430:	fff7c793          	not	a5,a5
+     434:	fec42703          	lw	a4,-20(s0)
+     438:	00f777b3          	and	a5,a4,a5
+     43c:	fef42423          	sw	a5,-24(s0)
+     440:	fd442783          	lw	a5,-44(s0)
+     444:	fd042703          	lw	a4,-48(s0)
+     448:	00f717b3          	sll	a5,a4,a5
+     44c:	fe842703          	lw	a4,-24(s0)
+     450:	00f767b3          	or	a5,a4,a5
+     454:	fef42223          	sw	a5,-28(s0)
+     458:	fdc42783          	lw	a5,-36(s0)
+     45c:	fe442703          	lw	a4,-28(s0)
+     460:	00e7a023          	sw	a4,0(a5)
+     464:	00000013          	nop
+     468:	02c12083          	lw	ra,44(sp)
+     46c:	02812403          	lw	s0,40(sp)
+     470:	03010113          	addi	sp,sp,48
+     474:	00008067          	ret
+
+00000478 <read_register_field>:
+     478:	fd010113          	addi	sp,sp,-48
+     47c:	02112623          	sw	ra,44(sp)
+     480:	02812423          	sw	s0,40(sp)
+     484:	03010413          	addi	s0,sp,48
+     488:	fca42e23          	sw	a0,-36(s0)
+     48c:	fcb42c23          	sw	a1,-40(s0)
+     490:	fcc42a23          	sw	a2,-44(s0)
+     494:	fdc42783          	lw	a5,-36(s0)
+     498:	0007a783          	lw	a5,0(a5)
+     49c:	fef42623          	sw	a5,-20(s0)
+     4a0:	fec42703          	lw	a4,-20(s0)
+     4a4:	fd842783          	lw	a5,-40(s0)
+     4a8:	00f77733          	and	a4,a4,a5
+     4ac:	fd442783          	lw	a5,-44(s0)
+     4b0:	00f757b3          	srl	a5,a4,a5
+     4b4:	fef42423          	sw	a5,-24(s0)
+     4b8:	fe842783          	lw	a5,-24(s0)
+     4bc:	00078513          	mv	a0,a5
+     4c0:	02c12083          	lw	ra,44(sp)
+     4c4:	02812403          	lw	s0,40(sp)
+     4c8:	03010113          	addi	sp,sp,48
+     4cc:	00008067          	ret
+
+000004d0 <parse_command>:
+     4d0:	fe010113          	addi	sp,sp,-32
+     4d4:	00112e23          	sw	ra,28(sp)
+     4d8:	00812c23          	sw	s0,24(sp)
+     4dc:	02010413          	addi	s0,sp,32
+     4e0:	00000613          	li	a2,0
+     4e4:	0ff00593          	li	a1,255
+     4e8:	000017b7          	lui	a5,0x1
+     4ec:	c6b78513          	addi	a0,a5,-917 # c6b <initialize_nrf_module+0x16b>
+     4f0:	f89ff0ef          	jal	478 <read_register_field>
+     4f4:	fea42623          	sw	a0,-20(s0)
+     4f8:	00800613          	li	a2,8
+     4fc:	000107b7          	lui	a5,0x10
+     500:	f0078593          	addi	a1,a5,-256 # ff00 <main+0xed58>
+     504:	000017b7          	lui	a5,0x1
+     508:	c6b78513          	addi	a0,a5,-917 # c6b <initialize_nrf_module+0x16b>
+     50c:	f6dff0ef          	jal	478 <read_register_field>
+     510:	fea42423          	sw	a0,-24(s0)
+     514:	01000613          	li	a2,16
+     518:	00ff05b7          	lui	a1,0xff0
+     51c:	000017b7          	lui	a5,0x1
+     520:	c6b78513          	addi	a0,a5,-917 # c6b <initialize_nrf_module+0x16b>
+     524:	f55ff0ef          	jal	478 <read_register_field>
+     528:	fea42223          	sw	a0,-28(s0)
+     52c:	000017b7          	lui	a5,0x1
+     530:	c9f78793          	addi	a5,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     534:	0007a783          	lw	a5,0(a5)
+     538:	00400713          	li	a4,4
+     53c:	4ae78663          	beq	a5,a4,9e8 <parse_command+0x518>
+     540:	00400713          	li	a4,4
+     544:	5af76263          	bltu	a4,a5,ae8 <parse_command+0x618>
+     548:	00200713          	li	a4,2
+     54c:	2ee78463          	beq	a5,a4,834 <parse_command+0x364>
+     550:	00200713          	li	a4,2
+     554:	58f76a63          	bltu	a4,a5,ae8 <parse_command+0x618>
+     558:	00078863          	beqz	a5,568 <parse_command+0x98>
+     55c:	00100713          	li	a4,1
+     560:	0ae78463          	beq	a5,a4,608 <parse_command+0x138>
+     564:	5840006f          	j	ae8 <parse_command+0x618>
+     568:	fec42703          	lw	a4,-20(s0)
+     56c:	00400793          	li	a5,4
+     570:	08f71863          	bne	a4,a5,600 <parse_command+0x130>
+     574:	fe842703          	lw	a4,-24(s0)
+     578:	00200793          	li	a5,2
+     57c:	06f70063          	beq	a4,a5,5dc <parse_command+0x10c>
+     580:	fe842703          	lw	a4,-24(s0)
+     584:	00200793          	li	a5,2
+     588:	06e7e863          	bltu	a5,a4,5f8 <parse_command+0x128>
+     58c:	fe842783          	lw	a5,-24(s0)
+     590:	00078a63          	beqz	a5,5a4 <parse_command+0xd4>
+     594:	fe842703          	lw	a4,-24(s0)
+     598:	00100793          	li	a5,1
+     59c:	02f70263          	beq	a4,a5,5c0 <parse_command+0xf0>
+     5a0:	0580006f          	j	5f8 <parse_command+0x128>
+     5a4:	00100693          	li	a3,1
+     5a8:	00000613          	li	a2,0
+     5ac:	fff00593          	li	a1,-1
+     5b0:	000017b7          	lui	a5,0x1
+     5b4:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     5b8:	e49ff0ef          	jal	400 <modify_register>
+     5bc:	0400006f          	j	5fc <parse_command+0x12c>
+     5c0:	00200693          	li	a3,2
+     5c4:	00000613          	li	a2,0
+     5c8:	fff00593          	li	a1,-1
+     5cc:	000017b7          	lui	a5,0x1
+     5d0:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     5d4:	e2dff0ef          	jal	400 <modify_register>
+     5d8:	0240006f          	j	5fc <parse_command+0x12c>
+     5dc:	00400693          	li	a3,4
+     5e0:	00000613          	li	a2,0
+     5e4:	fff00593          	li	a1,-1
+     5e8:	000017b7          	lui	a5,0x1
+     5ec:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     5f0:	e11ff0ef          	jal	400 <modify_register>
+     5f4:	0080006f          	j	5fc <parse_command+0x12c>
+     5f8:	00000013          	nop
+     5fc:	0080006f          	j	604 <parse_command+0x134>
+     600:	00000013          	nop
+     604:	4e80006f          	j	aec <parse_command+0x61c>
+     608:	fec42703          	lw	a4,-20(s0)
+     60c:	00500793          	li	a5,5
+     610:	20f70063          	beq	a4,a5,810 <parse_command+0x340>
+     614:	fec42703          	lw	a4,-20(s0)
+     618:	00500793          	li	a5,5
+     61c:	20e7e863          	bltu	a5,a4,82c <parse_command+0x35c>
+     620:	fec42703          	lw	a4,-20(s0)
+     624:	00400793          	li	a5,4
+     628:	10f70a63          	beq	a4,a5,73c <parse_command+0x26c>
+     62c:	fec42703          	lw	a4,-20(s0)
+     630:	00400793          	li	a5,4
+     634:	1ee7ec63          	bltu	a5,a4,82c <parse_command+0x35c>
+     638:	fec42703          	lw	a4,-20(s0)
+     63c:	00100793          	li	a5,1
+     640:	00f70a63          	beq	a4,a5,654 <parse_command+0x184>
+     644:	fec42703          	lw	a4,-20(s0)
+     648:	00200793          	li	a5,2
+     64c:	08f70863          	beq	a4,a5,6dc <parse_command+0x20c>
+     650:	1dc0006f          	j	82c <parse_command+0x35c>
+     654:	fe842703          	lw	a4,-24(s0)
+     658:	00100793          	li	a5,1
+     65c:	00f70a63          	beq	a4,a5,670 <parse_command+0x1a0>
+     660:	fe842703          	lw	a4,-24(s0)
+     664:	00200793          	li	a5,2
+     668:	02f70e63          	beq	a4,a5,6a4 <parse_command+0x1d4>
+     66c:	06c0006f          	j	6d8 <parse_command+0x208>
+     670:	00000693          	li	a3,0
+     674:	00a00613          	li	a2,10
+     678:	40000593          	li	a1,1024
+     67c:	000017b7          	lui	a5,0x1
+     680:	bff78513          	addi	a0,a5,-1025 # bff <initialize_nrf_module+0xff>
+     684:	d7dff0ef          	jal	400 <modify_register>
+     688:	00100693          	li	a3,1
+     68c:	00000613          	li	a2,0
+     690:	00100593          	li	a1,1
+     694:	000017b7          	lui	a5,0x1
+     698:	bff78513          	addi	a0,a5,-1025 # bff <initialize_nrf_module+0xff>
+     69c:	d65ff0ef          	jal	400 <modify_register>
+     6a0:	0380006f          	j	6d8 <parse_command+0x208>
+     6a4:	00000693          	li	a3,0
+     6a8:	00a00613          	li	a2,10
+     6ac:	40000593          	li	a1,1024
+     6b0:	000017b7          	lui	a5,0x1
+     6b4:	bff78513          	addi	a0,a5,-1025 # bff <initialize_nrf_module+0xff>
+     6b8:	d49ff0ef          	jal	400 <modify_register>
+     6bc:	00000693          	li	a3,0
+     6c0:	00000613          	li	a2,0
+     6c4:	00100593          	li	a1,1
+     6c8:	000017b7          	lui	a5,0x1
+     6cc:	bff78513          	addi	a0,a5,-1025 # bff <initialize_nrf_module+0xff>
+     6d0:	d31ff0ef          	jal	400 <modify_register>
+     6d4:	00000013          	nop
+     6d8:	1580006f          	j	830 <parse_command+0x360>
+     6dc:	fe842703          	lw	a4,-24(s0)
+     6e0:	00500793          	li	a5,5
+     6e4:	00f70a63          	beq	a4,a5,6f8 <parse_command+0x228>
+     6e8:	fe842703          	lw	a4,-24(s0)
+     6ec:	00600793          	li	a5,6
+     6f0:	02f70463          	beq	a4,a5,718 <parse_command+0x248>
+     6f4:	0440006f          	j	738 <parse_command+0x268>
+     6f8:	6d600693          	li	a3,1750
+     6fc:	00000613          	li	a2,0
+     700:	000107b7          	lui	a5,0x10
+     704:	fff78593          	addi	a1,a5,-1 # ffff <main+0xee57>
+     708:	000017b7          	lui	a5,0x1
+     70c:	c3f78513          	addi	a0,a5,-961 # c3f <initialize_nrf_module+0x13f>
+     710:	cf1ff0ef          	jal	400 <modify_register>
+     714:	0240006f          	j	738 <parse_command+0x268>
+     718:	4e200693          	li	a3,1250
+     71c:	00000613          	li	a2,0
+     720:	000107b7          	lui	a5,0x10
+     724:	fff78593          	addi	a1,a5,-1 # ffff <main+0xee57>
+     728:	000017b7          	lui	a5,0x1
+     72c:	c3f78513          	addi	a0,a5,-961 # c3f <initialize_nrf_module+0x13f>
+     730:	cd1ff0ef          	jal	400 <modify_register>
+     734:	00000013          	nop
+     738:	0f80006f          	j	830 <parse_command+0x360>
+     73c:	fe842703          	lw	a4,-24(s0)
+     740:	00200793          	li	a5,2
+     744:	08f70863          	beq	a4,a5,7d4 <parse_command+0x304>
+     748:	fe842703          	lw	a4,-24(s0)
+     74c:	00200793          	li	a5,2
+     750:	0ae7ec63          	bltu	a5,a4,808 <parse_command+0x338>
+     754:	fe842783          	lw	a5,-24(s0)
+     758:	00078a63          	beqz	a5,76c <parse_command+0x29c>
+     75c:	fe842703          	lw	a4,-24(s0)
+     760:	00100793          	li	a5,1
+     764:	02f70e63          	beq	a4,a5,7a0 <parse_command+0x2d0>
+     768:	0a00006f          	j	808 <parse_command+0x338>
+     76c:	00000693          	li	a3,0
+     770:	00a00613          	li	a2,10
+     774:	40000593          	li	a1,1024
+     778:	000017b7          	lui	a5,0x1
+     77c:	bff78513          	addi	a0,a5,-1025 # bff <initialize_nrf_module+0xff>
+     780:	c81ff0ef          	jal	400 <modify_register>
+     784:	00100693          	li	a3,1
+     788:	00000613          	li	a2,0
+     78c:	fff00593          	li	a1,-1
+     790:	000017b7          	lui	a5,0x1
+     794:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     798:	c69ff0ef          	jal	400 <modify_register>
+     79c:	0700006f          	j	80c <parse_command+0x33c>
+     7a0:	00000693          	li	a3,0
+     7a4:	00a00613          	li	a2,10
+     7a8:	40000593          	li	a1,1024
+     7ac:	000017b7          	lui	a5,0x1
+     7b0:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+     7b4:	c4dff0ef          	jal	400 <modify_register>
+     7b8:	00200693          	li	a3,2
+     7bc:	00000613          	li	a2,0
+     7c0:	fff00593          	li	a1,-1
+     7c4:	000017b7          	lui	a5,0x1
+     7c8:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     7cc:	c35ff0ef          	jal	400 <modify_register>
+     7d0:	03c0006f          	j	80c <parse_command+0x33c>
+     7d4:	00000693          	li	a3,0
+     7d8:	00a00613          	li	a2,10
+     7dc:	40000593          	li	a1,1024
+     7e0:	000017b7          	lui	a5,0x1
+     7e4:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+     7e8:	c19ff0ef          	jal	400 <modify_register>
+     7ec:	00400693          	li	a3,4
+     7f0:	00000613          	li	a2,0
+     7f4:	fff00593          	li	a1,-1
+     7f8:	000017b7          	lui	a5,0x1
+     7fc:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     800:	c01ff0ef          	jal	400 <modify_register>
+     804:	0080006f          	j	80c <parse_command+0x33c>
+     808:	00000013          	nop
+     80c:	0240006f          	j	830 <parse_command+0x360>
+     810:	00100693          	li	a3,1
+     814:	00a00613          	li	a2,10
+     818:	40000593          	li	a1,1024
+     81c:	000017b7          	lui	a5,0x1
+     820:	bff78513          	addi	a0,a5,-1025 # bff <initialize_nrf_module+0xff>
+     824:	bddff0ef          	jal	400 <modify_register>
+     828:	0080006f          	j	830 <parse_command+0x360>
+     82c:	00000013          	nop
+     830:	2bc0006f          	j	aec <parse_command+0x61c>
+     834:	fec42703          	lw	a4,-20(s0)
+     838:	00500793          	li	a5,5
+     83c:	18f70463          	beq	a4,a5,9c4 <parse_command+0x4f4>
+     840:	fec42703          	lw	a4,-20(s0)
+     844:	00500793          	li	a5,5
+     848:	18e7ec63          	bltu	a5,a4,9e0 <parse_command+0x510>
+     84c:	fec42703          	lw	a4,-20(s0)
+     850:	00100793          	li	a5,1
+     854:	00f70a63          	beq	a4,a5,868 <parse_command+0x398>
+     858:	fec42703          	lw	a4,-20(s0)
+     85c:	00400793          	li	a5,4
+     860:	08f70863          	beq	a4,a5,8f0 <parse_command+0x420>
+     864:	17c0006f          	j	9e0 <parse_command+0x510>
+     868:	fe842703          	lw	a4,-24(s0)
+     86c:	00300793          	li	a5,3
+     870:	00f70a63          	beq	a4,a5,884 <parse_command+0x3b4>
+     874:	fe842703          	lw	a4,-24(s0)
+     878:	00400793          	li	a5,4
+     87c:	02f70e63          	beq	a4,a5,8b8 <parse_command+0x3e8>
+     880:	06c0006f          	j	8ec <parse_command+0x41c>
+     884:	00000693          	li	a3,0
+     888:	00a00613          	li	a2,10
+     88c:	40000593          	li	a1,1024
+     890:	000017b7          	lui	a5,0x1
+     894:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+     898:	b69ff0ef          	jal	400 <modify_register>
+     89c:	00100693          	li	a3,1
+     8a0:	00000613          	li	a2,0
+     8a4:	00100593          	li	a1,1
+     8a8:	000017b7          	lui	a5,0x1
+     8ac:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+     8b0:	b51ff0ef          	jal	400 <modify_register>
+     8b4:	0380006f          	j	8ec <parse_command+0x41c>
+     8b8:	00000693          	li	a3,0
+     8bc:	00a00613          	li	a2,10
+     8c0:	40000593          	li	a1,1024
+     8c4:	000017b7          	lui	a5,0x1
+     8c8:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+     8cc:	b35ff0ef          	jal	400 <modify_register>
+     8d0:	00000693          	li	a3,0
+     8d4:	00000613          	li	a2,0
+     8d8:	00100593          	li	a1,1
+     8dc:	000017b7          	lui	a5,0x1
+     8e0:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+     8e4:	b1dff0ef          	jal	400 <modify_register>
+     8e8:	00000013          	nop
+     8ec:	0f80006f          	j	9e4 <parse_command+0x514>
+     8f0:	fe842703          	lw	a4,-24(s0)
+     8f4:	00200793          	li	a5,2
+     8f8:	08f70863          	beq	a4,a5,988 <parse_command+0x4b8>
+     8fc:	fe842703          	lw	a4,-24(s0)
+     900:	00200793          	li	a5,2
+     904:	0ae7ec63          	bltu	a5,a4,9bc <parse_command+0x4ec>
+     908:	fe842783          	lw	a5,-24(s0)
+     90c:	00078a63          	beqz	a5,920 <parse_command+0x450>
+     910:	fe842703          	lw	a4,-24(s0)
+     914:	00100793          	li	a5,1
+     918:	02f70e63          	beq	a4,a5,954 <parse_command+0x484>
+     91c:	0a00006f          	j	9bc <parse_command+0x4ec>
+     920:	00000693          	li	a3,0
+     924:	00a00613          	li	a2,10
+     928:	40000593          	li	a1,1024
+     92c:	000017b7          	lui	a5,0x1
+     930:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+     934:	acdff0ef          	jal	400 <modify_register>
+     938:	00100693          	li	a3,1
+     93c:	00000613          	li	a2,0
+     940:	fff00593          	li	a1,-1
+     944:	000017b7          	lui	a5,0x1
+     948:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     94c:	ab5ff0ef          	jal	400 <modify_register>
+     950:	0700006f          	j	9c0 <parse_command+0x4f0>
+     954:	00000693          	li	a3,0
+     958:	00a00613          	li	a2,10
+     95c:	40000593          	li	a1,1024
+     960:	000017b7          	lui	a5,0x1
+     964:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+     968:	a99ff0ef          	jal	400 <modify_register>
+     96c:	00200693          	li	a3,2
+     970:	00000613          	li	a2,0
+     974:	fff00593          	li	a1,-1
+     978:	000017b7          	lui	a5,0x1
+     97c:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     980:	a81ff0ef          	jal	400 <modify_register>
+     984:	03c0006f          	j	9c0 <parse_command+0x4f0>
+     988:	00000693          	li	a3,0
+     98c:	00a00613          	li	a2,10
+     990:	40000593          	li	a1,1024
+     994:	000017b7          	lui	a5,0x1
+     998:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+     99c:	a65ff0ef          	jal	400 <modify_register>
+     9a0:	00400693          	li	a3,4
+     9a4:	00000613          	li	a2,0
+     9a8:	fff00593          	li	a1,-1
+     9ac:	000017b7          	lui	a5,0x1
+     9b0:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     9b4:	a4dff0ef          	jal	400 <modify_register>
+     9b8:	0080006f          	j	9c0 <parse_command+0x4f0>
+     9bc:	00000013          	nop
+     9c0:	0240006f          	j	9e4 <parse_command+0x514>
+     9c4:	00100693          	li	a3,1
+     9c8:	00a00613          	li	a2,10
+     9cc:	40000593          	li	a1,1024
+     9d0:	000017b7          	lui	a5,0x1
+     9d4:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+     9d8:	a29ff0ef          	jal	400 <modify_register>
+     9dc:	0080006f          	j	9e4 <parse_command+0x514>
+     9e0:	00000013          	nop
+     9e4:	1080006f          	j	aec <parse_command+0x61c>
+     9e8:	fec42703          	lw	a4,-20(s0)
+     9ec:	00500793          	li	a5,5
+     9f0:	0ef70463          	beq	a4,a5,ad8 <parse_command+0x608>
+     9f4:	fec42703          	lw	a4,-20(s0)
+     9f8:	00500793          	li	a5,5
+     9fc:	0ee7e263          	bltu	a5,a4,ae0 <parse_command+0x610>
+     a00:	fec42703          	lw	a4,-20(s0)
+     a04:	00300793          	li	a5,3
+     a08:	00f70a63          	beq	a4,a5,a1c <parse_command+0x54c>
+     a0c:	fec42703          	lw	a4,-20(s0)
+     a10:	00400793          	li	a5,4
+     a14:	02f70c63          	beq	a4,a5,a4c <parse_command+0x57c>
+     a18:	0c80006f          	j	ae0 <parse_command+0x610>
+     a1c:	fe442703          	lw	a4,-28(s0)
+     a20:	00600793          	li	a5,6
+     a24:	02e7e063          	bltu	a5,a4,a44 <parse_command+0x574>
+     a28:	fe442783          	lw	a5,-28(s0)
+     a2c:	00279713          	slli	a4,a5,0x2
+     a30:	000027b7          	lui	a5,0x2
+     a34:	3fc78793          	addi	a5,a5,1020 # 23fc <main+0x1254>
+     a38:	00f707b3          	add	a5,a4,a5
+     a3c:	0007a783          	lw	a5,0(a5)
+     a40:	00078067          	jr	a5
+     a44:	00000013          	nop
+     a48:	09c0006f          	j	ae4 <parse_command+0x614>
+     a4c:	fe842703          	lw	a4,-24(s0)
+     a50:	00200793          	li	a5,2
+     a54:	06f70063          	beq	a4,a5,ab4 <parse_command+0x5e4>
+     a58:	fe842703          	lw	a4,-24(s0)
+     a5c:	00200793          	li	a5,2
+     a60:	06e7e863          	bltu	a5,a4,ad0 <parse_command+0x600>
+     a64:	fe842783          	lw	a5,-24(s0)
+     a68:	00078a63          	beqz	a5,a7c <parse_command+0x5ac>
+     a6c:	fe842703          	lw	a4,-24(s0)
+     a70:	00100793          	li	a5,1
+     a74:	02f70263          	beq	a4,a5,a98 <parse_command+0x5c8>
+     a78:	0580006f          	j	ad0 <parse_command+0x600>
+     a7c:	00100693          	li	a3,1
+     a80:	00000613          	li	a2,0
+     a84:	fff00593          	li	a1,-1
+     a88:	000017b7          	lui	a5,0x1
+     a8c:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     a90:	971ff0ef          	jal	400 <modify_register>
+     a94:	0400006f          	j	ad4 <parse_command+0x604>
+     a98:	00200693          	li	a3,2
+     a9c:	00000613          	li	a2,0
+     aa0:	fff00593          	li	a1,-1
+     aa4:	000017b7          	lui	a5,0x1
+     aa8:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     aac:	955ff0ef          	jal	400 <modify_register>
+     ab0:	0240006f          	j	ad4 <parse_command+0x604>
+     ab4:	00400693          	li	a3,4
+     ab8:	00000613          	li	a2,0
+     abc:	fff00593          	li	a1,-1
+     ac0:	000017b7          	lui	a5,0x1
+     ac4:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+     ac8:	939ff0ef          	jal	400 <modify_register>
+     acc:	0080006f          	j	ad4 <parse_command+0x604>
+     ad0:	00000013          	nop
+     ad4:	0100006f          	j	ae4 <parse_command+0x614>
+     ad8:	00000013          	nop
+     adc:	0100006f          	j	aec <parse_command+0x61c>
+     ae0:	00000013          	nop
+     ae4:	0080006f          	j	aec <parse_command+0x61c>
+     ae8:	00000013          	nop
+     aec:	00000013          	nop
+     af0:	01c12083          	lw	ra,28(sp)
+     af4:	01812403          	lw	s0,24(sp)
+     af8:	02010113          	addi	sp,sp,32
+     afc:	00008067          	ret
+
+00000b00 <initialize_nrf_module>:
+     b00:	ff010113          	addi	sp,sp,-16
+     b04:	00112623          	sw	ra,12(sp)
+     b08:	00812423          	sw	s0,8(sp)
+     b0c:	01010413          	addi	s0,sp,16
+     b10:	01b00693          	li	a3,27
+     b14:	00000613          	li	a2,0
+     b18:	000107b7          	lui	a5,0x10
+     b1c:	fff78593          	addi	a1,a5,-1 # ffff <main+0xee57>
+     b20:	000017b7          	lui	a5,0x1
+     b24:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     b28:	8d9ff0ef          	jal	400 <modify_register>
+     b2c:	00000013          	nop
+     b30:	00000613          	li	a2,0
+     b34:	00100593          	li	a1,1
+     b38:	000017b7          	lui	a5,0x1
+     b3c:	c6378513          	addi	a0,a5,-925 # c63 <initialize_nrf_module+0x163>
+     b40:	939ff0ef          	jal	478 <read_register_field>
+     b44:	00050793          	mv	a5,a0
+     b48:	fe0794e3          	bnez	a5,b30 <initialize_nrf_module+0x30>
+     b4c:	00200693          	li	a3,2
+     b50:	01000613          	li	a2,16
+     b54:	000f05b7          	lui	a1,0xf0
+     b58:	000017b7          	lui	a5,0x1
+     b5c:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     b60:	8a1ff0ef          	jal	400 <modify_register>
+     b64:	000027b7          	lui	a5,0x2
+     b68:	00f78693          	addi	a3,a5,15 # 200f <main+0xe67>
+     b6c:	00000613          	li	a2,0
+     b70:	fff00593          	li	a1,-1
+     b74:	000017b7          	lui	a5,0x1
+     b78:	c6778513          	addi	a0,a5,-921 # c67 <initialize_nrf_module+0x167>
+     b7c:	885ff0ef          	jal	400 <modify_register>
+     b80:	00100693          	li	a3,1
+     b84:	01800613          	li	a2,24
+     b88:	010005b7          	lui	a1,0x1000
+     b8c:	000017b7          	lui	a5,0x1
+     b90:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     b94:	86dff0ef          	jal	400 <modify_register>
+     b98:	00000013          	nop
+     b9c:	00000613          	li	a2,0
+     ba0:	00100593          	li	a1,1
+     ba4:	000017b7          	lui	a5,0x1
+     ba8:	c6378513          	addi	a0,a5,-925 # c63 <initialize_nrf_module+0x163>
+     bac:	8cdff0ef          	jal	478 <read_register_field>
+     bb0:	00050793          	mv	a5,a0
+     bb4:	fe0794e3          	bnez	a5,b9c <initialize_nrf_module+0x9c>
+     bb8:	00200693          	li	a3,2
+     bbc:	01000613          	li	a2,16
+     bc0:	000f05b7          	lui	a1,0xf0
+     bc4:	000017b7          	lui	a5,0x1
+     bc8:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     bcc:	835ff0ef          	jal	400 <modify_register>
+     bd0:	000027b7          	lui	a5,0x2
+     bd4:	10178693          	addi	a3,a5,257 # 2101 <main+0xf59>
+     bd8:	00000613          	li	a2,0
+     bdc:	fff00593          	li	a1,-1
+     be0:	000017b7          	lui	a5,0x1
+     be4:	c6778513          	addi	a0,a5,-921 # c67 <initialize_nrf_module+0x167>
+     be8:	819ff0ef          	jal	400 <modify_register>
+     bec:	00100693          	li	a3,1
+     bf0:	01800613          	li	a2,24
+     bf4:	010005b7          	lui	a1,0x1000
+     bf8:	000017b7          	lui	a5,0x1
+     bfc:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     c00:	801ff0ef          	jal	400 <modify_register>
+     c04:	00000013          	nop
+     c08:	00000613          	li	a2,0
+     c0c:	00100593          	li	a1,1
+     c10:	000017b7          	lui	a5,0x1
+     c14:	c6378513          	addi	a0,a5,-925 # c63 <initialize_nrf_module+0x163>
+     c18:	861ff0ef          	jal	478 <read_register_field>
+     c1c:	00050793          	mv	a5,a0
+     c20:	fe0794e3          	bnez	a5,c08 <initialize_nrf_module+0x108>
+     c24:	00200693          	li	a3,2
+     c28:	01000613          	li	a2,16
+     c2c:	000f05b7          	lui	a1,0xf0
+     c30:	000017b7          	lui	a5,0x1
+     c34:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     c38:	fc8ff0ef          	jal	400 <modify_register>
+     c3c:	000027b7          	lui	a5,0x2
+     c40:	20178693          	addi	a3,a5,513 # 2201 <main+0x1059>
+     c44:	00000613          	li	a2,0
+     c48:	fff00593          	li	a1,-1
+     c4c:	000017b7          	lui	a5,0x1
+     c50:	c6778513          	addi	a0,a5,-921 # c67 <initialize_nrf_module+0x167>
+     c54:	facff0ef          	jal	400 <modify_register>
+     c58:	00100693          	li	a3,1
+     c5c:	01800613          	li	a2,24
+     c60:	010005b7          	lui	a1,0x1000
+     c64:	000017b7          	lui	a5,0x1
+     c68:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     c6c:	f94ff0ef          	jal	400 <modify_register>
+     c70:	00000013          	nop
+     c74:	00000613          	li	a2,0
+     c78:	00100593          	li	a1,1
+     c7c:	000017b7          	lui	a5,0x1
+     c80:	c6378513          	addi	a0,a5,-925 # c63 <initialize_nrf_module+0x163>
+     c84:	ff4ff0ef          	jal	478 <read_register_field>
+     c88:	00050793          	mv	a5,a0
+     c8c:	fe0794e3          	bnez	a5,c74 <initialize_nrf_module+0x174>
+     c90:	00200693          	li	a3,2
+     c94:	01000613          	li	a2,16
+     c98:	000f05b7          	lui	a1,0xf0
+     c9c:	000017b7          	lui	a5,0x1
+     ca0:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     ca4:	f5cff0ef          	jal	400 <modify_register>
+     ca8:	000027b7          	lui	a5,0x2
+     cac:	30178693          	addi	a3,a5,769 # 2301 <main+0x1159>
+     cb0:	00000613          	li	a2,0
+     cb4:	fff00593          	li	a1,-1
+     cb8:	000017b7          	lui	a5,0x1
+     cbc:	c6778513          	addi	a0,a5,-921 # c67 <initialize_nrf_module+0x167>
+     cc0:	f40ff0ef          	jal	400 <modify_register>
+     cc4:	00100693          	li	a3,1
+     cc8:	01800613          	li	a2,24
+     ccc:	010005b7          	lui	a1,0x1000
+     cd0:	000017b7          	lui	a5,0x1
+     cd4:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     cd8:	f28ff0ef          	jal	400 <modify_register>
+     cdc:	00000013          	nop
+     ce0:	00000613          	li	a2,0
+     ce4:	00100593          	li	a1,1
+     ce8:	000017b7          	lui	a5,0x1
+     cec:	c6378513          	addi	a0,a5,-925 # c63 <initialize_nrf_module+0x163>
+     cf0:	f88ff0ef          	jal	478 <read_register_field>
+     cf4:	00050793          	mv	a5,a0
+     cf8:	fe0794e3          	bnez	a5,ce0 <initialize_nrf_module+0x1e0>
+     cfc:	00200693          	li	a3,2
+     d00:	01000613          	li	a2,16
+     d04:	000f05b7          	lui	a1,0xf0
+     d08:	000017b7          	lui	a5,0x1
+     d0c:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     d10:	ef0ff0ef          	jal	400 <modify_register>
+     d14:	000027b7          	lui	a5,0x2
+     d18:	40078693          	addi	a3,a5,1024 # 2400 <main+0x1258>
+     d1c:	00000613          	li	a2,0
+     d20:	fff00593          	li	a1,-1
+     d24:	000017b7          	lui	a5,0x1
+     d28:	c6778513          	addi	a0,a5,-921 # c67 <initialize_nrf_module+0x167>
+     d2c:	ed4ff0ef          	jal	400 <modify_register>
+     d30:	00100693          	li	a3,1
+     d34:	01800613          	li	a2,24
+     d38:	010005b7          	lui	a1,0x1000
+     d3c:	000017b7          	lui	a5,0x1
+     d40:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     d44:	ebcff0ef          	jal	400 <modify_register>
+     d48:	00000013          	nop
+     d4c:	00000613          	li	a2,0
+     d50:	00100593          	li	a1,1
+     d54:	000017b7          	lui	a5,0x1
+     d58:	c6378513          	addi	a0,a5,-925 # c63 <initialize_nrf_module+0x163>
+     d5c:	f1cff0ef          	jal	478 <read_register_field>
+     d60:	00050793          	mv	a5,a0
+     d64:	fe0794e3          	bnez	a5,d4c <initialize_nrf_module+0x24c>
+     d68:	00200693          	li	a3,2
+     d6c:	01000613          	li	a2,16
+     d70:	000f05b7          	lui	a1,0xf0
+     d74:	000017b7          	lui	a5,0x1
+     d78:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     d7c:	e84ff0ef          	jal	400 <modify_register>
+     d80:	000027b7          	lui	a5,0x2
+     d84:	54c78693          	addi	a3,a5,1356 # 254c <main+0x13a4>
+     d88:	00000613          	li	a2,0
+     d8c:	fff00593          	li	a1,-1
+     d90:	000017b7          	lui	a5,0x1
+     d94:	c6778513          	addi	a0,a5,-921 # c67 <initialize_nrf_module+0x167>
+     d98:	e68ff0ef          	jal	400 <modify_register>
+     d9c:	00100693          	li	a3,1
+     da0:	01800613          	li	a2,24
+     da4:	010005b7          	lui	a1,0x1000
+     da8:	000017b7          	lui	a5,0x1
+     dac:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     db0:	e50ff0ef          	jal	400 <modify_register>
+     db4:	00000013          	nop
+     db8:	00000613          	li	a2,0
+     dbc:	00100593          	li	a1,1
+     dc0:	000017b7          	lui	a5,0x1
+     dc4:	c6378513          	addi	a0,a5,-925 # c63 <initialize_nrf_module+0x163>
+     dc8:	eb0ff0ef          	jal	478 <read_register_field>
+     dcc:	00050793          	mv	a5,a0
+     dd0:	fe0794e3          	bnez	a5,db8 <initialize_nrf_module+0x2b8>
+     dd4:	00200693          	li	a3,2
+     dd8:	01000613          	li	a2,16
+     ddc:	000f05b7          	lui	a1,0xf0
+     de0:	000017b7          	lui	a5,0x1
+     de4:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     de8:	e18ff0ef          	jal	400 <modify_register>
+     dec:	000027b7          	lui	a5,0x2
+     df0:	60678693          	addi	a3,a5,1542 # 2606 <main+0x145e>
+     df4:	00000613          	li	a2,0
+     df8:	fff00593          	li	a1,-1
+     dfc:	000017b7          	lui	a5,0x1
+     e00:	c6778513          	addi	a0,a5,-921 # c67 <initialize_nrf_module+0x167>
+     e04:	dfcff0ef          	jal	400 <modify_register>
+     e08:	00100693          	li	a3,1
+     e0c:	01800613          	li	a2,24
+     e10:	010005b7          	lui	a1,0x1000
+     e14:	000017b7          	lui	a5,0x1
+     e18:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     e1c:	de4ff0ef          	jal	400 <modify_register>
+     e20:	00000013          	nop
+     e24:	00000613          	li	a2,0
+     e28:	00100593          	li	a1,1
+     e2c:	000017b7          	lui	a5,0x1
+     e30:	c6378513          	addi	a0,a5,-925 # c63 <initialize_nrf_module+0x163>
+     e34:	e44ff0ef          	jal	478 <read_register_field>
+     e38:	00050793          	mv	a5,a0
+     e3c:	fe0794e3          	bnez	a5,e24 <initialize_nrf_module+0x324>
+     e40:	00200693          	li	a3,2
+     e44:	01000613          	li	a2,16
+     e48:	000f05b7          	lui	a1,0xf0
+     e4c:	000017b7          	lui	a5,0x1
+     e50:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     e54:	dacff0ef          	jal	400 <modify_register>
+     e58:	000027b7          	lui	a5,0x2
+     e5c:	77078693          	addi	a3,a5,1904 # 2770 <main+0x15c8>
+     e60:	00000613          	li	a2,0
+     e64:	fff00593          	li	a1,-1
+     e68:	000017b7          	lui	a5,0x1
+     e6c:	c6778513          	addi	a0,a5,-921 # c67 <initialize_nrf_module+0x167>
+     e70:	d90ff0ef          	jal	400 <modify_register>
+     e74:	00100693          	li	a3,1
+     e78:	01800613          	li	a2,24
+     e7c:	010005b7          	lui	a1,0x1000
+     e80:	000017b7          	lui	a5,0x1
+     e84:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     e88:	d78ff0ef          	jal	400 <modify_register>
+     e8c:	00000013          	nop
+     e90:	00000613          	li	a2,0
+     e94:	00100593          	li	a1,1
+     e98:	000017b7          	lui	a5,0x1
+     e9c:	c6378513          	addi	a0,a5,-925 # c63 <initialize_nrf_module+0x163>
+     ea0:	dd8ff0ef          	jal	478 <read_register_field>
+     ea4:	00050793          	mv	a5,a0
+     ea8:	fe0794e3          	bnez	a5,e90 <initialize_nrf_module+0x390>
+     eac:	00400693          	li	a3,4
+     eb0:	01000613          	li	a2,16
+     eb4:	000f05b7          	lui	a1,0xf0
+     eb8:	000017b7          	lui	a5,0x1
+     ebc:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     ec0:	d40ff0ef          	jal	400 <modify_register>
+     ec4:	2aaab7b7          	lui	a5,0x2aaab
+     ec8:	aaa78693          	addi	a3,a5,-1366 # 2aaaaaaa <main+0x2aaa9902>
+     ecc:	00000613          	li	a2,0
+     ed0:	fff00593          	li	a1,-1
+     ed4:	000017b7          	lui	a5,0x1
+     ed8:	c6778513          	addi	a0,a5,-921 # c67 <initialize_nrf_module+0x167>
+     edc:	d24ff0ef          	jal	400 <modify_register>
+     ee0:	00100693          	li	a3,1
+     ee4:	01800613          	li	a2,24
+     ee8:	010005b7          	lui	a1,0x1000
+     eec:	000017b7          	lui	a5,0x1
+     ef0:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     ef4:	d0cff0ef          	jal	400 <modify_register>
+     ef8:	00000013          	nop
+     efc:	00000613          	li	a2,0
+     f00:	00100593          	li	a1,1
+     f04:	000017b7          	lui	a5,0x1
+     f08:	c6378513          	addi	a0,a5,-925 # c63 <initialize_nrf_module+0x163>
+     f0c:	d6cff0ef          	jal	478 <read_register_field>
+     f10:	00050793          	mv	a5,a0
+     f14:	fe0794e3          	bnez	a5,efc <initialize_nrf_module+0x3fc>
+     f18:	00200693          	li	a3,2
+     f1c:	01000613          	li	a2,16
+     f20:	000f05b7          	lui	a1,0xf0
+     f24:	000017b7          	lui	a5,0x1
+     f28:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     f2c:	cd4ff0ef          	jal	400 <modify_register>
+     f30:	000037b7          	lui	a5,0x3
+     f34:	12078693          	addi	a3,a5,288 # 3120 <main+0x1f78>
+     f38:	00000613          	li	a2,0
+     f3c:	fff00593          	li	a1,-1
+     f40:	000017b7          	lui	a5,0x1
+     f44:	c6778513          	addi	a0,a5,-921 # c67 <initialize_nrf_module+0x167>
+     f48:	cb8ff0ef          	jal	400 <modify_register>
+     f4c:	00100693          	li	a3,1
+     f50:	01800613          	li	a2,24
+     f54:	010005b7          	lui	a1,0x1000
+     f58:	000017b7          	lui	a5,0x1
+     f5c:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     f60:	ca0ff0ef          	jal	400 <modify_register>
+     f64:	00000013          	nop
+     f68:	00000613          	li	a2,0
+     f6c:	00100593          	li	a1,1
+     f70:	000017b7          	lui	a5,0x1
+     f74:	c6378513          	addi	a0,a5,-925 # c63 <initialize_nrf_module+0x163>
+     f78:	d00ff0ef          	jal	478 <read_register_field>
+     f7c:	00050793          	mv	a5,a0
+     f80:	fe0794e3          	bnez	a5,f68 <initialize_nrf_module+0x468>
+     f84:	00100693          	li	a3,1
+     f88:	01000613          	li	a2,16
+     f8c:	000f05b7          	lui	a1,0xf0
+     f90:	000017b7          	lui	a5,0x1
+     f94:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     f98:	c68ff0ef          	jal	400 <modify_register>
+     f9c:	0e200693          	li	a3,226
+     fa0:	00000613          	li	a2,0
+     fa4:	fff00593          	li	a1,-1
+     fa8:	000017b7          	lui	a5,0x1
+     fac:	c6778513          	addi	a0,a5,-921 # c67 <initialize_nrf_module+0x167>
+     fb0:	c50ff0ef          	jal	400 <modify_register>
+     fb4:	00100693          	li	a3,1
+     fb8:	01800613          	li	a2,24
+     fbc:	010005b7          	lui	a1,0x1000
+     fc0:	000017b7          	lui	a5,0x1
+     fc4:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+     fc8:	c38ff0ef          	jal	400 <modify_register>
+     fcc:	00000013          	nop
+     fd0:	00c12083          	lw	ra,12(sp)
+     fd4:	00812403          	lw	s0,8(sp)
+     fd8:	01010113          	addi	sp,sp,16
+     fdc:	00008067          	ret
+
+00000fe0 <receive_data>:
+     fe0:	ff010113          	addi	sp,sp,-16
+     fe4:	00112623          	sw	ra,12(sp)
+     fe8:	00812423          	sw	s0,8(sp)
+     fec:	01010413          	addi	s0,sp,16
+     ff0:	01b00693          	li	a3,27
+     ff4:	00000613          	li	a2,0
+     ff8:	000107b7          	lui	a5,0x10
+     ffc:	fff78593          	addi	a1,a5,-1 # ffff <main+0xee57>
+    1000:	000017b7          	lui	a5,0x1
+    1004:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+    1008:	bf8ff0ef          	jal	400 <modify_register>
+    100c:	00300693          	li	a3,3
+    1010:	01400613          	li	a2,20
+    1014:	00f005b7          	lui	a1,0xf00
+    1018:	000017b7          	lui	a5,0x1
+    101c:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+    1020:	be0ff0ef          	jal	400 <modify_register>
+    1024:	00100693          	li	a3,1
+    1028:	01900613          	li	a2,25
+    102c:	020005b7          	lui	a1,0x2000
+    1030:	000017b7          	lui	a5,0x1
+    1034:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+    1038:	bc8ff0ef          	jal	400 <modify_register>
+    103c:	00000693          	li	a3,0
+    1040:	00000613          	li	a2,0
+    1044:	00100593          	li	a1,1
+    1048:	000017b7          	lui	a5,0x1
+    104c:	c8378513          	addi	a0,a5,-893 # c83 <initialize_nrf_module+0x183>
+    1050:	bb0ff0ef          	jal	400 <modify_register>
+    1054:	00000013          	nop
+    1058:	01900613          	li	a2,25
+    105c:	020005b7          	lui	a1,0x2000
+    1060:	000017b7          	lui	a5,0x1
+    1064:	c5f78513          	addi	a0,a5,-929 # c5f <initialize_nrf_module+0x15f>
+    1068:	c10ff0ef          	jal	478 <read_register_field>
+    106c:	00050793          	mv	a5,a0
+    1070:	fe0794e3          	bnez	a5,1058 <receive_data+0x78>
+    1074:	c5cff0ef          	jal	4d0 <parse_command>
+    1078:	00000013          	nop
+    107c:	00c12083          	lw	ra,12(sp)
+    1080:	00812403          	lw	s0,8(sp)
+    1084:	01010113          	addi	sp,sp,16
+    1088:	00008067          	ret
+
+0000108c <initialize_system>:
+    108c:	ff010113          	addi	sp,sp,-16
+    1090:	00112623          	sw	ra,12(sp)
+    1094:	00812423          	sw	s0,8(sp)
+    1098:	01010413          	addi	s0,sp,16
+    109c:	00000693          	li	a3,0
+    10a0:	00000613          	li	a2,0
+    10a4:	fff00593          	li	a1,-1
+    10a8:	000017b7          	lui	a5,0x1
+    10ac:	c9f78513          	addi	a0,a5,-865 # c9f <initialize_nrf_module+0x19f>
+    10b0:	b50ff0ef          	jal	400 <modify_register>
+    10b4:	00100693          	li	a3,1
+    10b8:	00000613          	li	a2,0
+    10bc:	00100593          	li	a1,1
+    10c0:	000017b7          	lui	a5,0x1
+    10c4:	bff78513          	addi	a0,a5,-1025 # bff <initialize_nrf_module+0xff>
+    10c8:	b38ff0ef          	jal	400 <modify_register>
+    10cc:	1ff00693          	li	a3,511
+    10d0:	00100613          	li	a2,1
+    10d4:	3fe00593          	li	a1,1022
+    10d8:	000017b7          	lui	a5,0x1
+    10dc:	bff78513          	addi	a0,a5,-1025 # bff <initialize_nrf_module+0xff>
+    10e0:	b20ff0ef          	jal	400 <modify_register>
+    10e4:	00000693          	li	a3,0
+    10e8:	00a00613          	li	a2,10
+    10ec:	40000593          	li	a1,1024
+    10f0:	000017b7          	lui	a5,0x1
+    10f4:	bff78513          	addi	a0,a5,-1025 # bff <initialize_nrf_module+0xff>
+    10f8:	b08ff0ef          	jal	400 <modify_register>
+    10fc:	00100693          	li	a3,1
+    1100:	00000613          	li	a2,0
+    1104:	00100593          	li	a1,1
+    1108:	000017b7          	lui	a5,0x1
+    110c:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+    1110:	af0ff0ef          	jal	400 <modify_register>
+    1114:	1ff00693          	li	a3,511
+    1118:	00100613          	li	a2,1
+    111c:	3fe00593          	li	a1,1022
+    1120:	000017b7          	lui	a5,0x1
+    1124:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+    1128:	ad8ff0ef          	jal	400 <modify_register>
+    112c:	00000693          	li	a3,0
+    1130:	00a00613          	li	a2,10
+    1134:	40000593          	li	a1,1024
+    1138:	000017b7          	lui	a5,0x1
+    113c:	c1f78513          	addi	a0,a5,-993 # c1f <initialize_nrf_module+0x11f>
+    1140:	ac0ff0ef          	jal	400 <modify_register>
+    1144:	5dc00693          	li	a3,1500
+    1148:	00000613          	li	a2,0
+    114c:	000107b7          	lui	a5,0x10
+    1150:	fff78593          	addi	a1,a5,-1 # ffff <main+0xee57>
+    1154:	000017b7          	lui	a5,0x1
+    1158:	c3f78513          	addi	a0,a5,-961 # c3f <initialize_nrf_module+0x13f>
+    115c:	aa4ff0ef          	jal	400 <modify_register>
+    1160:	00000693          	li	a3,0
+    1164:	01000613          	li	a2,16
+    1168:	000105b7          	lui	a1,0x10
+    116c:	000017b7          	lui	a5,0x1
+    1170:	c3f78513          	addi	a0,a5,-961 # c3f <initialize_nrf_module+0x13f>
+    1174:	a8cff0ef          	jal	400 <modify_register>
+    1178:	989ff0ef          	jal	b00 <initialize_nrf_module>
+    117c:	00000693          	li	a3,0
+    1180:	00000613          	li	a2,0
+    1184:	fff00593          	li	a1,-1
+    1188:	000017b7          	lui	a5,0x1
+    118c:	ca378513          	addi	a0,a5,-861 # ca3 <initialize_nrf_module+0x1a3>
+    1190:	a70ff0ef          	jal	400 <modify_register>
+    1194:	00000013          	nop
+    1198:	00c12083          	lw	ra,12(sp)
+    119c:	00812403          	lw	s0,8(sp)
+    11a0:	01010113          	addi	sp,sp,16
+    11a4:	00008067          	ret
+
+000011a8 <main>:
+    11a8:	0ff00113          	li	sp,255
+    11ac:	ff010113          	addi	sp,sp,-16
+    11b0:	00112623          	sw	ra,12(sp)
+    11b4:	00812423          	sw	s0,8(sp)
+    11b8:	01010413          	addi	s0,sp,16
+    11bc:	ed1ff0ef          	jal	108c <initialize_system>
+    11c0:	00000613          	li	a2,0
+    11c4:	fff00593          	li	a1,-1
+    11c8:	000017b7          	lui	a5,0x1
+    11cc:	ca378513          	addi	a0,a5,-861 # ca3 <initialize_nrf_module+0x1a3>
+    11d0:	aa8ff0ef          	jal	478 <read_register_field>
+    11d4:	00050793          	mv	a5,a0
+    11d8:	02079463          	bnez	a5,1200 <main+0x58>
+    11dc:	00000613          	li	a2,0
+    11e0:	00100593          	li	a1,1
+    11e4:	000017b7          	lui	a5,0x1
+    11e8:	c8378513          	addi	a0,a5,-893 # c83 <initialize_nrf_module+0x183>
+    11ec:	a8cff0ef          	jal	478 <read_register_field>
+    11f0:	00050793          	mv	a5,a0
+    11f4:	fc0786e3          	beqz	a5,11c0 <main+0x18>
+    11f8:	de9ff0ef          	jal	fe0 <receive_data>
+    11fc:	fc5ff06f          	j	11c0 <main+0x18>
+    1200:	e8dff0ef          	jal	108c <initialize_system>
+    1204:	fbdff06f          	j	11c0 <main+0x18>

@@ -1,0 +1,25 @@
+# Verilog simulation output
+*.vcd
+*.fst
+*.lxt
+*.lxt2
+
+# Simulation executables
+*.vvp
+*.out
+
+# Logs
+*.log
+
+# Temporary and backup files
+*.tmp
+*.bak
+*~
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
